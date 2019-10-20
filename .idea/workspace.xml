@@ -1,18 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4bc7cc87-f0aa-4156-a6a2-e7a53a3e087c" name="Default Changelist" comment="" />
+    <list default="true" id="4bc7cc87-f0aa-4156-a6a2-e7a53a3e087c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/static/css/fonts.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/static/css/styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/static/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/cbir/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/cbir/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/cbir/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/cbir/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/pages/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/pages/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/pages/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/pages/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/pages/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/pages/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbir/pages/views.py" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1SPcxToDf8OPrVoZU0sfKTlgHnw" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -40,10 +87,38 @@
       <workItem from="1571469176175" duration="1490000" />
       <workItem from="1571473953464" duration="145000" />
       <workItem from="1571493414489" duration="3868000" />
+      <workItem from="1571537352146" duration="28000" />
+      <workItem from="1571537387479" duration="2943000" />
+      <workItem from="1571552532168" duration="5947000" />
+      <workItem from="1571559553964" duration="8824000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/cbir/wsgi.py</url>
+          <line>9</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
