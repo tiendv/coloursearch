@@ -25,5 +25,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view, name='home'),
     path('about/', about, name='about'),
+    path('extract-features/', extract_features, name='extract-features'),
     re_path(r'^favicon\.ico$', favicon_view),
 ]

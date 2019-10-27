@@ -12,3 +12,10 @@ def home_view(request, *args, **kwargs):
 def about(request, *args,  **kwargs):
     print(request.user)
     return render(request, 'html/about.html', {})
+
+
+def extract_features(request, *args, **kwargs):
+    if request.method == 'POST':
+        folder_path = request.POST.get('folder_path')
+        print(folder_path)
+    return render(request, 'html/extract-features.html', {})

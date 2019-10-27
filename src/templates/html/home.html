@@ -1,10 +1,12 @@
 {% extends 'html/base.html' %}
 {% load static %}
+
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/fonts.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 {% endblock %}
+
 {% block content %}
 <div id="demo-app" class="col-md-3" style="position: absolute">
     <div style="position: relative">
@@ -18,9 +20,9 @@
                 <input type="submit" class="submit-button" value="submit">
             </form>
             <input type="submit" class="quick-fill" value="fill">
+            <button id="bgcolor-button">Pick a color</button>
         </div>
         <div class="panel bgcolor col-md-6 offset-md-6">
-            <button id="bgcolor-button">Pick a color</button>
             <table>
                 <tr>
                     <th>RGB</th>
@@ -157,7 +159,7 @@
         width: 300,
         height: 120,
         sliderSize: 20,
-        position: 'top',
+        position: 'bottom',
         borderColor: '#CCC',
         insetColor: '#CCC',
         backgroundColor: '#202020'

@@ -1,0 +1,33 @@
+{% extends 'html/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/extract-features.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/fonts.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<form action="/extract-features/" method="post">{% csrf_token %}
+  <div class="form-row align-items-center">
+    <div class="col-6">
+      <label class="sr-only" for="inlineFormInputGroup">Folder path</label>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Folder path</div>
+        </div>
+        <input type="text" class="form-control" id="inlineFormInputGroup" name="folder_path"">
+      </div>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary mb-2" value="Send">Send</button>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

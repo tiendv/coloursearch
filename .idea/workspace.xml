@@ -2,30 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4bc7cc87-f0aa-4156-a6a2-e7a53a3e087c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/static/css/fonts.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/static/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/static/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/image_retrieval/models/ColorHistogram.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/image_retrieval/models/Image.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/image_retrieval/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/static/css/extract-features.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/templates/html/extract-features.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/cbir/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/cbir/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/cbir/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/cbir/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/image_retrieval/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/manage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/pages/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/pages/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/pages/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/pages/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/pages/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/pages/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbir/pages/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/static/images/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/images/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/static/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/html/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/html/home.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,9 +24,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JavaScript File" />
         <option value="HTML File" />
         <option value="CSS File" />
-        <option value="JavaScript File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -58,7 +47,9 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src\image_retrieval" />
       <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src" />
+      <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src\cbir" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -91,6 +82,12 @@
       <workItem from="1571537387479" duration="2943000" />
       <workItem from="1571552532168" duration="5947000" />
       <workItem from="1571559553964" duration="8824000" />
+      <workItem from="1571569687427" duration="12000" />
+      <workItem from="1571586370372" duration="3582000" />
+      <workItem from="1572078674901" duration="6140000" />
+      <workItem from="1572100349519" duration="3000" />
+      <workItem from="1572102788061" duration="601000" />
+      <workItem from="1572140830090" duration="2846000" />
     </task>
     <servers />
   </component>

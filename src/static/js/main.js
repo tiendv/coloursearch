@@ -1,3 +1,5 @@
+
+
 const sizePicker = document.querySelector('.size-picker');
 const pixelCanvas = document.querySelector('.pixel-canvas');
 const quickFill = document.querySelector('.quick-fill');
@@ -69,7 +71,7 @@ pixelCanvas.addEventListener('mousedown', function(e) {
   });
 });
 
-makeGrid(25, 25);
+makeGrid(15, 15);
 
 // Removes color from cell upon double-click
 pixelCanvas.addEventListener('dblclick', e => {
