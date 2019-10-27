@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('image_retrieval', '0001_initial'),
+        ('cbir', '0001_initial'),
     ]
 
     operations = [
