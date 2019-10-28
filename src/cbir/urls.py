@@ -17,14 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic.base import RedirectView
 from django.urls import re_path
-from .views import *
+from . import views
 
 favicon_view = RedirectView.as_view(url='/static/images/favicon.ico', permanent=True)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_view, name='home'),
-    path('about/', about, name='about'),
-    path('extract-features/', extract_features, name='extract-features'),
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+    path('extract-features/', views.extract_features, name='extract-features'),
     re_path(r'^favicon\.ico$', favicon_view),
 ]

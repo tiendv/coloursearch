@@ -2,24 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4bc7cc87-f0aa-4156-a6a2-e7a53a3e087c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/image_retrieval/models/ColorHistogram.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/image_retrieval/models/Image.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/image_retrieval/models/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/static/css/extract-features.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/templates/html/extract-features.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/constants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/views/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/views/about.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/views/extract_features.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/views/home.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/content-based-image-retrieval.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/content-based-image-retrieval.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/migrations/0002_colorhistogram.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/models/ColorHistogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/models/ColorHistogram.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/models/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cbir/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/images/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/images/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/templates/html/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/html/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/views.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="content-based-image-retrieval" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -41,15 +49,16 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/cbir/settings.py" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src\cbir\mode" />
+      <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src\cbir" />
       <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src\image_retrieval" />
       <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src" />
-      <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src\cbir" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -63,6 +72,54 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="content-based-image-retrieval" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="CBIR" type="Python.DjangoServer" factoryName="Django server">
+      <module name="content-based-image-retrieval" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="cbir.settings" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\nxhao\Desktop\content-based-image-retrieval\env\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="127.0.0.1" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="http://127.0.0.1:8000/" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -88,6 +145,10 @@
       <workItem from="1572100349519" duration="3000" />
       <workItem from="1572102788061" duration="601000" />
       <workItem from="1572140830090" duration="2846000" />
+      <workItem from="1572158203562" duration="12513000" />
+      <workItem from="1572186281298" duration="4434000" />
+      <workItem from="1572192218823" duration="103000" />
+      <workItem from="1572225844615" duration="5000" />
     </task>
     <servers />
   </component>
@@ -106,16 +167,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/cbir/wsgi.py</url>
-          <line>9</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
