@@ -1,9 +1,33 @@
+window.onload = function() {
+  // Change text of drop-down button
+  $('.dropdown-menu a').click(function(){
+    $('#algorithm').text($(this).text());
+  });
 
+  // Post form data
+  $('#extract-submit').on('submit', function (event) {
+    event.preventDefault();
+    csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+    let formData = {
+      'folder_path': $('input[name="folder_path"]').val(),
+      'algorithm': $('span[id="algorithm"]').text(),
+      'csrfmiddlewaretoken': csrf_token,
+    };
+    console.log(formData);
+    $.ajax({
+      url: '',
+      type: 'post',
+      data: formData,
+      success: function (message) {
+        alert(message);
+      }
+    })
+  })
+};
 
 const sizePicker = document.querySelector('.size-picker');
 const pixelCanvas = document.querySelector('.pixel-canvas');
 const quickFill = document.querySelector('.quick-fill');
-
 
 function makeGrid() {
   let gridHeight = document.querySelector('.input-height').value;

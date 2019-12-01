@@ -2,20 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4bc7cc87-f0aa-4156-a6a2-e7a53a3e087c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/cbir/constants.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/views/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/views/about.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/views/extract_features.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/views/home.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/content-based-image-retrieval.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/content-based-image-retrieval.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/migrations/0002_generate_default_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/models/Method.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/models/ValueType.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/utilities/ColorHistogramExtraction.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/utilities/FuzzyColorHistogramExtraction.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/utilities/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cbir/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/migrations/0002_colorhistogram.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/models/FuzzyColorHistogram.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cbir/models/ColorHistogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/models/ColorHistogram.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/models/Image.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/models/Image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/views/extract_features.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/views/extract_features.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/static/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/html/extract-features.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/html/extract-features.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/html/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/html/home.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,12 +54,16 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/cbir/settings.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/cbir/migrations" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Python" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src\cbir\migrations" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src\cbir\mode" />
       <recent name="C:\Users\nxhao\Desktop\content-based-image-retrieval\src\cbir" />
@@ -149,6 +159,10 @@
       <workItem from="1572186281298" duration="4434000" />
       <workItem from="1572192218823" duration="103000" />
       <workItem from="1572225844615" duration="5000" />
+      <workItem from="1575124240767" duration="2760000" />
+      <workItem from="1575127054849" duration="1789000" />
+      <workItem from="1575164768365" duration="9225000" />
+      <workItem from="1575185379707" duration="20207000" />
     </task>
     <servers />
   </component>

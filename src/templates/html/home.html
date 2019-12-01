@@ -9,7 +9,7 @@
 
 {% block content %}
 <div id="demo-app" class="col-md-3" style="position: absolute">
-    <div style="position: relative">
+    <div style="position: relative" class="my-3">
         <div class="col-md-6" style="position: absolute">
             <form class="size-picker">
                 height:
@@ -68,20 +68,20 @@
             </table>
         </div>
     </div>
-    <div style="position: relative">
+    <div style="position: relative" class="my-3 ml-3">
         <table class="pixel-canvas"></table>
     </div>
 </div>
 
 <div id="results" class="col-md-8 offset-md-3">
     <div id="content">
-
-        <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Thumbnail Gallery</h1>
-
+        <div class="row">
+            <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0 col-md-6">Thumbnail Gallery</h1>
+            <a class="btn btn-primary btn-block col-md-6" href="extract-features" role="button">Extract features</a>
+        </div>
         <hr class="mt-2 mb-5">
 
         <div class="row text-center text-lg-left">
-
             <div class="col-lg-3 col-md-4 col-6">
                 <a href="#" class="d-block mb-4 h-100">
                     <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/pWkk7iiCoDM/400x300" alt="">
@@ -148,7 +148,7 @@
 {% endblock %}
 
 {% block js %}
-<script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/jscolor.js' %}"></script>

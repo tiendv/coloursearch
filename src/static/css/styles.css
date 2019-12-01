@@ -60,14 +60,12 @@ h1, h2, #navigation {
 }
 
 #demo-app button {
-    width: 180px;
     height: 50px;
     margin: 10px 0;
 }
 
 #demo-app .panel {
     top: 0;
-    width: 220px;
 }
 
 #demo-app .panel .red {
