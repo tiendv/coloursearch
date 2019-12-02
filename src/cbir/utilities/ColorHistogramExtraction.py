@@ -1,11 +1,6 @@
-import os
 import math
 import numpy as np
 import cv2
-from collections import Counter
-from .. import constants
-from django.shortcuts import render
-from ..models.Image import Image
 import logging
 
 logger = logging.getLogger(__name__)

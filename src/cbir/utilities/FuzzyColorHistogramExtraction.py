@@ -1,16 +1,10 @@
-import os
-import numpy as np
-import cv2
 import math
-from collections import Counter
-from .. import constants
-from django.shortcuts import render
 from .ColorHistogramExtraction import calc_color_range, extract_rgb_color_histogram
 
 
-def extract_fuzzy_color_histogram(image, number_of_coarse_color, number_of_fine_color, m):
+def extract_fuzzy_color_histogram(image, number_of_coarse_color=4096, number_of_fine_color=64, m=1.9):
     coarse_color_range, coarse_color, coarse_channel_range = calc_color_range(number_of_coarse_color)
-    fine_color_range, fine_color,fine_channel_range = calc_color_range(number_of_fine_color)
+    fine_color_range, fine_color, fine_channel_range = calc_color_range(number_of_fine_color)
 
     number_of_coarse_color = len(coarse_color)
     number_of_fine_color = len(fine_color)
@@ -46,24 +40,24 @@ def extract_fuzzy_color_histogram(image, number_of_coarse_color, number_of_fine_
                 u[i][k] = 0.0
         print('i = ' + str(i))
 
-    v = [(color[0], color[1], color[2]) for color in fine_color]
-    x = [(color[0], color[1], color[2]) for color in coarse_color]
+    v = [[color[0], color[1], color[2]] for color in fine_color]
+    x = [[color[0], color[1], color[2]] for color in coarse_color]
     u_e = [[u[i][k] for k in range(number_of_coarse_color)] for i in range(number_of_fine_color)]
 
     while True:
         # Update v
         for i in range(0, number_of_fine_color):
-            n1 = n2 = n3 = d = d = d = 0
+            n0 = n1 = n2 = d = d = d = 0
             for k in range(0, number_of_coarse_color):
-                n1 += u[i][k]**m * x[k][1]
-                n2 += u[i][k]**m * x[k][2]
-                n3 += u[i][k]**m * x[k][3]
+                n0 += math.pow(u[i][k], m) * x[k][0]
+                n1 += math.pow(u[i][k], m) * x[k][1]
+                n2 += math.pow(u[i][k], m) * x[k][2]
                 d += u[i][k]**m
 
             if d != 0:
-                v[i][0] = 1.0 * n1 / d
+                v[i][0] = 1.0 * n0 / d
                 v[i][1] = 1.0 * n1 / d
-                v[i][2] = 1.0 * n1 / d
+                v[i][2] = 1.0 * n2 / d
 
         # Update u
         for i in range(0, number_of_fine_color):
@@ -82,6 +76,7 @@ def extract_fuzzy_color_histogram(image, number_of_coarse_color, number_of_fine_
                     u[i][k] = 1.0 / d
                 else:
                     u[i][k] = 0.0
+            print('i = ' + str(i))
 
         # Calculate error tolerance
         error_tolerance = 0.0

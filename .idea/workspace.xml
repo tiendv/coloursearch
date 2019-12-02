@@ -2,26 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4bc7cc87-f0aa-4156-a6a2-e7a53a3e087c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/migrations/0002_generate_default_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/models/Method.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/models/ValueType.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/utilities/ColorHistogramExtraction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/utilities/FuzzyColorHistogramExtraction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cbir/utilities/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/models/ColorCoherenceVector.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/models/ColorCorrelogram.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/utilities/ColorCoherenceVectorExtraction.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cbir/utilities/ColorCorrelogramExtraction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/models/FuzzyColorHistogram.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/models/ColorHistogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/models/ColorHistogram.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/models/Image.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/models/Image.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cbir/views/extract_features.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/views/extract_features.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/templates/html/extract-features.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/html/extract-features.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/templates/html/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/html/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/utilities/ColorHistogramExtraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/utilities/ColorHistogramExtraction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cbir/utilities/FuzzyColorHistogramExtraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cbir/utilities/FuzzyColorHistogramExtraction.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +45,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/cbir/migrations" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Python" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -163,6 +150,8 @@
       <workItem from="1575127054849" duration="1789000" />
       <workItem from="1575164768365" duration="9225000" />
       <workItem from="1575185379707" duration="20207000" />
+      <workItem from="1575252886422" duration="2049000" />
+      <workItem from="1575297469346" duration="4696000" />
     </task>
     <servers />
   </component>
