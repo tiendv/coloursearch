@@ -43,8 +43,8 @@ def calc_color_range(number_of_color):
     return color_range, color, value_range
 
 
-def extract_rgb_color_histogram(image, coarse_color_range, coarse_channel_range):
-    img = cv2.imread(image)
+def extract_rgb_color_histogram(image_location, coarse_color_range, coarse_channel_range):
+    img = cv2.imread(image_location)
     img = img.reshape((-1, 3))
     img = np.float32(img)
 

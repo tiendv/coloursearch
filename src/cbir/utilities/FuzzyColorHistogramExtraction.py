@@ -2,14 +2,15 @@ import math
 from .ColorHistogramExtraction import calc_color_range, extract_rgb_color_histogram
 
 
-def extract_fuzzy_color_histogram(image, number_of_coarse_color=4096, number_of_fine_color=64, m=1.9):
+def extract_fuzzy_color_histogram(image_location, number_of_coarse_color=4096, number_of_fine_color=64, m=1.9):
+    print('Extracting CCV for ' + image_location)
     coarse_color_range, coarse_color, coarse_channel_range = calc_color_range(number_of_coarse_color)
     fine_color_range, fine_color, fine_channel_range = calc_color_range(number_of_fine_color)
 
     number_of_coarse_color = len(coarse_color)
     number_of_fine_color = len(fine_color)
 
-    rgb_color_histogram = extract_rgb_color_histogram(image, coarse_color_range, coarse_channel_range)
+    rgb_color_histogram = extract_rgb_color_histogram(image_location, coarse_color_range, coarse_channel_range)
 
     iterator_count = 0
     epsilon = 10
