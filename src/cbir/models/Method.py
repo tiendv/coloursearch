@@ -2,4 +2,4 @@ from django.db import models
 
 
 class Method(models.Model):
-    name = models.CharField(max_length=255, null=False, default='', unique=True)
+    name = models.CharField(primary_key=True, max_length=255)

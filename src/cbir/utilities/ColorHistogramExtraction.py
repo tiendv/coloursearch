@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import cv2
+import collections
 import logging
 
 logger = logging.getLogger(__name__)
@@ -43,27 +44,27 @@ def calc_color_range(number_of_color):
     return color_range, color, value_range
 
 
-def extract_rgb_color_histogram(image_location, coarse_color_range, coarse_channel_range):
+def extract_rgb_color_histogram(image_location, color_range, channel_range):
     img = cv2.imread(image_location)
     img = img.reshape((-1, 3))
     img = np.float32(img)
 
-    histogram = {}
+    histogram = collections.OrderedDict()
 
-    for color_range in coarse_color_range:
-        histogram[color_range] = 0
+    for c in color_range:
+        histogram[c] = 0
 
     for pixel in img:
         channel_0 = None
         channel_1 = None
         channel_2 = None
-        for channel_range in coarse_channel_range:
-            if channel_range[0] <= pixel[0] <= channel_range[1]:
-                channel_0 = channel_range
-            if channel_range[0] <= pixel[1] <= channel_range[1]:
-                channel_1 = channel_range
-            if channel_range[0] <= pixel[2] <= channel_range[1]:
-                channel_2 = channel_range
+        for cr in channel_range:
+            if cr[0] <= pixel[0] <= cr[1]:
+                channel_0 = cr
+            if cr[0] <= pixel[1] <= cr[1]:
+                channel_1 = cr
+            if cr[0] <= pixel[2] <= cr[1]:
+                channel_2 = cr
             if channel_0 is not None and channel_1 is not None and channel_2 is not None:
                 break
         histogram[(channel_0, channel_1, channel_2)] += 1

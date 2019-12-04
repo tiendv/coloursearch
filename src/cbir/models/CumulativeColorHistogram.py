@@ -2,7 +2,7 @@ from django.db import models
 from .Extraction import Extraction
 
 
-class ColorHistogram(models.Model):
+class CumulativeColorHistogram(models.Model):
     extraction = models.ForeignKey(Extraction, on_delete=models.CASCADE)
     ccomponent1_min = models.IntegerField()
     ccomponent1_max = models.IntegerField()

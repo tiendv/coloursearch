@@ -1,9 +1,10 @@
 import math
+import numpy as np
 from .ColorHistogramExtraction import calc_color_range, extract_rgb_color_histogram
 
 
 def extract_fuzzy_color_histogram(image_location, number_of_coarse_color=4096, number_of_fine_color=64, m=1.9):
-    print('Extracting CCV for ' + image_location)
+    print('Extracting FCH for ' + image_location)
     coarse_color_range, coarse_color, coarse_channel_range = calc_color_range(number_of_coarse_color)
     fine_color_range, fine_color, fine_channel_range = calc_color_range(number_of_fine_color)
 
@@ -11,6 +12,10 @@ def extract_fuzzy_color_histogram(image_location, number_of_coarse_color=4096, n
     number_of_fine_color = len(fine_color)
 
     rgb_color_histogram = extract_rgb_color_histogram(image_location, coarse_color_range, coarse_channel_range)
+    cch = []
+    for key, value in rgb_color_histogram.items():
+        cch.append(value)
+    cch = np.asarray(cch)
 
     iterator_count = 0
     epsilon = 10
@@ -93,8 +98,13 @@ def extract_fuzzy_color_histogram(image_location, number_of_coarse_color=4096, n
             break
         else:
             u_e = [[u[i][k] for k in range(number_of_coarse_color)] for i in range(number_of_fine_color)]
+    m = np.asarray(u)
+    fch = None
+    if len(m.shape) > 2:
+        if m.shape[1] == len(cch):
+            fch = cch.dot(m)
 
-    return v, u
+    return fch, v, u
 
 
 def convert_to_channel(colors, channel):

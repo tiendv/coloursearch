@@ -1,10 +1,12 @@
 from django.db import models
-from .ValueType import ValueType
-from .Image import Image
+from .Extraction import Extraction
 
 
 class ColorCoherenceVector(models.Model):
-    name = models.CharField(max_length=255, null=False, default='')
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
-    value_type = models.ForeignKey(ValueType, on_delete=models.CASCADE)
-    value = models.FloatField(null=False, default=0)
+    extraction = models.ForeignKey(Extraction, on_delete=models.CASCADE)
+    ccomponent1 = models.IntegerField()
+    ccomponent2 = models.IntegerField()
+    ccomponent3 = models.IntegerField()
+    alpha = models.IntegerField(null=False, default=0)
+    beta = models.IntegerField(null=False, default=0)
+
