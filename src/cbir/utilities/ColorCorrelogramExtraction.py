@@ -2,9 +2,10 @@ import cv2
 import numpy as np
 import collections
 from .ColorHistogramExtraction import calc_color_range
+from ..models.ColorCorrelogram import ColorCorrelogram
 
 
-def extract_color_correlogram(image_location, number_of_color=64, d=7, increment=1):
+def extract_color_correlogram(img_extraction_id, image_location, number_of_color=64, d=7, increment=1):
     print('Extracting Color Correlogram for ' + image_location)
     D = []
     if d is None or d < 1:
@@ -56,6 +57,21 @@ def extract_color_correlogram(image_location, number_of_color=64, d=7, increment
                     gamma[k][color_range] = calc_gamma(k, pixels) / (histogram[color_range] * 8 * k)
                 else:
                     gamma[k][color_range] = 0.0
+
+    k = None
+    for key, value in gamma.items():
+        k = key
+        for key1, value1 in value.items():
+            instance = ColorCorrelogram()
+            instance.k = k
+            instance.ccomponent1_min = key1[0][0]
+            instance.ccomponent1_max = key1[0][1]
+            instance.ccomponent2_min = key1[1][0]
+            instance.ccomponent2_max = key1[1][1]
+            instance.ccomponent3_min = key1[2][0]
+            instance.ccomponent3_max = key1[2][1]
+            instance.value = value1
+            instance.save()
     return gamma
 
 

@@ -1,32 +1,19 @@
 import math
 import numpy as np
 from .ColorHistogramExtraction import calc_color_range, extract_rgb_color_histogram
+from ..models import FuzzyColorHistogram
 
 
-def extract_fuzzy_color_histogram(image_location, number_of_coarse_color=4096, number_of_fine_color=64, m=1.9):
-    print('Extracting FCH for ' + image_location)
+def quantize_color_space(number_of_coarse_color=4096, number_of_fine_color=64, m=1.9):
     coarse_color_range, coarse_color, coarse_channel_range = calc_color_range(number_of_coarse_color)
     fine_color_range, fine_color, fine_channel_range = calc_color_range(number_of_fine_color)
 
     number_of_coarse_color = len(coarse_color)
     number_of_fine_color = len(fine_color)
 
-    rgb_color_histogram = extract_rgb_color_histogram(image_location, coarse_color_range, coarse_channel_range)
-    cch = []
-    for key, value in rgb_color_histogram.items():
-        cch.append(value)
-    cch = np.asarray(cch)
-
     iterator_count = 0
     epsilon = 10
     u = [[0.0 for k in range(number_of_coarse_color)] for i in range(number_of_fine_color)]
-
-    coarse_channel = []
-    fine_channel = []
-
-    for i in range(0, 3):
-        coarse_channel.append(convert_to_channel(coarse_color, i))
-        fine_channel.append(convert_to_channel(fine_color, i))
 
     for i in range(0, number_of_fine_color):
         for k in range(0, number_of_coarse_color):
@@ -98,17 +85,36 @@ def extract_fuzzy_color_histogram(image_location, number_of_coarse_color=4096, n
             break
         else:
             u_e = [[u[i][k] for k in range(number_of_coarse_color)] for i in range(number_of_fine_color)]
-    m = np.asarray(u)
+    matrix = np.asarray(u)
+    return coarse_color_range, coarse_channel_range, matrix, v
+
+
+def extract_fuzzy_color_histogram(img_extraction_id, image_location, coarse_color_range, coarse_channel_range, matrix, v):
+    print('Extracting FCH for ' + image_location)
+
+    rgb_color_histogram = extract_rgb_color_histogram(image_location, coarse_color_range, coarse_channel_range)
+    cch = []
+    for key, value in rgb_color_histogram.items():
+        cch.append(value)
+    cch = np.asarray(cch)
+
     fch = None
-    if len(m.shape) > 2:
-        if m.shape[1] == len(cch):
-            fch = cch.dot(m)
-
-    return fch, v, u
-
-
-def convert_to_channel(colors, channel):
-    result = []
-    for color in colors:
-        result.append(color[channel])
-    return result
+    if len(matrix.shape) == 2:
+        if matrix.shape[1] == len(cch):
+            fch = cch.dot(matrix.T)
+            for i in range(0, len(v)):
+                instance = FuzzyColorHistogram(image_extraction_id=img_extraction_id)
+                instance.ccomponent1 = v[i][0]
+                instance.ccomponent2 = v[i][1]
+                instance.ccomponent3 = v[i][2]
+                instance.value = fch[i]
+                print('-----------------error-----------------')
+                print(instance.image_extraction_id)
+                print(instance.ccomponent1)
+                print(instance.ccomponent2)
+                print(instance.ccomponent3)
+                print(instance.value)
+                print('-----------------error-----------------')
+                instance.save()
+            return True
+    return False

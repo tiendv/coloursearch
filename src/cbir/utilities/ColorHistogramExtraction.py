@@ -4,6 +4,8 @@ import cv2
 import collections
 import logging
 
+from ..models import ColorHistogram, Extraction
+
 logger = logging.getLogger(__name__)
 
 
@@ -68,6 +70,9 @@ def extract_rgb_color_histogram(image_location, color_range, channel_range):
             if channel_0 is not None and channel_1 is not None and channel_2 is not None:
                 break
         histogram[(channel_0, channel_1, channel_2)] += 1
+
+    for key, value in histogram.items():
+        print('Saving ' + str(value))
 
     return histogram
 

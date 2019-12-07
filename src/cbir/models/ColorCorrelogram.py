@@ -1,9 +1,9 @@
 from django.db import models
-from .Extraction import Extraction
+from .ImageExtraction import ImageExtraction
 
 
 class ColorCorrelogram(models.Model):
-    extraction = models.ForeignKey(Extraction, on_delete=models.CASCADE)
+    image_extraction = models.ForeignKey(ImageExtraction, on_delete=models.CASCADE)
     k = models.IntegerField()
     ccomponent1_min = models.IntegerField()
     ccomponent1_max = models.IntegerField()

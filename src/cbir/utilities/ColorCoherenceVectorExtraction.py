@@ -3,9 +3,10 @@ import cv2
 import numpy as np
 from scipy.ndimage.measurements import label
 import collections
+from ..models.ColorCoherenceVector import ColorCoherenceVector
 
 
-def extract_color_coherence_vector(image_location, number_of_color=512, tau=100):
+def extract_color_coherence_vector(img_extraction_id, image_location, number_of_color=512, tau=100):
     print('Extracting CCV for ' + image_location)
     number_of_range = number_of_color ** (1 / 3)
     if (math.ceil(number_of_range) - number_of_range) < 0.001:
@@ -93,6 +94,17 @@ def extract_color_coherence_vector(image_location, number_of_color=512, tau=100)
                     ccv[color_tuple]['alpha'] += value
                 else:
                     ccv[color_tuple]['beta'] += value
+
+    for key, value in ccv.items():
+        instance = ColorCoherenceVector()
+        instance.image_extraction_id = img_extraction_id
+        instance.ccomponent1 = key[0]
+        instance.ccomponent1 = key[1]
+        instance.ccomponent1 = key[2]
+        instance.alpha = value['alpha']
+        instance.beta = value['beta']
+        instance.save()
+
     return ccv
 
 

@@ -10,11 +10,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunSQL('''
-        INSERT INTO cbir_method(name) VALUES ('color_histogram');
-        INSERT INTO cbir_method(name) VALUES ('fuzzy_color_histogram');
-        INSERT INTO cbir_method(name) VALUES ('cumulative_color_histogram');
-        INSERT INTO cbir_method(name) VALUES ('color_coherence_vector');
-        INSERT INTO cbir_method(name) VALUES ('color_correlogram');
+        INSERT INTO cbir_method(name, detail) VALUES ('color_histogram', 'Color Histogram');
+        INSERT INTO cbir_method(name, detail) VALUES ('fuzzy_color_histogram', 'Fuzzy Color Histogram');
+        INSERT INTO cbir_method(name, detail) VALUES ('cumulative_color_histogram', 'Cumulative Color Histogram');
+        INSERT INTO cbir_method(name, detail) VALUES ('color_coherence_vector', 'Color Coherence Vector');
+        INSERT INTO cbir_method(name, detail) VALUES ('color_correlogram', 'Color Correlogram');
         ''')
     ]
 

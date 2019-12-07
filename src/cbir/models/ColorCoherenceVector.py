@@ -1,9 +1,9 @@
 from django.db import models
-from .Extraction import Extraction
+from .ImageExtraction import ImageExtraction
 
 
 class ColorCoherenceVector(models.Model):
-    extraction = models.ForeignKey(Extraction, on_delete=models.CASCADE)
+    image_extraction = models.ForeignKey(ImageExtraction, on_delete=models.CASCADE)
     ccomponent1 = models.IntegerField()
     ccomponent2 = models.IntegerField()
     ccomponent3 = models.IntegerField()

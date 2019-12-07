@@ -1,63 +1,116 @@
 import os
-import numpy as np
-import cv2
-from collections import Counter
-from .. import constants
-from django.shortcuts import render
-from ..models import ColorHistogram
-from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram
+import datetime
+from django.utils import timezone
+import pytz
+from ..models import Extraction, ImageExtraction, Method
+from ..utilities.ColorHistogramExtraction import calc_color_range
+from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
+from ..utilities.ColorCoherenceVectorExtraction import extract_color_coherence_vector
+from ..utilities.ColorCorrelogramExtraction import extract_color_correlogram
+from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_color_histogram
 
 
-def extract_features(request, *args, **kwargs):
-    if request.method == 'POST':
-        for key, value in request.POST.items():
-            print(f'Key: {key}')
-            print(f'Value: {value}')
+def extract_features(path, method, param1, param2, param3):
+    available_methods = {
+        m['name']: m['detail'] for m in Method.objects.all().values()
+    }
 
-        folder_path = request.POST.get('folder_path')
+    if method is None or path is None or method not in available_methods.keys():
+        print('You did not include the available method or the directory path. Please re-run the command')
+        return
+    isNotEnoughParameter = False
+    if method == 'fuzzy_color_histogram' or method == 'color_correlogram':
+        if param1 is None or param2 is None or param3 is None:
+            isNotEnoughParameter = True
+    elif method == 'color_coherence_vector':
+        if param1 is None or param2 is None:
+            isNotEnoughParameter = True
+    elif method == 'cumulative_color_histogram':
+        if param1 is None:
+            isNotEnoughParameter = True
+    if isNotEnoughParameter:
+        print('Not enough parameters!')
+        return
 
-        # r=root, d=directories, f = files
-        images = []
-        for r, d, f in os.walk(folder_path):
-            for file in f:
-                if ('.jpg' in file) or ('.png' in file):
-                    images.append(os.path.join(r, file))
-        i = 1
+    print('==========================================================================')
+    print('Extracting ' + method + ' for ' + path)
+    print('==========================================================================')
+
+    extraction = Extraction(method_id=method)
+    extraction.directory_path = path
+    extraction.start_time = timezone.now()
+
+    if method == 'fuzzy_color_histogram':
+        extraction.param1_name = 'number_of_coarse_color'
+        extraction.param2_name = 'number_of_fine_color'
+        extraction.param3_name = 'm'
+        extraction.param1_value = param1
+        extraction.param2_value = param2
+        extraction.param3_value = param3
+    elif method == 'color_correlogram':
+        extraction.param1_name = 'number_of_color'
+        extraction.param2_name = 'd'
+        extraction.param3_name = 'increment'
+        extraction.param1_value = param1
+        extraction.param2_value = param2
+        extraction.param3_value = param3
+    elif method == 'color_coherence_vector':
+        extraction.param1_name = 'number_of_color'
+        extraction.param2_name = 'tau'
+        extraction.param1_value = param1
+        extraction.param2_value = param2
+    elif method == 'cumulative_color_histogram':
+        extraction.param1_name = 'number_of_color'
+        extraction.param1_value = param1
+    extraction.save()
+
+    latest_extraction_id = Extraction.objects.latest('id').id
+
+    # r=root, d=directories, f = files
+    images = []
+    for r, d, f in os.walk(path):
+        for file in f:
+            if ('.jpg' in file) or ('.png' in file):
+                images.append(os.path.join(r, file))
+
+    if method == 'fuzzy_color_histogram':
+        number_of_coarse_color = param1
+        number_of_fine_color = param2
+        m = param3
+        coarse_color_range, coarse_channel_range, matrix, v = quantize_color_space(number_of_coarse_color,
+                                                                                number_of_fine_color, m)
         for img in images:
-            extract_fuzzy_color_histogram(img, 4096, 64, 1.9)
-        #     img = cv2.imread(img)
-        #     Z = img.reshape((-1, 3))
-        #     Z = np.float32(Z)
-        #
-        #     # The iteration termination criteria
-        #     # cv2.TERM_CRITERIA_EPS - stop the algorithm iteration if specified accuracy, epsilon, is reached.
-        #     # cv2.TERM_CRITERIA_MAX_ITER - stop the algorithm after the specified number of iterations, max_iter.
-        #     # cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER - stop the iteration when any of the above
-        #     # condition is met.
-        #     # max_iter - An integer specifying maximum number of iterations.
-        #     # epsilon - Required accuracy
-        #     # For each run, the algorithm will stop if:
-        #     # The number of iteration reaches max_iter,
-        #     # or every cluster center moved less than epsilon in the last iteration.
-        #     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-        #     compactness, labels, centers = cv2.kmeans(Z, constants.K, None, criteria,
-        #                                               10, cv2.KMEANS_RANDOM_CENTERS)
-        #     centers = np.uint8(centers)
-        #     res = centers[labels.flatten()]
-        #     counts = dict(Counter(map(tuple, res)))
-        #     object_dict = {'image_id': i}
-        #     for field_name in constants.FIELD_NAMES:
-        #         object_dict[field_name] = 0
-        #     for key, value in counts.items():
-        #         color = np.uint8([[list(key)]])
-        #         color = cv2.cvtColor(color, cv2.COLOR_BGR2HSV)[0][0]
-        #         color[0] = round(color[0] * 2 / 45.0) * 45
-        #         color[1] = round(color[1] / 255.0 * 2) * 50
-        #         color[2] = round(color[2] / 255.0 * 2) * 50
-        #         field_name = 'c_' + str(color[0]) + '_' + str(color[1]) + '_' + str(color[2])
-        #         if field_name in constants.FIELD_NAMES:
-        #             object_dict[field_name] = object_dict[field_name] + value
-        #     ColorHistogram.objects.create(**object_dict)
-        #     i = i + 1
+            img_extraction = ImageExtraction(extraction_id=latest_extraction_id)
+            img_extraction.image_name = os.path.basename(img)
+            img_extraction.save()
+            img_extraction_id = ImageExtraction.objects.latest('extraction_id').extraction_id
+            print(latest_extraction_id)
+            print(img_extraction_id)
+            extract_fuzzy_color_histogram(img_extraction_id, img, coarse_color_range, coarse_channel_range, matrix, v)
+    elif method == 'color_coherence_vector':
+        for img in images:
+            img_extraction = ImageExtraction(extraction_id=latest_extraction_id)
+            img_extraction.image_name = os.path.basename(img)
+            img_extraction.save()
+            img_extraction_id = ImageExtraction.objects.latest('extraction_id').extraction_id
+            extract_color_coherence_vector(img_extraction_id, img, param1, param2)
+    elif method == 'color_correlogram':
+        for img in images:
+            img_extraction = ImageExtraction(extraction_id=latest_extraction_id)
+            img_extraction.image_name = os.path.basename(img)
+            img_extraction.save()
+            img_extraction_id = ImageExtraction.objects.latest('extraction_id').extraction_id
+            extract_color_correlogram(img_extraction_id, img, param1, param2, param3)
+    elif method == 'cumulative_color_histogram':
+        for img in images:
+            img_extraction = ImageExtraction(extraction_id=latest_extraction_id)
+            img_extraction.image_name = os.path.basename(img)
+            img_extraction.save()
+            img_extraction_id = ImageExtraction.objects.latest('extraction_id').extraction_id
+            extract_cumulative_color_histogram(img_extraction_id, img, param1)
 
-    return render(request, 'html/extract-features.html', {})
+    print('|------------------|')
+    print('| Extraction done. |')
+    print('|------------------|')
+
+    return True

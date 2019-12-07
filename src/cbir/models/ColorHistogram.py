@@ -1,9 +1,9 @@
 from django.db import models
-from .Extraction import Extraction
+from .ImageExtraction import ImageExtraction
 
 
 class ColorHistogram(models.Model):
-    extraction = models.ForeignKey(Extraction, on_delete=models.CASCADE)
+    image_extraction = models.ForeignKey(ImageExtraction, on_delete=models.CASCADE)
     ccomponent1_min = models.IntegerField()
     ccomponent1_max = models.IntegerField()
     ccomponent2_min = models.IntegerField()

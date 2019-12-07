@@ -26,13 +26,31 @@
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-          <span id="algorithm">Chose option</span>
+          <span id="algorithm">Fuzzy Color Histogram</span>
           <span class="caret"></span>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">Fuzzy Color Histogram</a>
           <a class="dropdown-item" href="#">Color Coherence Vector</a>
           <a class="dropdown-item" href="#">Color Correlogram</a>
+          <a class="dropdown-item" href="#">Cumulative Color Histogram</a>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="param1-label">Number of coarse colors</span>
+          </div>
+          <input type="text" class="form-control" id="param1" aria-describedby="basic-addon3">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="param2-label">Number of fine colors</span>
+          </div>
+          <input type="text" class="form-control" id="param2" aria-describedby="basic-addon3">
+        </div>
+                <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="param3-label">m (weighting exponent)</span>
+          </div>
+          <input type="text" class="form-control" id="param3" aria-describedby="basic-addon3">
         </div>
       </div>
     </div>

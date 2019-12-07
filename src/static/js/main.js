@@ -2,18 +2,81 @@ window.onload = function() {
   // Change text of drop-down button
   $('.dropdown-menu a').click(function(){
     $('#algorithm').text($(this).text());
+    let param1_label = $('#param1-label');
+    let param2_label = $('#param2-label');
+    let param3_label = $('#param3-label');
+    let param1 = $('#param1');
+    let param2 = $('#param2');
+    let param3 = $('#param3');
+    switch($(this).text()) {
+      case 'Fuzzy Color Histogram':
+        param1_label.text('Number of coarse colors');
+        param2_label.show();
+        param2_label.text('Number of fine colors');
+        param3_label.show();
+        param3_label.text('m (weighting exponent)');
+        param2.show();
+        param3.show();
+        break;
+      case 'Color Coherence Vector':
+        param1_label.text('Number of colors');
+        param2_label.show();
+        param2_label.text('τ (tau - coherence value)');
+        param3_label.hide();
+        param2.show();
+        param3.hide();
+        break;
+      case 'Color Correlogram':
+        param1_label.text('Number of colors');
+        param2_label.show();
+        param2_label.text('d');
+        param3_label.show();
+        param3_label.text('increment');
+        param2.show();
+        param3.show();
+        break;
+      case 'Cumulative Color Histogram':
+        param1_label.text('Number of colors');
+        param2_label.text('d');
+        param2_label.hide();
+        param3_label.hide();
+        param2.hide();
+        param3.hide();
+        break;
+    }
   });
 
   // Post form data
   $('#extract-submit').on('submit', function (event) {
     event.preventDefault();
     csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+    let algorithm = $('span[id="algorithm"]').text();
     let formData = {
       'folder_path': $('input[name="folder_path"]').val(),
-      'algorithm': $('span[id="algorithm"]').text(),
+      'algorithm': algorithm,
       'csrfmiddlewaretoken': csrf_token,
     };
-    console.log(formData);
+    switch(algorithm) {
+      case 'Fuzzy Color Histogram':
+      case 'Color Correlogram':
+        formData['param1_name'] = $('#param1-label');
+        formData['param2_name'] = $('#param2-label');
+        formData['param3_name'] = $('#param3-label');
+        formData['param1_value'] = $('#param1');
+        formData['param2_value'] = $('#param2');
+        formData['param3_value'] = $('#param3');
+        break;
+      case 'Color Coherence Vector':
+        formData['param1_name'] = $('#param1-label');
+        formData['param2_name'] = $('#param2-label');
+        formData['param1_value'] = $('#param1');
+        formData['param2_value'] = $('#param2');
+        break;
+      case 'Cumulative Color Histogram':
+        formData['param1_name'] = $('#param1-label');
+        formData['param1_value'] = $('#param1');
+        break;
+    }
     $.ajax({
       url: '',
       type: 'post',

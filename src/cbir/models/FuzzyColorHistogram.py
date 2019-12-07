@@ -1,10 +1,10 @@
 from django.db import models
-from .Extraction import Extraction
+from .ImageExtraction import ImageExtraction
 
 
 class FuzzyColorHistogram(models.Model):
-    extraction = models.ForeignKey(Extraction, on_delete=models.CASCADE)
-    ccomponent1 = models.IntegerField()
-    ccomponent2 = models.IntegerField()
-    ccomponent3 = models.IntegerField()
+    image_extraction_id = models.IntegerField()
+    ccomponent1 = models.FloatField()
+    ccomponent2 = models.FloatField()
+    ccomponent3 = models.FloatField()
     value = models.FloatField(null=False, default=0)
