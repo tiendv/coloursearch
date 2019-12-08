@@ -50,6 +50,7 @@ def extract_rgb_color_histogram(image_location, color_range, channel_range):
     img = cv2.imread(image_location)
     img = img.reshape((-1, 3))
     img = np.float32(img)
+    number_of_pixels = len(img)
 
     histogram = collections.OrderedDict()
 
@@ -72,7 +73,7 @@ def extract_rgb_color_histogram(image_location, color_range, channel_range):
         histogram[(channel_0, channel_1, channel_2)] += 1
 
     for key, value in histogram.items():
-        print('Saving ' + str(value))
+        histogram[key] = value / number_of_pixels
 
     return histogram
 

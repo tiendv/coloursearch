@@ -13,7 +13,7 @@ def extract_color_correlogram(img_extraction_id, image_location, number_of_color
     else:
         i = 1
         while i < d:
-            D.append(i)
+            D.append(int(i))
             i += increment
 
     color_ranges, colors, channel_ranges = calc_color_range(number_of_color)
@@ -58,11 +58,13 @@ def extract_color_correlogram(img_extraction_id, image_location, number_of_color
                 else:
                     gamma[k][color_range] = 0.0
 
+    print(gamma)
+
     k = None
     for key, value in gamma.items():
         k = key
         for key1, value1 in value.items():
-            instance = ColorCorrelogram()
+            instance = ColorCorrelogram(image_extraction_id=img_extraction_id)
             instance.k = k
             instance.ccomponent1_min = key1[0][0]
             instance.ccomponent1_max = key1[0][1]

@@ -1,9 +1,7 @@
 import os
-import datetime
-from django.utils import timezone
+from datetime import datetime
 import pytz
 from ..models import Extraction, ImageExtraction, Method
-from ..utilities.ColorHistogramExtraction import calc_color_range
 from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
 from ..utilities.ColorCoherenceVectorExtraction import extract_color_coherence_vector
 from ..utilities.ColorCorrelogramExtraction import extract_color_correlogram
@@ -38,7 +36,8 @@ def extract_features(path, method, param1, param2, param3):
 
     extraction = Extraction(method_id=method)
     extraction.directory_path = path
-    extraction.start_time = timezone.now()
+    extraction.start_time = str(datetime.now())
+    print(extraction.start_time)
 
     if method == 'fuzzy_color_histogram':
         extraction.param1_name = 'number_of_coarse_color'
@@ -108,6 +107,10 @@ def extract_features(path, method, param1, param2, param3):
             img_extraction.save()
             img_extraction_id = ImageExtraction.objects.latest('extraction_id').extraction_id
             extract_cumulative_color_histogram(img_extraction_id, img, param1)
+
+    latest_extraction = Extraction.objects.latest('id')
+    latest_extraction.end_time = str(datetime.now())
+    latest_extraction.save()
 
     print('|------------------|')
     print('| Extraction done. |')

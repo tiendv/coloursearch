@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+TIME_ZONE = 'Asia/Saigon'
+
+USE_TZ = False
 
 # Application definition
 

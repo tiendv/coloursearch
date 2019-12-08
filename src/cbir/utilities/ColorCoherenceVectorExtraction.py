@@ -99,8 +99,8 @@ def extract_color_coherence_vector(img_extraction_id, image_location, number_of_
         instance = ColorCoherenceVector()
         instance.image_extraction_id = img_extraction_id
         instance.ccomponent1 = key[0]
-        instance.ccomponent1 = key[1]
-        instance.ccomponent1 = key[2]
+        instance.ccomponent2 = key[1]
+        instance.ccomponent3 = key[2]
         instance.alpha = value['alpha']
         instance.beta = value['beta']
         instance.save()

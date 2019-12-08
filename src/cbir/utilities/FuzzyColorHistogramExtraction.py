@@ -108,13 +108,13 @@ def extract_fuzzy_color_histogram(img_extraction_id, image_location, coarse_colo
                 instance.ccomponent2 = v[i][1]
                 instance.ccomponent3 = v[i][2]
                 instance.value = fch[i]
-                print('-----------------error-----------------')
+                print('----------------- saving -----------------')
                 print(instance.image_extraction_id)
                 print(instance.ccomponent1)
                 print(instance.ccomponent2)
                 print(instance.ccomponent3)
                 print(instance.value)
-                print('-----------------error-----------------')
+                print('----------------- saving -----------------')
                 instance.save()
             return True
     return False
