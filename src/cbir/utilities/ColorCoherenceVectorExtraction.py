@@ -104,6 +104,7 @@ def extract_color_coherence_vector(img_extraction_id, image_location, number_of_
         instance.alpha = value['alpha']
         instance.beta = value['beta']
         instance.save()
+        print('Saved ' + str(key) + ': ' + str(value))
 
     return ccv
 

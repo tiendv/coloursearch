@@ -31,7 +31,7 @@ def quantize_color_space(number_of_coarse_color=4096, number_of_fine_color=64, m
                 u[i][k] = 1.0 / d
             else:
                 u[i][k] = 0.0
-        print('i = ' + str(i))
+        print('Calculating fine color i = ' + str(i))
 
     v = [[color[0], color[1], color[2]] for color in fine_color]
     x = [[color[0], color[1], color[2]] for color in coarse_color]
@@ -108,13 +108,7 @@ def extract_fuzzy_color_histogram(img_extraction_id, image_location, coarse_colo
                 instance.ccomponent2 = v[i][1]
                 instance.ccomponent3 = v[i][2]
                 instance.value = fch[i]
-                print('----------------- saving -----------------')
-                print(instance.image_extraction_id)
-                print(instance.ccomponent1)
-                print(instance.ccomponent2)
-                print(instance.ccomponent3)
-                print(instance.value)
-                print('----------------- saving -----------------')
                 instance.save()
+                print('Saving v = ' + str(v[i]) + ', value = ' + fch[i])
             return True
     return False

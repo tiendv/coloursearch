@@ -74,6 +74,7 @@ def extract_color_correlogram(img_extraction_id, image_location, number_of_color
             instance.ccomponent3_max = key1[2][1]
             instance.value = value1
             instance.save()
+            print('Saved k = ' + k + ', ' + str(key1) + ': ' + str(value1))
     return gamma
 
 

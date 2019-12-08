@@ -29,5 +29,6 @@ def extract_cumulative_color_histogram(img_extraction_id, image_location, number
         instance.ccomponent3_max = key[2][1]
         instance.value = value
         instance.save()
+        print('Saved ' + str(key) + ': ' + str(value))
 
     return rgb_color_histogram
