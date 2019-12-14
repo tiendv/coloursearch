@@ -3,6 +3,7 @@ from .Extraction import Extraction
 from .ImageExtraction import ImageExtraction
 from .ColorHistogram import ColorHistogram
 from .FuzzyColorHistogram import FuzzyColorHistogram
+from .FuzzyColorHistogramColor import FuzzyColorHistogramColor
 from .ColorCoherenceVector import ColorCoherenceVector
 from .ColorCorrelogram import ColorCorrelogram
 from .CumulativeColorHistogram import CumulativeColorHistogram

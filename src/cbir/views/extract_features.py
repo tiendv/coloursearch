@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-import pytz
 from ..models import Extraction, ImageExtraction, Method
 from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
 from ..utilities.ColorCoherenceVectorExtraction import extract_color_coherence_vector
@@ -69,7 +68,7 @@ def extract_features(path, method, param1, param2, param3):
     images = []
     for r, d, f in os.walk(path):
         for file in f:
-            if ('.jpg' in file) or ('.png' in file):
+            if ('.jpg' in file) or ('.png' in file) or ('.tif' in file):
                 images.append(os.path.join(r, file))
 
     if method == 'fuzzy_color_histogram':
@@ -83,8 +82,6 @@ def extract_features(path, method, param1, param2, param3):
             img_extraction.image_name = os.path.basename(img)
             img_extraction.save()
             img_extraction_id = ImageExtraction.objects.latest('extraction_id').extraction_id
-            print(latest_extraction_id)
-            print(img_extraction_id)
             extract_fuzzy_color_histogram(img_extraction_id, img, coarse_color_range, coarse_channel_range, matrix, v)
     elif method == 'color_coherence_vector':
         for img in images:

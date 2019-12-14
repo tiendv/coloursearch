@@ -1,7 +1,10 @@
+import os
+import csv
 import math
 import numpy as np
+from django.conf import settings
 from .ColorHistogramExtraction import calc_color_range, extract_rgb_color_histogram
-from ..models import FuzzyColorHistogram
+from ..models import FuzzyColorHistogram, FuzzyColorHistogramColor
 
 
 def quantize_color_space(number_of_coarse_color=4096, number_of_fine_color=64, m=1.9):
@@ -69,7 +72,7 @@ def quantize_color_space(number_of_coarse_color=4096, number_of_fine_color=64, m
                     u[i][k] = 1.0 / d
                 else:
                     u[i][k] = 0.0
-            print('i = ' + str(i))
+        print('Matrix calculation done.')
 
         # Calculate error tolerance
         error_tolerance = 0.0
@@ -79,13 +82,32 @@ def quantize_color_space(number_of_coarse_color=4096, number_of_fine_color=64, m
         error_tolerance = math.sqrt(error_tolerance)
 
         iterator_count += 1
-        print(iterator_count)
 
         if error_tolerance <= epsilon:
             break
         else:
             u_e = [[u[i][k] for k in range(number_of_coarse_color)] for i in range(number_of_fine_color)]
     matrix = np.asarray(u)
+
+    existed_color = FuzzyColorHistogramColor.objects\
+        .filter(number_of_coarse_color=number_of_coarse_color, number_of_fine_color=number_of_fine_color)
+    if len(existed_color) == 0:
+        for i in range(0, len(v)):
+            instance = FuzzyColorHistogramColor()
+            instance.number_of_fine_color = number_of_fine_color
+            instance.number_of_coarse_color = number_of_coarse_color
+            instance.ccomponent1 = v[i][0]
+            instance.ccomponent2 = v[i][1]
+            instance.ccomponent3 = v[i][2]
+            instance.save()
+
+    file_name = '{}_{}.csv'.format(number_of_coarse_color, number_of_fine_color)
+    file_path = os.path.join(settings.BASE_DIR, 'matrix', file_name)
+    with open(file_path, 'w') as f:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerows(matrix)
+        print('Matrix saved in {}.'.format(file_path))
+
     return coarse_color_range, coarse_channel_range, matrix, v
 
 
@@ -103,12 +125,17 @@ def extract_fuzzy_color_histogram(img_extraction_id, image_location, coarse_colo
         if matrix.shape[1] == len(cch):
             fch = cch.dot(matrix.T)
             for i in range(0, len(v)):
-                instance = FuzzyColorHistogram(image_extraction_id=img_extraction_id)
-                instance.ccomponent1 = v[i][0]
-                instance.ccomponent2 = v[i][1]
-                instance.ccomponent3 = v[i][2]
-                instance.value = fch[i]
-                instance.save()
-                print('Saving v = ' + str(v[i]) + ', value = ' + fch[i])
+                c1 = v[i][0]
+                c2 = v[i][1]
+                c3 = v[i][2]
+                color_id = FuzzyColorHistogramColor.objects\
+                    .filter(number_of_coarse_color=len(cch), number_of_fine_color=len(v),
+                            ccomponent1=c1, ccomponent2=c2, ccomponent3=c3).values('id').distinct()
+                if len(color_id) > 0:
+                    instance = FuzzyColorHistogram(image_extraction_id=img_extraction_id)
+                    color_id = list(color_id)[0]['id']
+                    instance.color_id = color_id
+                    instance.value = fch[i]
+                    instance.save()
             return True
     return False
