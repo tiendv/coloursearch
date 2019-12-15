@@ -39,8 +39,8 @@ def extract_features(path, method, param1, param2, param3):
     print(extraction.start_time)
 
     if method == 'fuzzy_color_histogram':
-        extraction.param1_name = 'number_of_coarse_color'
-        extraction.param2_name = 'number_of_fine_color'
+        extraction.param1_name = 'number_of_coarse_colors'
+        extraction.param2_name = 'number_of_fine_colors'
         extraction.param3_name = 'm'
         extraction.param1_value = param1
         extraction.param2_value = param2
@@ -72,11 +72,11 @@ def extract_features(path, method, param1, param2, param3):
                 images.append(os.path.join(r, file))
 
     if method == 'fuzzy_color_histogram':
-        number_of_coarse_color = param1
-        number_of_fine_color = param2
+        number_of_coarse_colors = param1
+        number_of_fine_colors = param2
         m = param3
-        coarse_color_range, coarse_channel_range, matrix, v = quantize_color_space(number_of_coarse_color,
-                                                                                number_of_fine_color, m)
+        coarse_color_range, coarse_channel_range, matrix, v = quantize_color_space(number_of_coarse_colors,
+                                                                                number_of_fine_colors, m)
         for img in images:
             img_extraction = ImageExtraction(extraction_id=latest_extraction_id)
             img_extraction.image_name = os.path.basename(img)

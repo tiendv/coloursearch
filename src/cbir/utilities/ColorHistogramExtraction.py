@@ -47,10 +47,13 @@ def calc_color_range(number_of_color):
 
 
 def extract_rgb_color_histogram(image_location, color_range, channel_range):
-    img = cv2.imread(image_location)
-    img = img.reshape((-1, 3))
-    img = np.float32(img)
-    number_of_pixels = len(img)
+    if type(image_location) == str:
+        img = cv2.imread(image_location)
+        img = img.reshape((-1, 3))
+        img = np.float32(img)
+        number_of_pixels = len(img)
+    elif type(image_location) == list:
+        img = image_location
 
     histogram = collections.OrderedDict()
 

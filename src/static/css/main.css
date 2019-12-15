@@ -179,7 +179,7 @@ input[type=number] {
 .submit-button, .quick-fill {
     /* Padding is space between element's content and border. First value sets top and bottom padding; second value sets right and left */
     min-width: 100px;
-    font-size: 14px;
+    font-size: 14px !important;
 }
 
 /* Styles content to left of grid */
@@ -229,7 +229,7 @@ input[type=number] {
 
 .normal-label {
     color: #000000;
-    font-size: 15px;
+    font-size: 14px;
     padding-right: 10px;
     text-align: left;
     top: 50%
@@ -249,4 +249,8 @@ input[type=number] {
     background: #242526 !important;
     border: 1px solid #242526 !important;
     color: #fff !important;
+}
+
+#method, .dropdown-item {
+    font-size: 14px !important;
 }
