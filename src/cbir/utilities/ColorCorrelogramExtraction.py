@@ -5,7 +5,7 @@ from .ColorHistogramExtraction import calc_color_range
 from ..models.ColorCorrelogram import ColorCorrelogram
 
 
-def extract_color_correlogram(img_extraction_id, image_location, number_of_color=64, d=7, increment=1):
+def extract_color_correlogram(img_extraction_id, image_location, number_of_colors=64, d=7, increment=1):
     print('Extracting Color Correlogram for ' + image_location)
     D = []
     if d is None or d < 1:
@@ -16,9 +16,9 @@ def extract_color_correlogram(img_extraction_id, image_location, number_of_color
             D.append(int(i))
             i += increment
 
-    color_ranges, colors, channel_ranges = calc_color_range(number_of_color)
-    number_of_color = len(colors)
-    m = number_of_color
+    color_ranges, colors, channel_ranges = calc_color_range(number_of_colors)
+    number_of_colors = len(colors)
+    m = number_of_colors
 
     img = cv2.imread(image_location)
     img = np.float32(img)

@@ -8,11 +8,12 @@ from ..models import FuzzyColorHistogram, FuzzyColorHistogramColor
 
 
 def quantize_color_space(number_of_coarse_colors=4096, number_of_fine_colors=64, m=1.9):
-    coarse_color_range, coarse_color, coarse_channel_range = calc_color_range(number_of_coarse_colors)
-    fine_color_range, fine_color, fine_channel_range = calc_color_range(number_of_fine_colors)
+    print('Quantizing color space... Waiting...')
+    coarse_color_ranges, coarse_colors, coarse_channel_ranges = calc_color_range(number_of_coarse_colors)
+    fine_color_ranges, fine_colors, fine_channel_ranges = calc_color_range(number_of_fine_colors)
 
-    number_of_coarse_colors = len(coarse_color)
-    number_of_fine_colors = len(fine_color)
+    number_of_coarse_colors = len(coarse_colors)
+    number_of_fine_colors = len(fine_colors)
 
     iterator_count = 0
     epsilon = 10
@@ -22,13 +23,13 @@ def quantize_color_space(number_of_coarse_colors=4096, number_of_fine_colors=64,
         for k in range(0, number_of_coarse_colors):
             d = 0
             for j in range(0, number_of_fine_colors):
-                f1 = math.sqrt((coarse_color[k][0] - fine_color[i][0])**2 +
-                               (coarse_color[k][1] - fine_color[i][1])**2 +
-                               (coarse_color[k][2] - fine_color[i][2])**2)
+                f1 = math.sqrt((coarse_colors[k][0] - fine_colors[i][0])**2 +
+                               (coarse_colors[k][1] - fine_colors[i][1])**2 +
+                               (coarse_colors[k][2] - fine_colors[i][2])**2)
 
-                f2 = math.sqrt((coarse_color[k][0] - fine_color[j][0])**2 +
-                               (coarse_color[k][1] - fine_color[j][1])**2 +
-                               (coarse_color[k][2] - fine_color[j][2])**2)
+                f2 = math.sqrt((coarse_colors[k][0] - fine_colors[j][0])**2 +
+                               (coarse_colors[k][1] - fine_colors[j][1])**2 +
+                               (coarse_colors[k][2] - fine_colors[j][2])**2)
                 d += (math.pow((f1 / f2), (1.0 / (m - 1))))
             if d != 0:
                 u[i][k] = 1.0 / d
@@ -36,8 +37,8 @@ def quantize_color_space(number_of_coarse_colors=4096, number_of_fine_colors=64,
                 u[i][k] = 0.0
         print('Calculating fine color i = ' + str(i))
 
-    v = [[color[0], color[1], color[2]] for color in fine_color]
-    x = [[color[0], color[1], color[2]] for color in coarse_color]
+    v = [[color[0], color[1], color[2]] for color in fine_colors]
+    x = [[color[0], color[1], color[2]] for color in coarse_colors]
     u_e = [[u[i][k] for k in range(number_of_coarse_colors)] for i in range(number_of_fine_colors)]
 
     while True:
@@ -60,13 +61,13 @@ def quantize_color_space(number_of_coarse_colors=4096, number_of_fine_colors=64,
             for k in range(0, number_of_coarse_colors):
                 d = 0
                 for j in range(0, number_of_fine_colors):
-                    f1 = math.sqrt((coarse_color[k][0] - fine_color[i][0]) ** 2 +
-                                   (coarse_color[k][1] - fine_color[i][1]) ** 2 +
-                                   (coarse_color[k][2] - fine_color[i][2]) ** 2)
+                    f1 = math.sqrt((coarse_colors[k][0] - fine_colors[i][0]) ** 2 +
+                                   (coarse_colors[k][1] - fine_colors[i][1]) ** 2 +
+                                   (coarse_colors[k][2] - fine_colors[i][2]) ** 2)
 
-                    f2 = math.sqrt((coarse_color[k][0] - fine_color[j][0]) ** 2 +
-                                   (coarse_color[k][1] - fine_color[j][1]) ** 2 +
-                                   (coarse_color[k][2] - fine_color[j][2]) ** 2)
+                    f2 = math.sqrt((coarse_colors[k][0] - fine_colors[j][0]) ** 2 +
+                                   (coarse_colors[k][1] - fine_colors[j][1]) ** 2 +
+                                   (coarse_colors[k][2] - fine_colors[j][2]) ** 2)
                     d += (math.pow((f1 / f2), (1.0 / (m - 1))))
                 if d != 0:
                     u[i][k] = 1.0 / d
@@ -103,26 +104,28 @@ def quantize_color_space(number_of_coarse_colors=4096, number_of_fine_colors=64,
 
     file_name = '{}_{}.csv'.format(number_of_coarse_colors, number_of_fine_colors)
     file_path = os.path.join(settings.BASE_DIR, 'matrix', file_name)
-    with open(file_path, 'w') as f:
-        writer = csv.writer(f, delimiter=',')
+    with open(file_path, 'w', newline='') as f:
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         writer.writerows(matrix)
         print('Matrix saved in {}.'.format(file_path))
 
-    return coarse_color_range, coarse_channel_range, matrix, v
+    return coarse_color_ranges, coarse_channel_ranges, matrix, v
 
 
-def extract_fuzzy_color_histogram(img_extraction_id, image_location, coarse_color_range, coarse_channel_range, matrix, v):
-    print('Extracting FCH for ' + image_location)
-    rgb_color_histogram = extract_rgb_color_histogram(image_location, coarse_color_range, coarse_channel_range)
+def extract_fuzzy_color_histogram(img_extraction_id, image_location, coarse_color_ranges, coarse_channel_ranges, matrix, v):
+    if type(image_location) == str:
+        print('Extracting FCH for ' + image_location)
+    rgb_color_histogram = extract_rgb_color_histogram(image_location, coarse_color_ranges, coarse_channel_ranges)
     cch = []
     for key, value in rgb_color_histogram.items():
         cch.append(value)
-    cch = np.asarray(cch)
+    cch = np.asarray(cch, dtype=np.float32)
+    membership_matrix = np.asarray(matrix, dtype=np.float32)
 
     fch = None
-    if len(matrix.shape) == 2:
-        if matrix.shape[1] == len(cch):
-            fch = cch.dot(matrix.T)
+    if len(membership_matrix.shape) == 2:
+        if membership_matrix.shape[1] == len(cch):
+            fch = np.dot(cch, membership_matrix.T)
             if img_extraction_id != -1:
                 for i in range(0, len(v)):
                     c1 = v[i][0]

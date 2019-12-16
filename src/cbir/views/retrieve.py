@@ -1,5 +1,6 @@
 import os
 import math
+import numpy as np
 from datetime import datetime
 from ..models import Extraction, ImageExtraction, Method, FuzzyColorHistogram
 from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
@@ -12,19 +13,19 @@ from ..models.FuzzyColorHistogramColor import FuzzyColorHistogramColor
 import csv
 import json
 from django.conf import settings
-from django.http import HttpResponseRedirect
-
-method_map = {
-    'Fuzzy Color Histogram': 'fuzzy_color_histogram',
-    'Color Coherence Vector': 'color_coherence_vector',
-    'Color Correlogram': 'color_correlogram',
-    'Cumulative Color Histogram': 'cumulative_color_histogram'
-}
+from django.http import HttpResponseRedirect, HttpResponse
 
 
 def retrieve(request):
     if request.method == 'POST':
+        colors = []
         colorMap = json.loads(request.POST.get('colorMap'))
+        for row in colorMap:
+            color_row = []
+            for color in row:
+                color = list(map(int, color[4:-1].replace(' ', '').split(',')))
+                color_row.append(color)
+            colors.append(color_row)
         method = request.POST.get('method')
         print(colorMap)
         print(method)
@@ -43,20 +44,20 @@ def retrieve(request):
                             csv_file = os.path.join(r, file)
             print(csv_file)
             if csv_file == '':
-                coarse_color_range, coarse_channel_range, matrix, v = quantize_color_space()
+                coarse_color_ranges, coarse_channel_ranges, matrix, v = quantize_color_space()
             else:
                 v = FuzzyColorHistogramColor.objects\
                     .filter(number_of_coarse_colors=4096, number_of_fine_colors=64)\
                     .values('ccomponent1', 'ccomponent2', 'ccomponent3')
                 v = [[item['ccomponent1'], item['ccomponent2'], item['ccomponent3']] for item in v]
                 with open(csv_file) as csv_file:
-                    csv_reader = csv.reader(csv_file, delimiter=',')
+                    csv_reader = csv.reader(csv_file, quoting=csv.QUOTE_ALL)
                     matrix = list(csv_reader)
-                coarse_color_range, coarse_color, coarse_channel_range = calc_color_range(4096)
+                coarse_color_ranges, coarse_colors, coarse_channel_ranges = calc_color_range(4096)
             fch = extract_fuzzy_color_histogram(-1,
-                                                colorMap,
-                                                coarse_color_range,
-                                                coarse_channel_range,
+                                                colors,
+                                                coarse_color_ranges,
+                                                coarse_channel_ranges,
                                                 matrix, v)
             images_map = {}
             extraction_id = [1]
@@ -69,10 +70,11 @@ def retrieve(request):
             for extraction in extractions:
                 images = ImageExtraction.objects\
                     .filter(extraction_id=extraction['id'])\
-                    .values('id', 'image_name')
+                    .values('id', 'image_name', 'thumbnail_path')
                 for image in images:
                     images_map[image['id']] = {
                         'image_path': os.path.join(extraction['directory_path'], image['image_name']),
+                        'thumbnail_path': image['thumbnail_path'],
                         'similarity': 0.0
                     }
                     fch_of_image = FuzzyColorHistogram.objects\
@@ -80,12 +82,14 @@ def retrieve(request):
                         .values('id', 'value')\
                         .order_by('id')
                     fch_of_image = [item['value'] for item in fch_of_image]
-                    similarity = 0
+                    similarity = 0.0
                     if len(fch) == len(fch_of_image):
                         for i in range(len(fch)):
                             similarity += (fch[i] - fch_of_image[i])**2
                     similarity = math.sqrt(similarity)
                     images_map[image['id']]['similarity'] = similarity
+            print(images_map)
+            return HttpResponse(json.dumps(images_map), content_type="application/json")
 
         elif method == 'Color Coherence Vector':
             extract_color_coherence_vector(-1, colorMap)

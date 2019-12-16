@@ -9,27 +9,27 @@ from ..models import ColorHistogram, Extraction
 logger = logging.getLogger(__name__)
 
 
-def calc_color_range(number_of_color):
-    number_of_range_per_channel = number_of_color**(1/3)
-    if (math.ceil(number_of_range_per_channel) - number_of_range_per_channel) < 0.001:
-        number_of_range_per_channel = math.ceil(number_of_range_per_channel)
+def calc_color_range(number_of_colors):
+    number_of_ranges_per_channel = number_of_colors**(1/3)
+    if (math.ceil(number_of_ranges_per_channel) - number_of_ranges_per_channel) < 0.001:
+        number_of_ranges_per_channel = math.ceil(number_of_ranges_per_channel)
     else:
-        number_of_range_per_channel = int(number_of_range_per_channel)
-    print('number_of_range_per_channel: ' + str(number_of_range_per_channel))
+        number_of_ranges_per_channel = int(number_of_ranges_per_channel)
+    print('number_of_ranges_per_channel: ' + str(number_of_ranges_per_channel))
 
     # Value with distance
     color = []
     color_range = []
     value = []
     value_range = []
-    distance = round(1.0 * 255 / number_of_range_per_channel)
+    distance = round(1.0 * 255 / number_of_ranges_per_channel)
 
-    for i in range(0, number_of_range_per_channel):
+    for i in range(0, number_of_ranges_per_channel):
         if i != 0:
             start = distance * i + 1
         else:
             start = 0
-        if i != (number_of_range_per_channel - 1):
+        if i != (number_of_ranges_per_channel - 1):
             end = distance * (i + 1)
         else:
             end = 255
@@ -51,9 +51,13 @@ def extract_rgb_color_histogram(image_location, color_range, channel_range):
         img = cv2.imread(image_location)
         img = img.reshape((-1, 3))
         img = np.float32(img)
-        number_of_pixels = len(img)
     elif type(image_location) == list:
-        img = image_location
+        img = []
+        for row in image_location:
+            for pixel in row:
+                img.append(pixel)
+
+    number_of_pixels = len(img)
 
     histogram = collections.OrderedDict()
 

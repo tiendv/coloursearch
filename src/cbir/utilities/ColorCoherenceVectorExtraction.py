@@ -6,19 +6,19 @@ import collections
 from ..models.ColorCoherenceVector import ColorCoherenceVector
 
 
-def extract_color_coherence_vector(img_extraction_id, image_location, number_of_color=512, tau=100):
+def extract_color_coherence_vector(img_extraction_id, image_location, number_of_colors=512, tau=100):
     print('Extracting CCV for ' + image_location)
-    number_of_range = number_of_color ** (1 / 3)
-    if (math.ceil(number_of_range) - number_of_range) < 0.001:
-        number_of_range = math.ceil(number_of_range)
+    number_of_ranges = number_of_colors ** (1 / 3)
+    if (math.ceil(number_of_ranges) - number_of_ranges) < 0.001:
+        number_of_ranges = math.ceil(number_of_ranges)
     else:
-        number_of_range = int(number_of_range)
+        number_of_ranges = int(number_of_ranges)
 
     colors = []
 
-    for i in range(0, number_of_range + 1):
-        for j in range(0, number_of_range + 1):
-            for k in range(0, number_of_range + 1):
+    for i in range(0, number_of_ranges + 1):
+        for j in range(0, number_of_ranges + 1):
+            for k in range(0, number_of_ranges + 1):
                 colors.append([i, j, k])
 
     colors = np.array(colors)
@@ -69,7 +69,7 @@ def extract_color_coherence_vector(img_extraction_id, image_location, number_of_
     for k in range(0, 3):
         for i in range(0, image_height):
             for j in range(0, image_width):
-                blurred_image[i][j][k] = round(blurred_image[i][j][k] / 255 * number_of_range)
+                blurred_image[i][j][k] = round(blurred_image[i][j][k] / 255 * number_of_ranges)
 
     blurred_image.astype(np.int64)
 

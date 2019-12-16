@@ -112,8 +112,9 @@ window.onload = function () {
                 'method': method,
                 'csrfmiddlewaretoken': csrf_token,
             },
-            success: function () {
+            success: function (data) {
                 alert('Success');
+                console.log(data);
             }
         });
     })

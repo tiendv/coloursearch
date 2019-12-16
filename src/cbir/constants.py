@@ -8,8 +8,11 @@ FIELD_NAMES = ['c_0_100_100', 'c_45_100_100', 'c_90_100_100', 'c_135_100_100', '
                'c_45_50_50', 'c_90_50_50', 'c_135_50_50', 'c_180_50_50', 'c_225_50_50',
                'c_270_50_50', 'c_315_50_50', 'c_0_0_100', 'c_0_0_50', 'c_0_0_0']
 
-ALGORITHMS = {
-  'FUZZY_COLOR_HISTOGRAM': 'Fuzzy Color Histogram',
-  'COLOR_COHERENCE_VECTOR': 'Color Coherence Vector',
-  'COLOR_CORRELOGRAM': 'Color Correlogram'
+METHODS = {
+    'Fuzzy Color Histogram': 'fuzzy_color_histogram',
+    'Color Coherence Vector': 'color_coherence_vector',
+    'Color Correlogram': 'color_correlogram',
+    'Cumulative Color Histogram': 'cumulative_color_histogram'
 }
+
+THUMBNAIL_IMAGE_HEIGHT = 256

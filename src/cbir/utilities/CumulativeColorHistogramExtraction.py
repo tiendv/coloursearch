@@ -7,10 +7,10 @@ from .ColorHistogramExtraction import calc_color_range, extract_rgb_color_histog
 from ..models.CumulativeColorHistogram import CumulativeColorHistogram
 
 
-def extract_cumulative_color_histogram(img_extraction_id, image_location, number_of_color=4096):
+def extract_cumulative_color_histogram(img_extraction_id, image_location, number_of_colors=4096):
     print('Extracting Cumulative Color Histogram for ' + image_location)
-    color_range, color, channel_range = calc_color_range(number_of_color)
-    number_of_color = len(color)
+    color_range, color, channel_range = calc_color_range(number_of_colors)
+    number_of_colors = len(color)
     rgb_color_histogram = extract_rgb_color_histogram(image_location, color_range, channel_range)
 
     for key0, value0 in rgb_color_histogram.items():

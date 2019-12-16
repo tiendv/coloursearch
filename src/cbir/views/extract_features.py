@@ -1,4 +1,7 @@
 import os
+import cv2
+from ..constants import *
+from django.conf import settings
 from datetime import datetime
 from ..models import Extraction, ImageExtraction, Method
 from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
@@ -36,7 +39,7 @@ def extract_features(path, method, param1, param2, param3):
     extraction = Extraction(method_id=method)
     extraction.directory_path = path
     extraction.start_time = str(datetime.now())
-    print(extraction.start_time)
+    print("Extraction started at " + str(extraction.start_time))
 
     if method == 'fuzzy_color_histogram':
         extraction.param1_name = 'number_of_coarse_colors'
@@ -46,23 +49,26 @@ def extract_features(path, method, param1, param2, param3):
         extraction.param2_value = param2
         extraction.param3_value = param3
     elif method == 'color_correlogram':
-        extraction.param1_name = 'number_of_color'
+        extraction.param1_name = 'number_of_colors'
         extraction.param2_name = 'd'
         extraction.param3_name = 'increment'
         extraction.param1_value = param1
         extraction.param2_value = param2
         extraction.param3_value = param3
     elif method == 'color_coherence_vector':
-        extraction.param1_name = 'number_of_color'
+        extraction.param1_name = 'number_of_colors'
         extraction.param2_name = 'tau'
         extraction.param1_value = param1
         extraction.param2_value = param2
     elif method == 'cumulative_color_histogram':
-        extraction.param1_name = 'number_of_color'
+        extraction.param1_name = 'number_of_colors'
         extraction.param1_value = param1
     extraction.save()
 
     latest_extraction_id = Extraction.objects.latest('id').id
+    thumbnail_path = os.path.join(settings.BASE_DIR, 'static', 'thumbnails', str(latest_extraction_id))
+    if not os.path.exists(thumbnail_path):
+        os.makedirs(thumbnail_path)
 
     # r=root, d=directories, f = files
     images = []
@@ -75,14 +81,24 @@ def extract_features(path, method, param1, param2, param3):
         number_of_coarse_colors = param1
         number_of_fine_colors = param2
         m = param3
-        coarse_color_range, coarse_channel_range, matrix, v = quantize_color_space(number_of_coarse_colors,
+        coarse_color_ranges, coarse_channel_ranges, matrix, v = quantize_color_space(number_of_coarse_colors,
                                                                                 number_of_fine_colors, m)
         for img in images:
+            image_name = os.path.basename(img)
             img_extraction = ImageExtraction(extraction_id=latest_extraction_id)
-            img_extraction.image_name = os.path.basename(img)
+            img_extraction.image_name = image_name
+            image_thumbnail_path = os.path.join('static', 'thumbnails', str(latest_extraction_id), image_name)
+            img_extraction.thumbnail_path = image_thumbnail_path
             img_extraction.save()
-            img_extraction_id = ImageExtraction.objects.latest('extraction_id').extraction_id
-            extract_fuzzy_color_histogram(img_extraction_id, img, coarse_color_range, coarse_channel_range, matrix, v)
+
+            # Save thumbnail
+            thumbnail = cv2.imread(img)
+            thumbnail = image_resize(thumbnail, height=THUMBNAIL_IMAGE_HEIGHT)
+            cv2.imwrite(image_thumbnail_path, thumbnail)
+            print('Saved thumbnail for {} in {}'.format(image_name, image_thumbnail_path))
+
+            img_extraction_id = ImageExtraction.objects.latest('id').id
+            extract_fuzzy_color_histogram(img_extraction_id, img, coarse_color_ranges, coarse_channel_ranges, matrix, v)
     elif method == 'color_coherence_vector':
         for img in images:
             img_extraction = ImageExtraction(extraction_id=latest_extraction_id)
@@ -114,3 +130,35 @@ def extract_features(path, method, param1, param2, param3):
     print('|------------------|')
 
     return True
+
+
+def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
+    # initialize the dimensions of the image to be resized and
+    # grab the image size
+    dim = None
+    (h, w) = image.shape[:2]
+
+    # if both the width and height are None, then return the
+    # original image
+    if width is None and height is None:
+        return image
+
+    # check to see if the width is None
+    if width is None:
+        # calculate the ratio of the height and construct the
+        # dimensions
+        r = height / float(h)
+        dim = (int(w * r), height)
+
+    # otherwise, the height is None
+    else:
+        # calculate the ratio of the width and construct the
+        # dimensions
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    # resize the image
+    resized = cv2.resize(image, dim, interpolation = inter)
+
+    # return the resized image
+    return resized
