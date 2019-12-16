@@ -7348,7 +7348,7 @@ h1, h2, h3, h4, h5,
       padding-top: 2em;
       background: rgba(0, 0, 0, 0.04); } }
   #colorlib-aside #colorlib-logo {
-    margin-bottom: 2.5em;
+    margin-bottom: 1em;
     display: block;
     width: 100%;
     font-weight: 900;
@@ -7914,7 +7914,7 @@ h1, h2, h3, h4, h5,
     -ms-border-radius: 3px;
     border-radius: 3px; }
     .blog-entry .img.img-2 {
-      height: 330px; }
+      height: 200px; }
   .blog-entry .text {
     position: relative;
     z-index: 0; }
@@ -8015,8 +8015,7 @@ textarea.form-control {
   height: inherit !important; }
 
 .ftco-animate {
-  opacity: 0;
-  visibility: hidden; }
+  opacity: 100; }
 
 .about-author img {
   -webkit-border-radius: 50%;
@@ -8028,7 +8027,7 @@ textarea.form-control {
   font-size: 20px; }
 
 .ftco-section {
-  padding: 6em 1.8em;
+  padding: 3em 1.8em;
   position: relative; }
 
 .ftco-footer {

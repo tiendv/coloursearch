@@ -113,7 +113,40 @@ window.onload = function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             success: function (data) {
-                alert('Success');
+                if (Array.isArray(data)) {
+                    let retrievalResult = document.querySelector('.retrieval-result');
+                    for (let i = 0; i < data.length; i++) {
+                        let image_path = data[i]['image_path'];
+                        let thumbnail_path = data[i]['thumbnail_path'];
+                        thumbnail_path = thumbnail_path.replace(/\s/g, '');
+                        thumbnail_path = thumbnail_path.replace(/\\/g, "/");
+                        let similarity = data[i]['similarity'];
+                        let col = document.createElement('div');
+                        col.className = 'col-md-4';
+                        let blogEntry = document.createElement('div');
+                        blogEntry.className = 'blog-entry ftco-animate';
+                        let a = document.createElement('a');
+                        a.className = 'img img-2';
+                        a.href = '#';
+                        a.style.backgroundImage = `url(${thumbnail_path})`;
+                        let text = document.createElement('div');
+                        text.className = 'text text-2 pt-2 mt-3';
+                        let span = document.createElement('span');
+                        span.className = 'category mb-3 d-block';
+                        span.style.color = '#000000';
+                        span.textContent = similarity;
+                        let p = document.createElement('p');
+                        p.className = 'mb-2';
+                        p.textContent = image_path;
+                        p.style.color = '#000000';
+                        text.appendChild(span);
+                        text.appendChild(p);
+                        blogEntry.appendChild(a);
+                        blogEntry.appendChild(text);
+                        col.appendChild(blogEntry);
+                        retrievalResult.appendChild(col);
+                    }
+                }
                 console.log(data);
             }
         });
@@ -212,185 +245,185 @@ AOS.init({
     easing: 'slide'
 });
 
-(function ($) {
-
-    "use strict";
-
-    $(window).stellar({
-        responsive: true,
-        parallaxBackgrounds: true,
-        parallaxElements: true,
-        horizontalScrolling: false,
-        hideDistantElements: false,
-        scrollProperty: 'scroll'
-    });
-
-
-    var fullHeight = function () {
-
-        $('.js-fullheight').css('height', $(window).height());
-        $(window).resize(function () {
-            $('.js-fullheight').css('height', $(window).height());
-        });
-
-    };
-    fullHeight();
-
-    // loader
-    var loader = function () {
-        setTimeout(function () {
-            if ($('#ftco-loader').length > 0) {
-                $('#ftco-loader').removeClass('show');
-            }
-        }, 1);
-    };
-    loader();
-
-    // Scrollax
-    $.Scrollax();
-
-
-    var burgerMenu = function () {
-
-        $('.js-colorlib-nav-toggle').on('click', function (event) {
-            event.preventDefault();
-            var $this = $(this);
-
-            if ($('body').hasClass('offcanvas')) {
-                $this.removeClass('active');
-                $('body').removeClass('offcanvas');
-            } else {
-                $this.addClass('active');
-                $('body').addClass('offcanvas');
-            }
-        });
-    };
-    burgerMenu();
-
-    // Click outside of offcanvass
-    var mobileMenuOutsideClick = function () {
-
-        $(document).click(function (e) {
-            var container = $("#colorlib-aside, .js-colorlib-nav-toggle");
-            if (!container.is(e.target) && container.has(e.target).length === 0) {
-
-                if ($('body').hasClass('offcanvas')) {
-
-                    $('body').removeClass('offcanvas');
-                    $('.js-colorlib-nav-toggle').removeClass('active');
-
-                }
-
-            }
-        });
-
-        $(window).scroll(function () {
-            if ($('body').hasClass('offcanvas')) {
-
-                $('body').removeClass('offcanvas');
-                $('.js-colorlib-nav-toggle').removeClass('active');
-
-            }
-        });
-
-    };
-    mobileMenuOutsideClick();
-
-    var carousel = function () {
-        $('.home-slider').owlCarousel({
-            loop: true,
-            autoplay: true,
-            margin: 0,
-            animateOut: 'fadeOut',
-            animateIn: 'fadeIn',
-            nav: false,
-            autoplayHoverPause: false,
-            items: 1,
-            navText: ["<span class='ion-md-arrow-back'></span>", "<span class='ion-chevron-right'></span>"],
-            responsive: {
-                0: {
-                    items: 1
-                },
-                600: {
-                    items: 1
-                },
-                1000: {
-                    items: 1
-                }
-            }
-        });
-
-    };
-    carousel();
-
-
-    var contentWayPoint = function () {
-        var i = 0;
-        $('.ftco-animate').waypoint(function (direction) {
-
-            if (direction === 'down' && !$(this.element).hasClass('ftco-animated')) {
-
-                i++;
-
-                $(this.element).addClass('item-animate');
-                setTimeout(function () {
-
-                    $('body .ftco-animate.item-animate').each(function (k) {
-                        var el = $(this);
-                        setTimeout(function () {
-                            var effect = el.data('animate-effect');
-                            if (effect === 'fadeIn') {
-                                el.addClass('fadeIn ftco-animated');
-                            } else if (effect === 'fadeInLeft') {
-                                el.addClass('fadeInLeft ftco-animated');
-                            } else if (effect === 'fadeInRight') {
-                                el.addClass('fadeInRight ftco-animated');
-                            } else {
-                                el.addClass('fadeInUp ftco-animated');
-                            }
-                            el.removeClass('item-animate');
-                        }, k * 50, 'easeInOutExpo');
-                    });
-
-                }, 100);
-
-            }
-
-        }, {offset: '95%'});
-    };
-    contentWayPoint();
-
-
-    // magnific popup
-    $('.image-popup').magnificPopup({
-        type: 'image',
-        closeOnContentClick: true,
-        closeBtnInside: false,
-        fixedContentPos: true,
-        mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
-        gallery: {
-            enabled: true,
-            navigateByImgClick: true,
-            preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
-        },
-        image: {
-            verticalFit: true
-        },
-        zoom: {
-            enabled: true,
-            duration: 300 // don't foget to change the duration also in CSS
-        }
-    });
-
-    $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
-        disableOn: 700,
-        type: 'iframe',
-        mainClass: 'mfp-fade',
-        removalDelay: 160,
-        preloader: false,
-
-        fixedContentPos: false
-    });
-
-})(jQuery);
+// (function ($) {
+//
+//     "use strict";
+//
+//     $(window).stellar({
+//         responsive: true,
+//         parallaxBackgrounds: true,
+//         parallaxElements: true,
+//         horizontalScrolling: false,
+//         hideDistantElements: false,
+//         scrollProperty: 'scroll'
+//     });
+//
+//
+//     var fullHeight = function () {
+//
+//         $('.js-fullheight').css('height', $(window).height());
+//         $(window).resize(function () {
+//             $('.js-fullheight').css('height', $(window).height());
+//         });
+//
+//     };
+//     fullHeight();
+//
+//     // loader
+//     var loader = function () {
+//         setTimeout(function () {
+//             if ($('#ftco-loader').length > 0) {
+//                 $('#ftco-loader').removeClass('show');
+//             }
+//         }, 1);
+//     };
+//     loader();
+//
+//     // Scrollax
+//     $.Scrollax();
+//
+//
+//     var burgerMenu = function () {
+//
+//         $('.js-colorlib-nav-toggle').on('click', function (event) {
+//             event.preventDefault();
+//             var $this = $(this);
+//
+//             if ($('body').hasClass('offcanvas')) {
+//                 $this.removeClass('active');
+//                 $('body').removeClass('offcanvas');
+//             } else {
+//                 $this.addClass('active');
+//                 $('body').addClass('offcanvas');
+//             }
+//         });
+//     };
+//     burgerMenu();
+//
+//     // Click outside of offcanvass
+//     var mobileMenuOutsideClick = function () {
+//
+//         $(document).click(function (e) {
+//             var container = $("#colorlib-aside, .js-colorlib-nav-toggle");
+//             if (!container.is(e.target) && container.has(e.target).length === 0) {
+//
+//                 if ($('body').hasClass('offcanvas')) {
+//
+//                     $('body').removeClass('offcanvas');
+//                     $('.js-colorlib-nav-toggle').removeClass('active');
+//
+//                 }
+//
+//             }
+//         });
+//
+//         $(window).scroll(function () {
+//             if ($('body').hasClass('offcanvas')) {
+//
+//                 $('body').removeClass('offcanvas');
+//                 $('.js-colorlib-nav-toggle').removeClass('active');
+//
+//             }
+//         });
+//
+//     };
+//     mobileMenuOutsideClick();
+//
+//     var carousel = function () {
+//         $('.home-slider').owlCarousel({
+//             loop: true,
+//             autoplay: true,
+//             margin: 0,
+//             animateOut: 'fadeOut',
+//             animateIn: 'fadeIn',
+//             nav: false,
+//             autoplayHoverPause: false,
+//             items: 1,
+//             navText: ["<span class='ion-md-arrow-back'></span>", "<span class='ion-chevron-right'></span>"],
+//             responsive: {
+//                 0: {
+//                     items: 1
+//                 },
+//                 600: {
+//                     items: 1
+//                 },
+//                 1000: {
+//                     items: 1
+//                 }
+//             }
+//         });
+//
+//     };
+//     carousel();
+//
+//
+//     var contentWayPoint = function () {
+//         var i = 0;
+//         $('.ftco-animate').waypoint(function (direction) {
+//
+//             if (direction === 'down' && !$(this.element).hasClass('ftco-animated')) {
+//
+//                 i++;
+//
+//                 $(this.element).addClass('item-animate');
+//                 setTimeout(function () {
+//
+//                     $('body .ftco-animate.item-animate').each(function (k) {
+//                         var el = $(this);
+//                         setTimeout(function () {
+//                             var effect = el.data('animate-effect');
+//                             if (effect === 'fadeIn') {
+//                                 el.addClass('fadeIn ftco-animated');
+//                             } else if (effect === 'fadeInLeft') {
+//                                 el.addClass('fadeInLeft ftco-animated');
+//                             } else if (effect === 'fadeInRight') {
+//                                 el.addClass('fadeInRight ftco-animated');
+//                             } else {
+//                                 el.addClass('fadeInUp ftco-animated');
+//                             }
+//                             el.removeClass('item-animate');
+//                         }, k * 50, 'easeInOutExpo');
+//                     });
+//
+//                 }, 100);
+//
+//             }
+//
+//         }, {offset: '95%'});
+//     };
+//     contentWayPoint();
+//
+//
+//     // magnific popup
+//     $('.image-popup').magnificPopup({
+//         type: 'image',
+//         closeOnContentClick: true,
+//         closeBtnInside: false,
+//         fixedContentPos: true,
+//         mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+//         gallery: {
+//             enabled: true,
+//             navigateByImgClick: true,
+//             preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+//         },
+//         image: {
+//             verticalFit: true
+//         },
+//         zoom: {
+//             enabled: true,
+//             duration: 300 // don't foget to change the duration also in CSS
+//         }
+//     });
+//
+//     $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+//         disableOn: 700,
+//         type: 'iframe',
+//         mainClass: 'mfp-fade',
+//         removalDelay: 160,
+//         preloader: false,
+//
+//         fixedContentPos: false
+//     });
+//
+// })(jQuery);
 

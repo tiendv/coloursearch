@@ -13,7 +13,7 @@ from ..models.FuzzyColorHistogramColor import FuzzyColorHistogramColor
 import csv
 import json
 from django.conf import settings
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 
 
 def retrieve(request):
@@ -88,8 +88,12 @@ def retrieve(request):
                             similarity += (fch[i] - fch_of_image[i])**2
                     similarity = math.sqrt(similarity)
                     images_map[image['id']]['similarity'] = similarity
+            result = []
+            for key, value in images_map.items():
+                result.append(value)
+            result = sorted(result, key=lambda k: k['similarity'])
             print(images_map)
-            return HttpResponse(json.dumps(images_map), content_type="application/json")
+            return JsonResponse(result, safe=False)
 
         elif method == 'Color Coherence Vector':
             extract_color_coherence_vector(-1, colorMap)
