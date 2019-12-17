@@ -1,8 +1,9 @@
 from django.db import models
 from .ImageExtraction import ImageExtraction
+from .FuzzyColorHistogramColor import FuzzyColorHistogramColor
 
 
 class FuzzyColorHistogram(models.Model):
-    image_extraction_id = models.IntegerField()
-    color_id = models.IntegerField()
+    image_extraction = models.ForeignKey(ImageExtraction, on_delete=models.CASCADE)
+    color_id = models.ForeignKey(FuzzyColorHistogramColor, on_delete=models.CASCADE)
     value = models.FloatField(null=False, default=0)

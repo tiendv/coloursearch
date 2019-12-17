@@ -115,6 +115,7 @@ window.onload = function () {
             success: function (data) {
                 if (Array.isArray(data)) {
                     let retrievalResult = document.querySelector('.retrieval-result');
+                    retrievalResult.innerHTML = '';
                     for (let i = 0; i < data.length; i++) {
                         let image_path = data[i]['image_path'];
                         let thumbnail_path = data[i]['thumbnail_path'];

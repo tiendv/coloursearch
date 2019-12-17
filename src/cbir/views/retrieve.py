@@ -27,7 +27,6 @@ def retrieve(request):
                 color_row.append(color)
             colors.append(color_row)
         method = request.POST.get('method')
-        print(colorMap)
         print(method)
 
         if method == 'Fuzzy Color Histogram':
