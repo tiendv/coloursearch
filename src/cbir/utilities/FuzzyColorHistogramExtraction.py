@@ -116,7 +116,7 @@ def quantize_color_space(number_of_coarse_colors=4096, number_of_fine_colors=64,
 def extract_fuzzy_color_histogram(img_extraction_id, image_location, coarse_color_ranges, coarse_channel_ranges, matrix, v):
     if type(image_location) == str:
         print('Extracting FCH for ' + image_location)
-    cielab_color_histogram = extract_rgb_color_histogram(image_location, coarse_color_ranges, coarse_channel_ranges)
+    cielab_color_histogram = extract_cielab_color_histogram(image_location, coarse_color_ranges, coarse_channel_ranges)
     cch = []
     for key, value in cielab_color_histogram.items():
         cch.append(value)
