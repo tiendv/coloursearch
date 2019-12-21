@@ -116,15 +116,12 @@ def quantize_color_space(number_of_coarse_colors=4096, number_of_fine_colors=64,
 def extract_fuzzy_color_histogram(img_extraction_id, image_location, coarse_color_ranges, coarse_channel_ranges, matrix, v):
     if type(image_location) == str:
         print('Extracting FCH for ' + image_location)
-    start_time = time.time()
-    cielab_color_histogram = extract_cielab_color_histogram(image_location, coarse_color_ranges, coarse_channel_ranges)
-    print("cielab_color_histogram: %s seconds" % (time.time() - start_time))
+    cielab_color_histogram = extract_rgb_color_histogram(image_location, coarse_color_ranges, coarse_channel_ranges)
     cch = []
     for key, value in cielab_color_histogram.items():
         cch.append(value)
     cch = np.asarray(cch, dtype=np.float32)
     membership_matrix = np.asarray(matrix, dtype=np.float32)
-    print("membership_matrix: %s seconds" % (time.time() - start_time))
     fch = None
     if len(membership_matrix.shape) == 2:
         if membership_matrix.shape[1] == len(cch):
@@ -143,7 +140,6 @@ def extract_fuzzy_color_histogram(img_extraction_id, image_location, coarse_colo
                         instance.color_id = color_id
                         instance.value = fch[i]
                         instance.save()
-                        print("instance: %s seconds" % (time.time() - start_time))
                 return True
             else:
                 return fch

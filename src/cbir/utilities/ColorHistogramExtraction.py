@@ -3,6 +3,9 @@ import numpy as np
 import cv2
 import collections
 import logging
+from ..utilities.Utilities import image_resize
+from ..constants import *
+import time
 
 from ..models import ColorHistogram, Extraction
 
@@ -47,6 +50,7 @@ def calc_color_range(number_of_colors):
 
 
 def extract_rgb_color_histogram(image_location, color_range, channel_range):
+    start_time = time.time()
     if type(image_location) == str:
         img = cv2.imread(image_location)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -85,13 +89,30 @@ def extract_rgb_color_histogram(image_location, color_range, channel_range):
     for key, value in histogram.items():
         histogram[key] = value / number_of_pixels
 
+    print("--- Histogram: %s seconds ---" % (time.time() - start_time))
     return histogram
 
 
 def extract_cielab_color_histogram(image_location, color_range, channel_range):
+    start_time = time.time()
     if type(image_location) == str:
         img = cv2.imread(image_location)
+        height, width = img.shape[:2]
+        if width > MAX_IMAGE_WIDTH:
+            img = image_resize(img, width=MAX_IMAGE_WIDTH)
+            height, width = img.shape[:2]
+            if height > MAX_IMAGE_HEIGHT:
+                img = image_resize(img, height=MAX_IMAGE_HEIGHT)
+        elif height > MAX_IMAGE_HEIGHT:
+            img = image_resize(img, height=MAX_IMAGE_HEIGHT)
+            height, width = img.shape[:2]
+            if width > MAX_IMAGE_WIDTH:
+                img = image_resize(img, width=MAX_IMAGE_WIDTH)
+        print('Resize to {}x{}'.format(img.shape[0], img.shape[1]))
+        print("--- Resize: %s seconds ---" % (time.time() - start_time))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
+        print('Convert to Lab successfully')
+        print("--- Convert color space: %s seconds ---" % (time.time() - start_time))
         img = img.reshape((-1, 3))
         img = np.float32(img)
     elif type(image_location) == list:
@@ -125,6 +146,7 @@ def extract_cielab_color_histogram(image_location, color_range, channel_range):
             if channel_0 is not None and channel_1 is not None and channel_2 is not None:
                 break
         histogram[(channel_0, channel_1, channel_2)] += 1
+    print("--- Histogram: %s seconds ---" % (time.time() - start_time))
 
     for key, value in histogram.items():
         histogram[key] = value / number_of_pixels
