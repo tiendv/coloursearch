@@ -49,9 +49,12 @@ def calc_color_range(number_of_colors):
 def extract_rgb_color_histogram(image_location, color_range, channel_range):
     if type(image_location) == str:
         img = cv2.imread(image_location)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = img.reshape((-1, 3))
         img = np.float32(img)
     elif type(image_location) == list:
+        image_location = np.array(image_location)
+        image_location = cv2.cvtColor(image_location, cv2.COLOR_BGR2RGB)
         img = []
         for row in image_location:
             for pixel in row:
@@ -84,4 +87,47 @@ def extract_rgb_color_histogram(image_location, color_range, channel_range):
 
     return histogram
 
+
+def extract_cielab_color_histogram(image_location, color_range, channel_range):
+    if type(image_location) == str:
+        img = cv2.imread(image_location)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
+        img = img.reshape((-1, 3))
+        img = np.float32(img)
+    elif type(image_location) == list:
+        image_location = np.array(image_location)
+        image_location = image_location.astype(np.uint8)
+        image_location = cv2.cvtColor(image_location, cv2.COLOR_BGR2Lab)
+        print(image_location)
+        img = []
+        for row in image_location:
+            for pixel in row:
+                img.append(pixel)
+
+    number_of_pixels = len(img)
+
+    histogram = collections.OrderedDict()
+
+    for c in color_range:
+        histogram[c] = 0
+
+    for pixel in img:
+        channel_0 = None
+        channel_1 = None
+        channel_2 = None
+        for cr in channel_range:
+            if cr[0] <= pixel[0] <= cr[1]:
+                channel_0 = cr
+            if cr[0] <= pixel[1] <= cr[1]:
+                channel_1 = cr
+            if cr[0] <= pixel[2] <= cr[1]:
+                channel_2 = cr
+            if channel_0 is not None and channel_1 is not None and channel_2 is not None:
+                break
+        histogram[(channel_0, channel_1, channel_2)] += 1
+
+    for key, value in histogram.items():
+        histogram[key] = value / number_of_pixels
+
+    return histogram
 

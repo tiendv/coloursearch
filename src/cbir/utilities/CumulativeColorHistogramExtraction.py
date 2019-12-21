@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from scipy.ndimage.measurements import label
 import collections
-from .ColorHistogramExtraction import calc_color_range, extract_rgb_color_histogram
+from .ColorHistogramExtraction import *
 from ..models.CumulativeColorHistogram import CumulativeColorHistogram
 
 

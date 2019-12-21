@@ -7317,7 +7317,7 @@ h1, h2, h3, h4, h5,
   position: relative; }
 
 #colorlib-aside {
-  padding-top: 3em;
+  padding-top: 2.5em;
   padding-bottom: 40px;
   padding-left: 3em;
   padding-right: 3em;
@@ -7348,7 +7348,7 @@ h1, h2, h3, h4, h5,
       padding-top: 2em;
       background: rgba(0, 0, 0, 0.04); } }
   #colorlib-aside #colorlib-logo {
-    margin-bottom: 1em;
+    margin-bottom: 0.6em;
     display: block;
     width: 100%;
     font-weight: 900;

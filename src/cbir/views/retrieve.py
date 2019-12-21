@@ -1,19 +1,18 @@
 import os
+import csv
+import json
 import math
 import numpy as np
 from datetime import datetime
-from ..models import Extraction, ImageExtraction, Method, FuzzyColorHistogram
-from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
-from ..utilities.ColorCoherenceVectorExtraction import extract_color_coherence_vector
-from ..utilities.ColorCorrelogramExtraction import extract_color_correlogram
-from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_color_histogram
-from django.shortcuts import render
-from ..utilities.FuzzyColorHistogramExtraction import calc_color_range, extract_rgb_color_histogram
-from ..models.FuzzyColorHistogramColor import FuzzyColorHistogramColor
-import csv
-import json
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
+from ..utilities.FuzzyColorHistogramExtraction import calc_color_range
+from ..models.FuzzyColorHistogramColor import FuzzyColorHistogramColor
+from ..utilities.ColorCorrelogramExtraction import extract_color_correlogram
+from ..models import Extraction, ImageExtraction, Method, FuzzyColorHistogram
+from ..utilities.ColorCoherenceVectorExtraction import extract_color_coherence_vector
+from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_color_histogram
+from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
 
 
 def retrieve(request):

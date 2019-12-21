@@ -34,7 +34,12 @@
     <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
 
     <aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-        <h1 id="colorlib-logo"><a href="#">cbir<span>.</span></a></h1>
+        <div class="row">
+            <div class="offset-3 col-2">
+                <img class="img-fluid w-100" style="vertical-align: center; position: absolute" src="{% static 'images/uit.png' %}">
+            </div>
+            <h1 class="col-4 mx-2" id="colorlib-logo"><a href="#">cbir<span>.</span></a></h1>
+        </div>
 
         <div class="accordion" id="query-accordion">
             <div class="card no-border">
@@ -101,7 +106,7 @@
                                 Chọn một màu
                             </button>
                             <button class="offset-1 col-4 btn btn-primary px-4 py-2 retrieve-button"
-                                    id="retrieve">{% csrf_token %}
+                                    id="color-query-retrieve">{% csrf_token %}
                                 Truy xuất
                             </button>
                         </div>
@@ -121,7 +126,17 @@
                 </div>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#query-accordion">
                     <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                        <div class="box-input">
+                            <input class="box-file" type="file" name="files[]" id="file"
+                                   data-multiple-caption="{count} files selected" multiple hidden/>
+                            <img id="image-upload">
+                            <label for="file" class="no-margin" id="select-image-label"><strong>Chọn một file hình
+                                ảnh</strong></label>
+                        </div>
+                        <button class="btn btn-primary my-3 px-4 py-2 retrieve-button"
+                                id="image-query-retrieve">{% csrf_token %}
+                            Truy xuất
+                        </button>
                     </div>
                 </div>
             </div>
@@ -167,7 +182,8 @@
                                     </li>
                                     <li><span class="icon icon-phone"></span><span class="text">+84 327 197 193</span>
                                     </li>
-                                    <li><span class="icon icon-envelope"></span><span class="text">nxhao235@gmail.com</span>
+                                    <li><span class="icon icon-envelope"></span><span
+                                        class="text">nxhao235@gmail.com</span>
                                     </li>
                                 </ul>
                             </div>
@@ -177,7 +193,8 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        <p class="no-margin"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p class="no-margin">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             Copyright &copy;<script>document.write(new Date().getFullYear());</script>
                         <p class="no-margin">Sinh viên thực hiện: Nguyễn Xuân Hảo</p>
                         <p class="no-margin">Mã số sinh viên: 15520203</p></a>
