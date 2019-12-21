@@ -1,5 +1,6 @@
 import os
 import cv2
+import time
 from ..constants import *
 from django.conf import settings
 from datetime import datetime
