@@ -318,3 +318,9 @@ button[aria-expanded="true"] {
     outline: 2px dashed black;
     padding: 15px;
 }
+
+#colorlib-main {
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

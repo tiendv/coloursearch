@@ -3,11 +3,13 @@ import cv2
 import numpy as np
 from scipy.ndimage.measurements import label
 import collections
+from ..constants import *
 from .ColorHistogramExtraction import *
 from ..models.CumulativeColorHistogram import CumulativeColorHistogram
 
 
-def extract_cumulative_color_histogram(img_extraction_id, image_location, number_of_colors=4096):
+def extract_cumulative_color_histogram(img_extraction_id, image_location,
+                                       number_of_colors=NUMBER_OF_COLORS):
     print('Extracting Cumulative Color Histogram for ' + image_location)
     color_range, color, channel_range = calc_color_range(number_of_colors)
     number_of_colors = len(color)

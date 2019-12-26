@@ -1,3 +1,6 @@
+let number_of_cols_in_page = 0;
+let cols = [];
+
 window.onload = function () {
     // Change text of drop-down button
     $('.dropdown-menu a').click(function () {
@@ -89,6 +92,8 @@ window.onload = function () {
     });
 
     $('#color-query-retrieve').click(function () {
+        number_of_cols_in_page = 0;
+        cols = [];
         let colorMap = [];
         let rowCount = $('#color-map tr').length;
         let columnCount = document.getElementById('color-map').rows[0].cells.length;
@@ -114,8 +119,8 @@ window.onload = function () {
             },
             success: function (data) {
                 if (Array.isArray(data)) {
-                    let retrievalResult = document.querySelector('.retrieval-result');
-                    retrievalResult.innerHTML = '';
+                    let retrieval_result = document.querySelector('#retrieval-result');
+                    retrieval_result.innerHTML = '';
                     for (let i = 0; i < data.length; i++) {
                         let image_path = data[i]['image_path'];
                         let thumbnail_path = data[i]['thumbnail_path'];
@@ -127,7 +132,9 @@ window.onload = function () {
                         let blogEntry = document.createElement('div');
                         blogEntry.className = 'blog-entry ftco-animate';
                         let a = document.createElement('a');
-                        a.className = 'img img-2';
+                        a.className = 'img img-2 lazyload';
+                        a.setAttribute('src', thumbnail_path);
+                        a.setAttribute('data-src', thumbnail_path);
                         a.href = '#';
                         a.style.backgroundImage = `url(${thumbnail_path})`;
                         let text = document.createElement('div');
@@ -146,15 +153,34 @@ window.onload = function () {
                         blogEntry.appendChild(a);
                         blogEntry.appendChild(text);
                         col.appendChild(blogEntry);
-                        retrievalResult.appendChild(col);
+                        cols.push(col);
+                        // retrievalResult.appendChild(col);
                     }
+                    for (let i = 0; i < 50; i++) {
+                        retrieval_result.appendChild(cols[number_of_cols_in_page + i]);
+                    }
+                    number_of_cols_in_page += 50;
                 }
                 console.log(data);
             }
         });
-    })
+    });
 
+    $("#colorlib-main").on('scroll', function () {
+        let colorlib_main = document.getElementById('colorlib-main');
+        let retrieval_result = document.querySelector('#retrieval-result');
+        if (colorlib_main.offsetHeight + colorlib_main.scrollTop >= colorlib_main.scrollHeight - 500) {
+            for (let i = 0; i < 50; i++) {
+                retrieval_result.appendChild(cols[number_of_cols_in_page + i]);
+            }
+            number_of_cols_in_page += 50;
+        }
+    });
 };
+
+window.addEventListener("load", function(event) {
+    lazyload();
+});
 
 const sizePicker = document.querySelector('.size-picker');
 const pixelCanvas = document.querySelector('.pixel-canvas');

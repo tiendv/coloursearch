@@ -4,11 +4,13 @@ import time
 import math
 import numpy as np
 from django.conf import settings
+from ..constants import *
 from .ColorHistogramExtraction import *
 from ..models import FuzzyColorHistogram, FuzzyColorHistogramColor
 
 
-def quantize_color_space(number_of_coarse_colors=4096, number_of_fine_colors=64, m=1.9):
+def quantize_color_space(number_of_coarse_colors=NUMBER_OF_COARSE_COLORS,
+                         number_of_fine_colors=NUMBER_OF_FINE_COLORS, m=M):
     print('Quantizing color space... Waiting...')
     coarse_color_ranges, coarse_colors, coarse_channel_ranges = calc_color_range(number_of_coarse_colors)
     fine_color_ranges, fine_colors, fine_channel_ranges = calc_color_range(number_of_fine_colors)

@@ -4,6 +4,7 @@ import json
 import math
 import numpy as np
 from datetime import datetime
+from ..constants import *
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
 from ..utilities.FuzzyColorHistogramExtraction import calc_color_range
@@ -29,29 +30,31 @@ def retrieve(request):
         print(method)
 
         if method == 'Fuzzy Color Histogram':
-            number_of_coarse_colors = 4096
-            number_of_fine_colors = 64
-            m = 1.9
+            number_of_coarse_colors = NUMBER_OF_COARSE_COLORS
+            number_of_fine_colors = NUMBER_OF_FINE_COLORS
+            m = M
             matrix_path = os.path.join(settings.BASE_DIR, 'matrix')
             csv_file = ''
             for r, d, f in os.walk(matrix_path):
                 for file in f:
                     if '.csv' in file:
                         file_name = os.path.splitext(file)[0]
-                        if file_name == '4096_64':
+                        color_name = '_'.join(map(str, [NUMBER_OF_COARSE_COLORS, NUMBER_OF_FINE_COLORS]))
+                        if file_name == color_name:
                             csv_file = os.path.join(r, file)
             print(csv_file)
             if csv_file == '':
                 coarse_color_ranges, coarse_channel_ranges, matrix, v = quantize_color_space()
             else:
                 v = FuzzyColorHistogramColor.objects\
-                    .filter(number_of_coarse_colors=4096, number_of_fine_colors=64)\
+                    .filter(number_of_coarse_colors=NUMBER_OF_COARSE_COLORS,
+                            number_of_fine_colors=NUMBER_OF_FINE_COLORS)\
                     .values('ccomponent1', 'ccomponent2', 'ccomponent3')
                 v = [[item['ccomponent1'], item['ccomponent2'], item['ccomponent3']] for item in v]
                 with open(csv_file) as csv_file:
                     csv_reader = csv.reader(csv_file, quoting=csv.QUOTE_ALL)
                     matrix = list(csv_reader)
-                coarse_color_ranges, coarse_colors, coarse_channel_ranges = calc_color_range(4096)
+                coarse_color_ranges, coarse_colors, coarse_channel_ranges = calc_color_range(NUMBER_OF_COARSE_COLORS)
             fch = extract_fuzzy_color_histogram(-1,
                                                 colors,
                                                 coarse_color_ranges,
