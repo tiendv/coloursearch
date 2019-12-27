@@ -166,6 +166,7 @@ window.onload = function () {
         });
     });
 
+    // Load more data when scrolled to the bottom
     $("#colorlib-main").on('scroll', function () {
         let colorlib_main = document.getElementById('colorlib-main');
         let retrieval_result = document.querySelector('#retrieval-result');
@@ -176,6 +177,7 @@ window.onload = function () {
             number_of_cols_in_page += 50;
         }
     });
+
 };
 
 window.addEventListener("load", function(event) {
