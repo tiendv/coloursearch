@@ -118,7 +118,7 @@ def extract_cielab_color_histogram(image_location, color_range, channel_range):
     elif type(image_location) == list:
         image_location = np.array(image_location)
         image_location = image_location.astype(np.uint8)
-        image_location = cv2.cvtColor(image_location, cv2.COLOR_BGR2Lab)
+        image_location = cv2.cvtColor(image_location, cv2.COLOR_RGB2Lab)
         print(image_location)
         img = []
         for row in image_location:

@@ -1,9 +1,9 @@
 import os
+import cv2
 import csv
 import json
 import math
 import numpy as np
-from datetime import datetime
 from ..constants import *
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
@@ -19,13 +19,26 @@ from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histog
 def retrieve(request):
     if request.method == 'POST':
         colors = []
-        colorMap = json.loads(request.POST.get('colorMap'))
-        for row in colorMap:
-            color_row = []
-            for color in row:
-                color = list(map(int, color[4:-1].replace(' ', '').split(',')))
-                color_row.append(color)
-            colors.append(color_row)
+        if 'colorMap' in request.POST:
+            colorMap = json.loads(request.POST.get('colorMap'))
+            for row in colorMap:
+                color_row = []
+                for color in row:
+                    color = list(map(int, color[4:-1].replace(' ', '').split(',')))
+                    color_row.append(color)
+                colors.append(color_row)
+        elif len(request.FILES) > 0:
+            image = request.FILES['image']
+            colorMap = cv2.imdecode(np.fromstring(image.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+            colorMap = cv2.cvtColor(colorMap, cv2.COLOR_BGR2RGB)
+            for row in colorMap:
+                color_row = []
+                for color in row:
+                    color = list(map(int, color))
+                    color_row.append(color)
+                colors.append(color_row)
+        else:
+            return
         method = request.POST.get('method')
         print(method)
 

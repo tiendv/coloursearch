@@ -5,6 +5,7 @@ window.onload = function () {
     // Change text of drop-down button
     $('.dropdown-menu a').click(function () {
         $('#method').text($(this).text());
+        $('#method2').text($(this).text());
         let param1_label = $('#param1-label');
         let param2_label = $('#param2-label');
         let param3_label = $('#param3-label');
@@ -139,17 +140,24 @@ window.onload = function () {
                         a.style.backgroundImage = `url(${thumbnail_path})`;
                         let text = document.createElement('div');
                         text.className = 'text text-2 pt-2 mt-3';
+                        let p1 = document.createElement('p');
+                        p1.className = 'mb-2';
+                        p1.textContent = i;
+                        p1.style.fontWeight = '900';
+                        p1.style.color = '#000000';
+                        p1.style.wordWrap = 'break-word';
                         let span = document.createElement('span');
-                        span.className = 'category mb-3 d-block';
+                        span.className = 'category mb-2 d-block';
                         span.style.color = '#000000';
                         span.textContent = similarity;
-                        let p = document.createElement('p');
-                        p.className = 'mb-2';
-                        p.textContent = image_path;
-                        p.style.color = '#000000';
-                        p.style.wordWrap = 'break-word';
+                        let p2 = document.createElement('p');
+                        p2.className = 'mb-2';
+                        p2.textContent = image_path;
+                        p2.style.color = '#000000';
+                        p2.style.wordWrap = 'break-word';
+                        text.appendChild(p1);
                         text.appendChild(span);
-                        text.appendChild(p);
+                        text.appendChild(p2);
                         blogEntry.appendChild(a);
                         blogEntry.appendChild(text);
                         col.appendChild(blogEntry);
@@ -163,6 +171,83 @@ window.onload = function () {
                 }
                 console.log(data);
             }
+        });
+    });
+
+    $('#image-query-retrieve').click(function () {
+        number_of_cols_in_page = 0;
+        cols = [];
+        let colorMap = [];
+        let rowCount = $('#color-map tr').length;
+        let columnCount = document.getElementById('color-map').rows[0].cells.length;
+        let csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+        let method = $('span[id="method2"]').text();
+        let image = $('#image-uploaded').attr('src');
+        let base64ImageContent = image.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+        let blob = base64ToBlob(base64ImageContent, 'image/png');
+        let formData = new FormData();
+        formData.append('image', blob);
+        formData.append('method', method);
+        formData.append('csrfmiddlewaretoken', csrf_token);
+        $.ajax({
+            type: "post",
+            url: "/retrieve/",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData
+        }).done(function (data) {
+            if (Array.isArray(data)) {
+                let retrieval_result = document.querySelector('#retrieval-result');
+                retrieval_result.innerHTML = '';
+                for (let i = 0; i < data.length; i++) {
+                    let image_path = data[i]['image_path'];
+                    let thumbnail_path = data[i]['thumbnail_path'];
+                    thumbnail_path = thumbnail_path.replace(/\s/g, '');
+                    thumbnail_path = thumbnail_path.replace(/\\/g, "/");
+                    let similarity = data[i]['similarity'];
+                    let col = document.createElement('div');
+                    col.className = 'col-md-4';
+                    let blogEntry = document.createElement('div');
+                    blogEntry.className = 'blog-entry ftco-animate';
+                    let a = document.createElement('a');
+                    a.className = 'img img-2 lazyload';
+                    a.setAttribute('src', thumbnail_path);
+                    a.setAttribute('data-src', thumbnail_path);
+                    a.href = '#';
+                    a.style.backgroundImage = `url(${thumbnail_path})`;
+                    let text = document.createElement('div');
+                    text.className = 'text text-2 pt-2 mt-3';
+                    let p1 = document.createElement('p');
+                    p1.className = 'mb-2';
+                    p1.textContent = i;
+                    p1.style.fontWeight = '900';
+                    p1.style.color = '#000000';
+                    p1.style.wordWrap = 'break-word';
+                    let span = document.createElement('span');
+                    span.className = 'category mb-2 d-block';
+                    span.style.color = '#000000';
+                    span.textContent = similarity;
+                    let p2 = document.createElement('p');
+                    p2.className = 'mb-2';
+                    p2.textContent = image_path;
+                    p2.style.color = '#000000';
+                    p2.style.wordWrap = 'break-word';
+                    text.appendChild(p1);
+                    text.appendChild(span);
+                    text.appendChild(p2);
+                    blogEntry.appendChild(a);
+                    blogEntry.appendChild(text);
+                    col.appendChild(blogEntry);
+                    cols.push(col);
+                    // retrievalResult.appendChild(col);
+                }
+                for (let i = 0; i < 50; i++) {
+                    retrieval_result.appendChild(cols[number_of_cols_in_page + i]);
+                }
+                number_of_cols_in_page += 50;
+            }
+            console.log(data);
         });
     });
 
@@ -180,7 +265,29 @@ window.onload = function () {
 
 };
 
-window.addEventListener("load", function(event) {
+function base64ToBlob(base64, mime) {
+    mime = mime || '';
+    let sliceSize = 1024;
+    let byteChars = window.atob(base64);
+    let byteArrays = [];
+
+    for (let offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
+        let slice = byteChars.slice(offset, offset + sliceSize);
+
+        let byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        let byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, {type: mime});
+}
+
+window.addEventListener("load", function (event) {
     lazyload();
 });
 
@@ -281,7 +388,7 @@ $(".box-file").change(function (e) {
 
         let file = e.originalEvent.srcElement.files[i];
 
-        let img = document.getElementById('image-upload');
+        let img = document.getElementById('image-uploaded');
         img.style.maxWidth = '320px';
         img.style.padding = '15px 0';
         let reader = new FileReader();
