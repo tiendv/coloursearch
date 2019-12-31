@@ -85,17 +85,18 @@ def retrieve(request):
                 images = ImageExtraction.objects\
                     .filter(extraction_id=extraction['id'])\
                     .values('id', 'image_name', 'thumbnail_path')
+                image_ids = [item['id'] for item in images]
+                fch_of_images = FuzzyColorHistogram.objects\
+                    .filter(image_extraction_id__in=image_ids)\
+                    .values('image_extraction_id', 'id', 'value')\
+                    .order_by('id')
                 for image in images:
                     images_map[image['id']] = {
                         'image_path': os.path.join(extraction['directory_path'], image['image_name']),
                         'thumbnail_path': image['thumbnail_path'],
                         'similarity': 0.0
                     }
-                    fch_of_image = FuzzyColorHistogram.objects\
-                        .filter(image_extraction_id=image['id'])\
-                        .values('id', 'value')\
-                        .order_by('id')
-                    fch_of_image = [item['value'] for item in fch_of_image]
+                    fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
                     similarity = 0.0
                     if len(fch) == len(fch_of_image):
                         for i in range(len(fch)):
