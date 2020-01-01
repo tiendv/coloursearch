@@ -92,6 +92,7 @@ def extract_color_correlogram(img_extraction_id, image_location, number_of_color
 
     epsilon = 10
     gamma = {k: {} for k in D}
+    start_time = time.time()
     if D[len(D) - 1] < epsilon:
         for k in D:
             for color_range in color_ranges:
@@ -100,8 +101,8 @@ def extract_color_correlogram(img_extraction_id, image_location, number_of_color
                     gamma[k][color_range] = calc_gamma(k, pixels) / (histogram[color_range] * 8 * k)
                 else:
                     gamma[k][color_range] = 0.0
-
-    print(gamma)
+    print("--- gamma: %s seconds ---" % (time.time() - start_time))
+    # print(gamma)
 
     k = None
     for key, value in gamma.items():
@@ -117,12 +118,12 @@ def extract_color_correlogram(img_extraction_id, image_location, number_of_color
             instance.ccomponent3_max = key1[2][1]
             instance.value = value1
             instance.save()
-            print('Saved k = ' + str(k) + ', ' + str(key1) + ': ' + str(value1))
+            # print('Saved k = ' + str(k) + ', ' + str(key1) + ': ' + str(value1))
     return gamma
 
 
 def calc_gamma(k, pixels):
-    print('calculating gamma for k = ' + str(k))
+    # print('calculating gamma for k = ' + str(k))
     lambda_h1 = lambda_h2 = lambda_v1 = lambda_v2 = 0
     temp_pixels = set(tuple(i) for i in pixels)
     for pixel in pixels:
