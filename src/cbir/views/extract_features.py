@@ -13,6 +13,7 @@ from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_co
 
 
 def extract_features(path, method, param1, param2, param3):
+    start_time = time.time()
     available_methods = {
         m['name']: m['detail'] for m in Method.objects.all().values()
     }
@@ -122,16 +123,36 @@ def extract_features(path, method, param1, param2, param3):
 
     elif method == 'color_correlogram':
         for img in images:
+            image_name = os.path.basename(img)
             img_extraction = ImageExtraction(extraction_id=latest_extraction_id)
             img_extraction.image_name = os.path.basename(img)
+            image_thumbnail_path = os.path.join('static', 'thumbnails', str(latest_extraction_id), image_name)
+            img_extraction.thumbnail_path = image_thumbnail_path
             img_extraction.save()
+
+            # Save thumbnail
+            thumbnail = cv2.imread(img)
+            thumbnail = image_resize(thumbnail, height=THUMBNAIL_IMAGE_HEIGHT)
+            cv2.imwrite(image_thumbnail_path, thumbnail)
+            print('Saved thumbnail for {} in {}'.format(image_name, image_thumbnail_path))
+
             img_extraction_id = ImageExtraction.objects.latest('id').id
             extract_color_correlogram(img_extraction_id, img, param1, param2, param3)
     elif method == 'cumulative_color_histogram':
         for img in images:
+            image_name = os.path.basename(img)
             img_extraction = ImageExtraction(extraction_id=latest_extraction_id)
             img_extraction.image_name = os.path.basename(img)
+            image_thumbnail_path = os.path.join('static', 'thumbnails', str(latest_extraction_id), image_name)
+            img_extraction.thumbnail_path = image_thumbnail_path
             img_extraction.save()
+
+            # Save thumbnail
+            thumbnail = cv2.imread(img)
+            thumbnail = image_resize(thumbnail, height=THUMBNAIL_IMAGE_HEIGHT)
+            cv2.imwrite(image_thumbnail_path, thumbnail)
+            print('Saved thumbnail for {} in {}'.format(image_name, image_thumbnail_path))
+
             img_extraction_id = ImageExtraction.objects.latest('id').id
             extract_cumulative_color_histogram(img_extraction_id, img, param1)
 
@@ -142,5 +163,6 @@ def extract_features(path, method, param1, param2, param3):
     print('|------------------|')
     print('| Extraction done. |')
     print('|------------------|')
+    print("--- Time execution: %s seconds ---" % (time.time() - start_time))
 
     return True
