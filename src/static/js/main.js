@@ -1,97 +1,15 @@
 let number_of_cols_in_page = 0;
 let cols = [];
+let selected_extractions = [];
 
 window.onload = function () {
     // Change text of drop-down button
     $('.dropdown-menu a').click(function () {
         $('#method').text($(this).text());
         $('#method2').text($(this).text());
-        let param1_label = $('#param1-label');
-        let param2_label = $('#param2-label');
-        let param3_label = $('#param3-label');
-        let param1 = $('#param1');
-        let param2 = $('#param2');
-        let param3 = $('#param3');
-        switch ($(this).text()) {
-            case 'Fuzzy Color Histogram':
-                param1_label.text('Number of coarse colors');
-                param2_label.show();
-                param2_label.text('Number of fine colors');
-                param3_label.show();
-                param3_label.text('m (weighting exponent)');
-                param2.show();
-                param3.show();
-                break;
-            case 'Color Coherence Vector':
-                param1_label.text('Number of colors');
-                param2_label.show();
-                param2_label.text('τ (tau - coherence value)');
-                param3_label.hide();
-                param2.show();
-                param3.hide();
-                break;
-            case 'Color Correlogram':
-                param1_label.text('Number of colors');
-                param2_label.show();
-                param2_label.text('d');
-                param3_label.show();
-                param3_label.text('increment');
-                param2.show();
-                param3.show();
-                break;
-            case 'Cumulative Color Histogram':
-                param1_label.text('Number of colors');
-                param2_label.text('d');
-                param2_label.hide();
-                param3_label.hide();
-                param2.hide();
-                param3.hide();
-                break;
-        }
     });
 
-    // Post form data
-    $('#extract-submit').on('submit', function (event) {
-        event.preventDefault();
-        let csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
-        let method = $('span[id="method"]').text();
-        let formData = {
-            'folder_path': $('input[name="folder_path"]').val(),
-            'method': method,
-            'csrfmiddlewaretoken': csrf_token,
-        };
-        switch (method) {
-            case 'Fuzzy Color Histogram':
-            case 'Color Correlogram':
-                formData['param1_name'] = $('#param1-label');
-                formData['param2_name'] = $('#param2-label');
-                formData['param3_name'] = $('#param3-label');
-                formData['param1_value'] = $('#param1');
-                formData['param2_value'] = $('#param2');
-                formData['param3_value'] = $('#param3');
-                break;
-            case 'Color Coherence Vector':
-                formData['param1_name'] = $('#param1-label');
-                formData['param2_name'] = $('#param2-label');
-                formData['param1_value'] = $('#param1');
-                formData['param2_value'] = $('#param2');
-                break;
-            case 'Cumulative Color Histogram':
-                formData['param1_name'] = $('#param1-label');
-                formData['param1_value'] = $('#param1');
-                break;
-        }
-        csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: formData,
-            success: function (message) {
-                alert(message);
-            }
-        })
-    });
-
+    // Query by color layout
     $('#color-query-retrieve').click(function () {
         number_of_cols_in_page = 0;
         cols = [];
@@ -117,6 +35,7 @@ window.onload = function () {
                 'colorMap': JSON.stringify(colorMap),
                 'method': method,
                 'csrfmiddlewaretoken': csrf_token,
+                'extraction_id': JSON.stringify(selected_extractions),
             },
             success: function (data) {
                 if (Array.isArray(data)) {
@@ -165,7 +84,9 @@ window.onload = function () {
                         // retrievalResult.appendChild(col);
                     }
                     for (let i = 0; i < 50; i++) {
-                        retrieval_result.appendChild(cols[number_of_cols_in_page + i]);
+                        if (cols.length > (number_of_cols_in_page + i)) {
+                            retrieval_result.appendChild(cols[number_of_cols_in_page + i]);
+                        }
                     }
                     number_of_cols_in_page += 50;
                 }
@@ -174,6 +95,7 @@ window.onload = function () {
         });
     });
 
+    // Query by example image
     $('#image-query-retrieve').click(function () {
         number_of_cols_in_page = 0;
         cols = [];
@@ -189,6 +111,7 @@ window.onload = function () {
         formData.append('image', blob);
         formData.append('method', method);
         formData.append('csrfmiddlewaretoken', csrf_token);
+        formData.append('extraction_id', JSON.stringify(selected_extractions));
         $.ajax({
             type: "post",
             url: "/retrieve/",
@@ -243,11 +166,12 @@ window.onload = function () {
                     // retrievalResult.appendChild(col);
                 }
                 for (let i = 0; i < 50; i++) {
-                    retrieval_result.appendChild(cols[number_of_cols_in_page + i]);
+                    if (cols.length > (number_of_cols_in_page + i)) {
+                        retrieval_result.appendChild(cols[number_of_cols_in_page + i]);
+                    }
                 }
                 number_of_cols_in_page += 50;
             }
-            console.log(data);
         });
     });
 
@@ -263,6 +187,17 @@ window.onload = function () {
         }
     });
 
+    let extraction_table = document.querySelector('#extraction-table');
+    $('#save-changes').click(function () {
+        let checkbox = document.getElementsByClassName('extraction-checkbox');
+        selected_extractions = [];
+        for (let i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked) {
+                let box_id = checkbox[i].id.split('-')[1];
+                selected_extractions.push(document.getElementById('id-' + box_id).textContent);
+            }
+        }
+    });
 };
 
 function base64ToBlob(base64, mime) {
@@ -325,7 +260,7 @@ function makeGrid() {
     let tds = document.getElementsByClassName('color-cell');
     for (let i = 0; i < tds.length; i++) {
         tds[i].style.setProperty('width', cellLength + 'px', 'important');
-        tds[i].style.setProperty('height', (cellLength - 2) + 'px', 'important');
+        tds[i].style.setProperty('height', (cellLength - 2) + 'px');
         tds[i].style.backgroundColor = 'rgb(255, 255, 255)'
     }
 }

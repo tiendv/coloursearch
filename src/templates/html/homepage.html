@@ -60,7 +60,8 @@
                                 <span class="col-4 normal-label vertical-center">Phương pháp</span>
                                 <div class="col-8 my-3">
                                     <div class="dropdown float-right mr-3">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        <button class="btn dropdown-toggle" type="button"
+                                                style="background-color: #6cc0e5"
                                                 id="dropdownMenuButton" data-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false">
                                             <span id="method">Fuzzy Color Histogram</span>
@@ -100,7 +101,7 @@
                         </form>
                         <div class="row px-3 mb-3">
                             <button type="button" class="col-2 btn btn-primary p-2 px-4 py-3"
-                                    data-toggle="modal" data-target="#select-database">
+                                    data-toggle="modal" data-target="#select-extractions" id="extractions-select">
                                 <i class="fas fa-cogs"></i>
                             </button>
                             <button class="offset-1 col-4 btn btn-primary p-2 px-4 py-3 no-border" id="bgcolor-button">
@@ -111,7 +112,7 @@
                                 Truy xuất
                             </button>
                         </div>
-                        <div class="row justify-content-md-center mx-3 px-5 py-3" id="color-map-div">
+                        <div class="row justify-content-md-center mx-3 px-5 py-3 border" id="color-map-div">
                             <table class="pixel-canvas" id="color-map"></table>
                         </div>
                     </div>
@@ -165,6 +166,7 @@
         <div class="colorlib-footer">
             <p class="no-margin pt-5">Copyright &copy;<script>document.write(new Date().getFullYear());</script>
             </p>
+            <p class="no-margin">Giảng viên hướng dẫn: Huỳnh Ngọc Tín & Đỗ Văn Tiến</p>
             <p class="no-margin">Sinh viên thực hiện: Nguyễn Xuân Hảo</p>
             <p class="no-margin pb-3">Mã số sinh viên: 15520203</p>
             <ul>
@@ -216,6 +218,7 @@
                         <p class="no-margin">
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        <p class="no-margin">Giảng viên hướng dẫn: Huỳnh Ngọc Tín & Đỗ Văn Tiến</p>
                         <p class="no-margin">Sinh viên thực hiện: Nguyễn Xuân Hảo</p>
                         <p class="no-margin">Mã số sinh viên: 15520203</p></a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
@@ -227,22 +230,42 @@
 </div><!-- END COLORLIB-PAGE -->
 
 <!-- Modal -->
-<div class="modal fade" id="select-database" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+<div class="modal fade" id="select-extractions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Chọn cơ sở dữ liệu</h5>
+                <h5 class="modal-title px-2 py-1" id="exampleModalLongTitle">Chọn cơ sở dữ liệu</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <div class="boxes" id="modal-checkbox">
+                    <table id="extraction-table">
+                        <tr>
+                            <th>ID</th>
+                            <th>Địa chỉ đường dẫn / Tên</th>
+                            <th>Phương pháp</th>
+                            <th>Thời gian bắt đầu</th>
+                            <th>Thời gian kết thúc</th>
+                        </tr>
+                        {% for extraction in extractions %}
+                            <tr>
+                                <td><input type="checkbox" id="box-{{ forloop.counter }}" class="extraction-checkbox">
+                                    <label for="box-{{ forloop.counter }}" id="id-{{ forloop.counter }}">{{ extraction.id }}</label></td>
+                                <td class="extraction-cell">{{ extraction.directory_path }}</td>
+                                <td class="extraction-cell">{{ extraction.method.detail }}</td>
+                                <td class="extraction-cell">{{ extraction.start_time }}</td>
+                                <td class="extraction-cell">{{ extraction.end_time }}</td>
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" id="save-changes" data-dismiss="modal">Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -284,7 +307,7 @@
 
     pickers.bgcolor = new jscolor('bgcolor-button', options);
     pickers.bgcolor.onFineChange = "update('bgcolor')";
-    pickers.bgcolor.fromString('AB2567');
+    pickers.bgcolor.fromString('6cc0e5');
 
     function update(id) {
         document.getElementById('bgcolor-button').innerText = pickers[id].toHEXString();

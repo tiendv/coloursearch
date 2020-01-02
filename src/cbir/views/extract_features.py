@@ -2,14 +2,14 @@ import os
 import cv2
 import time
 from ..constants import *
-from django.conf import settings
 from datetime import datetime
+from django.conf import settings
 from ..utilities.Utilities import image_resize
 from ..models import Extraction, ImageExtraction, Method
-from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
-from ..utilities.ColorCoherenceVectorExtraction import extract_color_coherence_vector
 from ..utilities.ColorCorrelogramExtraction import extract_color_correlogram
+from ..utilities.ColorCoherenceVectorExtraction import extract_color_coherence_vector
 from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_color_histogram
+from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
 
 
 def extract_features(path, method, param1, param2, param3):

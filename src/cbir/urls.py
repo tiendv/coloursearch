@@ -28,6 +28,5 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('extract-features/', views.extract_features, name='extract-features'),
     path('retrieve/', views.retrieve, name='retrieve'),
-    path('get-extractions/', views.get_extractions, name='get-extractions'),
     re_path(r'^favicon\.ico$', favicon_view),
 ]

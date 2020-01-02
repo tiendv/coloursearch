@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from ..utilities.FuzzyColorHistogramExtraction import calc_color_range
 from ..models.FuzzyColorHistogramColor import FuzzyColorHistogramColor
 from ..utilities.ColorCorrelogramExtraction import extract_color_correlogram
-from ..models import Extraction, ImageExtraction, Method, FuzzyColorHistogram
+from ..models import Extraction, ImageExtraction, FuzzyColorHistogram
 from ..utilities.ColorCoherenceVectorExtraction import extract_color_coherence_vector
 from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_color_histogram
 from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
@@ -39,8 +39,17 @@ def retrieve(request):
                 colors.append(color_row)
         else:
             return
+
         method = request.POST.get('method')
         print(method)
+
+        extraction_ids = json.loads(request.POST.get('extraction_id'))
+        if len(extraction_ids) == 0:
+            extraction_ids = Extraction.objects.values('id').order_by('id')
+            extraction_ids = [item['id'] for item in extraction_ids]
+        else:
+            extraction_ids = [int(item) for item in extraction_ids]
+        print(extraction_ids)
 
         if method == 'Fuzzy Color Histogram':
             number_of_coarse_colors = NUMBER_OF_COARSE_COLORS
@@ -74,13 +83,13 @@ def retrieve(request):
                                                 coarse_channel_ranges,
                                                 matrix, v)
             images_map = {}
-            extraction_id = [1]
             extractions = Extraction.objects\
-                .filter(id__in=extraction_id,
+                .filter(id__in=extraction_ids,
                         param1_value=number_of_coarse_colors,
                         param2_value=number_of_fine_colors,
                         param3_value=m)\
                 .values('id', 'directory_path')
+            print(extraction_ids)
             for extraction in extractions:
                 images = ImageExtraction.objects\
                     .filter(extraction_id=extraction['id'])\
