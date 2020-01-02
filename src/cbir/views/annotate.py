@@ -48,7 +48,6 @@ def annotate(directory_path):
             center = cv2.cvtColor(np.asarray([center]), cv2.COLOR_BGR2HSV)
             center = center[0].tolist()
             label = label.flatten()
-            colors = {}
             count = collections.Counter(list(label))
             count = count.most_common(4)
             count = sorted(count, key=lambda x: int(x[1]), reverse=True)
@@ -85,3 +84,40 @@ def convert_color_to_string(color):
         return 'blue'
     if 135 < color[0] <= 165:
         return 'magenta'
+
+
+def get_dominant_color(image):
+    height, width = image.shape[:2]
+    if width > MAX_IMAGE_WIDTH:
+        image = image_resize(image, width=MAX_IMAGE_WIDTH)
+        height, width = image.shape[:2]
+        if height > MAX_IMAGE_HEIGHT:
+            image = image_resize(image, height=MAX_IMAGE_HEIGHT)
+    elif height > MAX_IMAGE_HEIGHT:
+        image = image_resize(image, height=MAX_IMAGE_HEIGHT)
+        height, width = image.shape[:2]
+        if width > MAX_IMAGE_WIDTH:
+            image = image_resize(image, width=MAX_IMAGE_WIDTH)
+    Z = image.reshape((-1, 3))
+
+    # convert to np.float32
+    Z = np.float32(Z)
+
+    # define criteria, number of clusters(K) and apply kmeans()
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+    ret, label, center = cv2.kmeans(Z, K_IN_K_MEANS, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+
+    # Now convert back into uint8, and make original image
+    center = np.uint8(center)
+    center = cv2.cvtColor(np.asarray([center]), cv2.COLOR_BGR2HSV)
+    center = center[0].tolist()
+    label = label.flatten()
+    count = collections.Counter(list(label))
+    count = count.most_common(4)
+    count = sorted(count, key=lambda x: int(x[1]), reverse=True)
+    color_indices = [item[0] for item in count]
+    colors = []
+    for i in color_indices:
+        colors.append(center[i])
+    colors = [convert_color_to_string(item) for item in colors]
+    return colors

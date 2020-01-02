@@ -3,8 +3,11 @@ import cv2
 import csv
 import json
 import math
+import time
+import collections
 import numpy as np
 from ..constants import *
+from ..views.annotate import *
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
 from ..utilities.FuzzyColorHistogramExtraction import calc_color_range
@@ -17,6 +20,7 @@ from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histog
 
 
 def retrieve(request):
+    start_time = time.time()
     if request.method == 'POST':
         colors = []
         if 'colorMap' in request.POST:
@@ -27,9 +31,13 @@ def retrieve(request):
                     color = list(map(int, color[4:-1].replace(' ', '').split(',')))
                     color_row.append(color)
                 colors.append(color_row)
+            image = np.uint8(colorMap)
+            dominant_colors = get_dominant_color(image)
+            print("--- Histogram: %s seconds ---" % (time.time() - start_time))
         elif len(request.FILES) > 0:
             image = request.FILES['image']
             colorMap = cv2.imdecode(np.fromstring(image.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+            dominant_colors = get_dominant_color(colorMap)
             colorMap = cv2.cvtColor(colorMap, cv2.COLOR_BGR2RGB)
             for row in colorMap:
                 color_row = []
@@ -37,6 +45,7 @@ def retrieve(request):
                     color = list(map(int, color))
                     color_row.append(color)
                 colors.append(color_row)
+            print("--- Histogram: %s seconds ---" % (time.time() - start_time))
         else:
             return
 
@@ -89,10 +98,40 @@ def retrieve(request):
                         param2_value=number_of_fine_colors,
                         param3_value=m)\
                 .values('id', 'directory_path')
-            print(extraction_ids)
             for extraction in extractions:
+                directory_path = extraction['directory_path']
+                folder_name = os.path.basename(directory_path)
+
+                annotation_path = os.path.join(settings.BASE_DIR, 'annotation')
+                csv_file = ''
+                for r, d, f in os.walk(annotation_path):
+                    for file in f:
+                        if '.csv' in file:
+                            file_name = os.path.splitext(file)[0]
+                            if file_name == folder_name:
+                                csv_file = os.path.join(r, file)
+                                break
+                with open(csv_file) as csv_file:
+                    csv_reader = csv.reader(csv_file, quoting=csv.QUOTE_ALL)
+                    color_matrix = list(csv_reader)
+                list_of_image_name = []
+                for row in color_matrix:
+                    if row[1] in dominant_colors:
+                        list_of_image_name.append(row[0])
+                        break
+                    if row[2] in dominant_colors:
+                        list_of_image_name.append(row[0])
+                        break
+                    if row[3] in dominant_colors:
+                        list_of_image_name.append(row[0])
+                        break
+                    if row[4] in dominant_colors:
+                        list_of_image_name.append(row[0])
+                        break
+
                 images = ImageExtraction.objects\
-                    .filter(extraction_id=extraction['id'])\
+                    .filter(extraction_id=extraction['id'],
+                            image_name__in=list_of_image_name)\
                     .values('id', 'image_name', 'thumbnail_path')
                 image_ids = [item['id'] for item in images]
                 fch_of_images = FuzzyColorHistogram.objects\
