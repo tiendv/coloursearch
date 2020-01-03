@@ -107,6 +107,7 @@ def retrieve(request):
                                                 coarse_color_ranges,
                                                 coarse_channel_ranges,
                                                 matrix, v)
+            fch = np.float32(fch)
             images_map = {}
             extractions = Extraction.objects\
                 .filter(id__in=extraction_ids,
@@ -162,21 +163,20 @@ def retrieve(request):
                     images_map[image['id']] = {
                         'image_path': os.path.join(extraction['directory_path'], image['image_name']),
                         'thumbnail_path': image['thumbnail_path'],
-                        'similarity': 0.0
+                        'similarity': 1.0
                     }
                     fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
-                    similarity = 0.0
+                    fch_of_image = np.float32(fch_of_image)
+                    similarity = 1.0
                     if len(fch) == len(fch_of_image):
-                        for i in range(len(fch)):
-                            similarity += (fch[i] - fch_of_image[i])**2
-                    similarity = math.sqrt(similarity)
+                        similarity = cv2.norm(fch - fch_of_image, cv2.NORM_L2)
                     images_map[image['id']]['similarity'] = similarity
                     print('{}. Degree of similarity ({}): {}'.format(index, image['image_name'], similarity))
             result = []
             for key, value in images_map.items():
                 result.append(value)
             result = sorted(result, key=lambda k: k['similarity'])
-            print(images_map)
+            print("--- Retrieval: %s seconds ---" % (time.time() - start_time))
             return JsonResponse(result, safe=False)
 
         elif method == 'Color Coherence Vector':
@@ -185,5 +185,4 @@ def retrieve(request):
             extract_color_correlogram(-1, colorMap)
         elif method == 'Cumulative Color Histogram':
             extract_cumulative_color_histogram(-1, colorMap)
-        print("--- Retrieval: %s seconds ---" % (time.time() - start_time))
         return HttpResponseRedirect('/')
