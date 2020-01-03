@@ -163,11 +163,11 @@ def retrieve(request):
                     images_map[image['id']] = {
                         'image_path': os.path.join(extraction['directory_path'], image['image_name']),
                         'thumbnail_path': image['thumbnail_path'],
-                        'similarity': 1.0
+                        'similarity': 0.0
                     }
                     fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
                     # fch_of_image = np.float32(fch_of_image)
-                    similarity = 1.0
+                    similarity = 0.0
                     if len(fch) == len(fch_of_image):
                         for i in range(len(fch)):
                             similarity += (fch[i] - fch_of_image[i]) ** 2
