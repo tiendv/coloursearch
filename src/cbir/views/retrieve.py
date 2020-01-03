@@ -145,7 +145,7 @@ def retrieve(request):
                     if row[4] in dominant_colors:
                         list_of_image_name.append(row[0])
                         continue
-                print(list_of_image_name)
+                print('length of image list: {}'.format(len(list_of_image_name)))
 
                 images = ImageExtraction.objects\
                     .filter(extraction_id=extraction['id'],
@@ -182,5 +182,5 @@ def retrieve(request):
             extract_color_correlogram(-1, colorMap)
         elif method == 'Cumulative Color Histogram':
             extract_cumulative_color_histogram(-1, colorMap)
-
+        print("--- Retrieval: %s seconds ---" % (time.time() - start_time))
         return HttpResponseRedirect('/')
