@@ -158,7 +158,7 @@ def retrieve(request):
                     .values('image_extraction_id', 'id', 'value')\
                     .order_by('id')
                 print("--- Get FCH: %s seconds ---" % (time.time() - start_time))
-                for image in images:
+                for index, image in enumerate(images, start=1):
                     images_map[image['id']] = {
                         'image_path': os.path.join(extraction['directory_path'], image['image_name']),
                         'thumbnail_path': image['thumbnail_path'],
@@ -171,7 +171,7 @@ def retrieve(request):
                             similarity += (fch[i] - fch_of_image[i])**2
                     similarity = math.sqrt(similarity)
                     images_map[image['id']]['similarity'] = similarity
-                    print('Degree of similarity ({}): {}'.format(image['image_name'], similarity))
+                    print('{}. Degree of similarity ({}): {}'.format(index, image['image_name'], similarity))
             result = []
             for key, value in images_map.items():
                 result.append(value)
