@@ -171,7 +171,7 @@ def retrieve(request):
                     if len(fch) == len(fch_of_image):
                         similarity = cv2.norm(fch - fch_of_image, cv2.NORM_L2)
                     images_map[image['id']]['similarity'] = similarity
-                    print('{}. Degree of similarity ({}): {}'.format(index, image['image_name'], similarity))
+                    print('{}/{}. Degree of similarity ({}): {}'.format(index, len(list_of_image_name), image['image_name'], similarity))
             result = []
             for key, value in images_map.items():
                 result.append(value)
