@@ -107,7 +107,7 @@ def retrieve(request):
                                                 coarse_color_ranges,
                                                 coarse_channel_ranges,
                                                 matrix, v)
-            fch = np.float32(fch)
+            # fch = np.float32(fch)
             images_map = {}
             extractions = Extraction.objects\
                 .filter(id__in=extraction_ids,
@@ -166,10 +166,13 @@ def retrieve(request):
                         'similarity': 1.0
                     }
                     fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
-                    fch_of_image = np.float32(fch_of_image)
+                    # fch_of_image = np.float32(fch_of_image)
                     similarity = 1.0
                     if len(fch) == len(fch_of_image):
-                        similarity = cv2.norm(fch - fch_of_image, cv2.NORM_L2)
+                        for i in range(len(fch)):
+                            similarity += (fch[i] - fch_of_image[i]) ** 2
+                        # similarity = cv2.norm(fch - fch_of_image, cv2.NORM_L2)
+                    similarity = math.sqrt(similarity)
                     images_map[image['id']]['similarity'] = similarity
                     print('{}/{}. Degree of similarity ({}): {}'.format(index, len(list_of_image_name), image['image_name'], similarity))
             result = []
