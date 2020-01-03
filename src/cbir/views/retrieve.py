@@ -192,10 +192,7 @@ def retrieve(request):
                                                     extraction['directory_path'],
                                                     fch_of_images,
                                                     images), range(0, len(images), 1))
-                for r in result:
-                    print(r)
                 result = list(result)
-                result = [item[0] for item in result]
                 print(result)
 
                 # for index, image in enumerate(images, start=1):
