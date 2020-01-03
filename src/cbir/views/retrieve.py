@@ -195,15 +195,16 @@ def retrieve(request):
                 result = list(result)
                 print(result)
 
+                result = sorted(result, key=lambda k: k['similarity'])
+                print("--- Retrieval: %s seconds ---" % (time.time() - start_time))
+                return JsonResponse(result, safe=False)
+
                 # for index, image in enumerate(images, start=1):
                 #     images_map[image['id']] = calc_similarity(image, fch, extraction, fch_of_images)
                 #     print('{}/{}. Degree of similarity ({}): {}'.format(index, len(list_of_image_name), image['image_name'], images_map[image['id']]['similarity']))
 
             # for key, value in images_map.items():
             #     result.append(value)
-            result = sorted(result, key=lambda k: k['similarity'])
-            print("--- Retrieval: %s seconds ---" % (time.time() - start_time))
-            return JsonResponse(result, safe=False)
 
         elif method == 'Color Coherence Vector':
             extract_color_coherence_vector(-1, colorMap)
