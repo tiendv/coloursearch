@@ -22,11 +22,6 @@ from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histog
 
 
 def calc_similarity(fch, directory_path, fch_of_images, images, index):
-    images_map_item = {
-        'image_path': os.path.join(directory_path, images[index]['image_name']),
-        'thumbnail_path': images[index]['thumbnail_path'],
-        'similarity': 0.0
-    }
     fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == images[index]['id']]
     # fch_of_image = np.float32(fch_of_image)
     similarity = 0.0
@@ -35,8 +30,12 @@ def calc_similarity(fch, directory_path, fch_of_images, images, index):
             similarity += (fch[i] - fch_of_image[i]) ** 2
         # similarity = cv2.norm(fch - fch_of_image, cv2.NORM_L2)
     similarity = math.sqrt(similarity)
-    images_map_item['similarity'] = similarity
-    return images_map_item
+    print(similarity)
+    return {
+        'image_path': os.path.join(directory_path, images[index]['image_name']),
+        'thumbnail_path': images[index]['thumbnail_path'],
+        'similarity': similarity
+    }
 
 
 def retrieve(request):
