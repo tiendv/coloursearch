@@ -334,3 +334,50 @@ $(".box-file").change(function (e) {
         $(".box-file").after(img);
     }
 });
+
+(function ($) {
+    let burgerMenu = function () {
+
+        $('.js-colorlib-nav-toggle').on('click', function (event) {
+            event.preventDefault();
+            let $this = $(this);
+
+            if ($('body').hasClass('offcanvas')) {
+                $this.removeClass('active');
+                $('body').removeClass('offcanvas');
+            } else {
+                $this.addClass('active');
+                $('body').addClass('offcanvas');
+            }
+        });
+    };
+    burgerMenu();
+
+    // Click outside of offcanvass
+    let mobileMenuOutsideClick = function () {
+
+        $(document).click(function (e) {
+            let container = $("#colorlib-aside, .js-colorlib-nav-toggle");
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+
+                if ($('body').hasClass('offcanvas')) {
+
+                    $('body').removeClass('offcanvas');
+                    $('.js-colorlib-nav-toggle').removeClass('active');
+
+                }
+
+            }
+        });
+
+        $(window).scroll(function () {
+            if ($('body').hasClass('offcanvas')) {
+
+                $('body').removeClass('offcanvas');
+                $('.js-colorlib-nav-toggle').removeClass('active');
+
+            }
+        });
+
+    };
+})(jQuery);

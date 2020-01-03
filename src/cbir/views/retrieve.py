@@ -33,12 +33,28 @@ def retrieve(request):
                 colors.append(color_row)
             image = np.uint8(colorMap)
             dominant_colors = get_dominant_color(image)
+            print(dominant_colors)
             print("--- Histogram: %s seconds ---" % (time.time() - start_time))
         elif len(request.FILES) > 0:
             image = request.FILES['image']
-            colorMap = cv2.imdecode(np.fromstring(image.read(), np.uint8), cv2.IMREAD_UNCHANGED)
-            dominant_colors = get_dominant_color(colorMap)
-            colorMap = cv2.cvtColor(colorMap, cv2.COLOR_BGR2RGB)
+            image = cv2.imdecode(np.fromstring(image.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+            height, width = image.shape[:2]
+            if width > MAX_RETRIEVAL_IMAGE_WIDTH:
+                image = image_resize(image, width=MAX_RETRIEVAL_IMAGE_WIDTH)
+                height, width = image.shape[:2]
+                if height > MAX_RETRIEVAL_IMAGE_HEIGHT:
+                    image = image_resize(image, height=MAX_RETRIEVAL_IMAGE_HEIGHT)
+            elif height > MAX_RETRIEVAL_IMAGE_HEIGHT:
+                image = image_resize(image, height=MAX_RETRIEVAL_IMAGE_HEIGHT)
+                height, width = image.shape[:2]
+                if width > MAX_RETRIEVAL_IMAGE_WIDTH:
+                    image = image_resize(image, width=MAX_RETRIEVAL_IMAGE_WIDTH)
+            print('Resize to {}x{}'.format(image.shape[0], image.shape[1]))
+            print("--- Resize: %s seconds ---" % (time.time() - start_time))
+
+            dominant_colors = get_dominant_color(image)
+            print(dominant_colors)
+            colorMap = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             for row in colorMap:
                 color_row = []
                 for color in row:
@@ -111,6 +127,7 @@ def retrieve(request):
                             if file_name == folder_name:
                                 csv_file = os.path.join(r, file)
                                 break
+                print(csv_file)
                 with open(csv_file) as csv_file:
                     csv_reader = csv.reader(csv_file, quoting=csv.QUOTE_ALL)
                     color_matrix = list(csv_reader)
@@ -118,16 +135,17 @@ def retrieve(request):
                 for row in color_matrix:
                     if row[1] in dominant_colors:
                         list_of_image_name.append(row[0])
-                        break
+                        continue
                     if row[2] in dominant_colors:
                         list_of_image_name.append(row[0])
-                        break
+                        continue
                     if row[3] in dominant_colors:
                         list_of_image_name.append(row[0])
-                        break
+                        continue
                     if row[4] in dominant_colors:
                         list_of_image_name.append(row[0])
-                        break
+                        continue
+                print(list_of_image_name)
 
                 images = ImageExtraction.objects\
                     .filter(extraction_id=extraction['id'],

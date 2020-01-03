@@ -181,6 +181,7 @@ input[type=number] {
     /* Padding is space between element's content and border. First value sets top and bottom padding; second value sets right and left */
     min-width: 100px;
     font-size: 14px !important;
+    white-space: normal;
 }
 
 /* Styles content to left of grid */
@@ -254,6 +255,7 @@ input[type=number] {
 
 #method, .dropdown-item {
     font-size: 14px !important;
+    white-space: normal;
 }
 
 button[aria-expanded="true"] {
@@ -388,4 +390,26 @@ input[type="checkbox"]:checked + label:before {
 th, td {
     padding: 7px;
     white-space: nowrap;
+}
+
+/* Responsive typography */
+@media (min-width: 544px) {
+    .large-text {
+        font-size: 0.5rem;
+    }
+}
+@media (min-width: 768px) {
+    .large-text {
+        font-size: 0.5rem;
+    }
+}
+@media (min-width: 992px) {
+    .large-text {
+        font-size: 0.7rem;
+    }
+}
+@media (min-width: 1200px) {
+    .large-text {
+        font-size: 0.9rem;
+    }
 }
