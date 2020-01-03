@@ -21,7 +21,7 @@ from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_co
 from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
 
 
-def calc_similarity(image, fch, extraction, fch_of_images):
+def calc_similarity(fch, extraction, fch_of_images, image):
     images_map_item = {
         'image_path': os.path.join(extraction['directory_path'], image['image_name']),
         'thumbnail_path': image['thumbnail_path'],
@@ -185,12 +185,14 @@ def retrieve(request):
 
                 import django
                 django.setup()
-                pool = multiprocessing.Pool(processes=4)
+                pool = multiprocessing.Pool(processes=30)
                 result = zip(*pool.map(functools.partial(calc_similarity,
-                                                         fch=fch,
-                                                         extraction=extraction,
-                                                         fch_of_images=fch_of_images), images))
-
+                                                         fch,
+                                                         extraction,
+                                                         fch_of_images), images))
+                result = list(result)
+                result = [item[0] for item in result]
+                print(result)
 
                 # for index, image in enumerate(images, start=1):
                 #     images_map[image['id']] = calc_similarity(image, fch, extraction, fch_of_images)
