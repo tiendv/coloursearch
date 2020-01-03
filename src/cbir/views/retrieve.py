@@ -27,6 +27,7 @@ def calc_similarity(fch, directory_path, fch_of_images, image):
         'thumbnail_path': image['thumbnail_path'],
         'similarity': 0.0
     }
+    fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
     # fch_of_image = np.float32(fch_of_image)
     similarity = 0.0
     if len(fch) == len(fch_of_image):
@@ -175,13 +176,13 @@ def retrieve(request):
                             image_name__in=list_of_image_name)\
                     .values('id', 'image_name', 'thumbnail_path')
                 image_ids = [item['id'] for item in images]
-                images = [image.__dict__ for image in images]
+                images = list(images)
                 print("--- Get images: %s seconds ---" % (time.time() - start_time))
                 fch_of_images = FuzzyColorHistogram.objects\
                     .filter(image_extraction_id__in=image_ids)\
                     .values('image_extraction_id', 'id', 'value')\
                     .order_by('id')
-                fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
+                fch_of_images = list(fch_of_images)
                 print("--- Get FCH: %s seconds ---" % (time.time() - start_time))
 
                 import django
