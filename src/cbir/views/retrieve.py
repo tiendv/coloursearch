@@ -32,8 +32,8 @@ def calc_similarity(fch, directory_path, fch_of_images, images, index):
     similarity = math.sqrt(similarity)
     print(similarity)
     return {
-        'image_path': os.path.join(directory_path, images[index]['image_name']),
-        'thumbnail_path': images[index]['thumbnail_path'],
+        'image_path': str(os.path.join(directory_path, images[index]['image_name'])),
+        'thumbnail_path': str(images[index]['thumbnail_path']),
         'similarity': similarity
     }
 
@@ -187,11 +187,11 @@ def retrieve(request):
                 import django
                 django.setup()
                 pool = multiprocessing.Pool(processes=30)
-                result = zip(*pool.map(functools.partial(calc_similarity,
-                                                         fch,
-                                                         extraction['directory_path'],
-                                                         fch_of_images,
-                                                         images), range(0, len(images), 1)))
+                result = pool.map(functools.partial(calc_similarity,
+                                                    fch,
+                                                    extraction['directory_path'],
+                                                    fch_of_images,
+                                                    images), range(0, len(images), 1))
                 for r in result:
                     print(r)
                 result = list(result)
