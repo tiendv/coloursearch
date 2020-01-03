@@ -4,12 +4,14 @@ import csv
 import json
 import math
 import time
+import functools
 import collections
 import numpy as np
-from ..constants import *
-from ..views.annotate import *
+import multiprocessing
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
+from ..constants import *
+from ..views.annotate import annotate, image_resize, get_dominant_color
 from ..utilities.FuzzyColorHistogramExtraction import calc_color_range
 from ..models.FuzzyColorHistogramColor import FuzzyColorHistogramColor
 from ..utilities.ColorCorrelogramExtraction import extract_color_correlogram
@@ -17,6 +19,24 @@ from ..models import Extraction, ImageExtraction, FuzzyColorHistogram
 from ..utilities.ColorCoherenceVectorExtraction import extract_color_coherence_vector
 from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_color_histogram
 from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
+
+
+def calc_similarity(image, fch, extraction, fch_of_images):
+    images_map_item = {
+        'image_path': os.path.join(extraction['directory_path'], image['image_name']),
+        'thumbnail_path': image['thumbnail_path'],
+        'similarity': 0.0
+    }
+    fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
+    # fch_of_image = np.float32(fch_of_image)
+    similarity = 0.0
+    if len(fch) == len(fch_of_image):
+        for i in range(len(fch)):
+            similarity += (fch[i] - fch_of_image[i]) ** 2
+        # similarity = cv2.norm(fch - fch_of_image, cv2.NORM_L2)
+    similarity = math.sqrt(similarity)
+    images_map_item['similarity'] = similarity
+    return images_map_item
 
 
 def retrieve(request):
@@ -115,6 +135,9 @@ def retrieve(request):
                         param2_value=number_of_fine_colors,
                         param3_value=m)\
                 .values('id', 'directory_path')
+
+            result = []
+
             for extraction in extractions:
                 directory_path = extraction['directory_path']
                 folder_name = os.path.basename(directory_path)
@@ -159,25 +182,22 @@ def retrieve(request):
                     .values('image_extraction_id', 'id', 'value')\
                     .order_by('id')
                 print("--- Get FCH: %s seconds ---" % (time.time() - start_time))
-                for index, image in enumerate(images, start=1):
-                    images_map[image['id']] = {
-                        'image_path': os.path.join(extraction['directory_path'], image['image_name']),
-                        'thumbnail_path': image['thumbnail_path'],
-                        'similarity': 0.0
-                    }
-                    fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
-                    # fch_of_image = np.float32(fch_of_image)
-                    similarity = 0.0
-                    if len(fch) == len(fch_of_image):
-                        for i in range(len(fch)):
-                            similarity += (fch[i] - fch_of_image[i]) ** 2
-                        # similarity = cv2.norm(fch - fch_of_image, cv2.NORM_L2)
-                    similarity = math.sqrt(similarity)
-                    images_map[image['id']]['similarity'] = similarity
-                    print('{}/{}. Degree of similarity ({}): {}'.format(index, len(list_of_image_name), image['image_name'], similarity))
-            result = []
-            for key, value in images_map.items():
-                result.append(value)
+
+                import django
+                django.setup()
+                pool = multiprocessing.Pool(processes=4)
+                result = zip(*pool.map(functools.partial(calc_similarity,
+                                                         fch=fch,
+                                                         extraction=extraction,
+                                                         fch_of_images=fch_of_images), images))
+
+
+                # for index, image in enumerate(images, start=1):
+                #     images_map[image['id']] = calc_similarity(image, fch, extraction, fch_of_images)
+                #     print('{}/{}. Degree of similarity ({}): {}'.format(index, len(list_of_image_name), image['image_name'], images_map[image['id']]['similarity']))
+
+            # for key, value in images_map.items():
+            #     result.append(value)
             result = sorted(result, key=lambda k: k['similarity'])
             print("--- Retrieval: %s seconds ---" % (time.time() - start_time))
             return JsonResponse(result, safe=False)
