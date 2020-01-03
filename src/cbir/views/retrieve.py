@@ -152,10 +152,12 @@ def retrieve(request):
                             image_name__in=list_of_image_name)\
                     .values('id', 'image_name', 'thumbnail_path')
                 image_ids = [item['id'] for item in images]
+                print("--- Get images: %s seconds ---" % (time.time() - start_time))
                 fch_of_images = FuzzyColorHistogram.objects\
                     .filter(image_extraction_id__in=image_ids)\
                     .values('image_extraction_id', 'id', 'value')\
                     .order_by('id')
+                print("--- Get FCH: %s seconds ---" % (time.time() - start_time))
                 for image in images:
                     images_map[image['id']] = {
                         'image_path': os.path.join(extraction['directory_path'], image['image_name']),
@@ -169,6 +171,7 @@ def retrieve(request):
                             similarity += (fch[i] - fch_of_image[i])**2
                     similarity = math.sqrt(similarity)
                     images_map[image['id']]['similarity'] = similarity
+                    print('Degree of similarity ({}): {}'.format(image['image_name'], similarity))
             result = []
             for key, value in images_map.items():
                 result.append(value)
