@@ -21,13 +21,13 @@ from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_co
 from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
 
 
-def calc_similarity(fch, directory_path, fch_of_images, image):
+def calc_similarity(fch, directory_path, fch_of_images, images, index):
     images_map_item = {
-        'image_path': os.path.join(directory_path, image['image_name']),
-        'thumbnail_path': image['thumbnail_path'],
+        'image_path': os.path.join(directory_path, images[index]['image_name']),
+        'thumbnail_path': images[index]['thumbnail_path'],
         'similarity': 0.0
     }
-    fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
+    fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == images[index]['id']]
     # fch_of_image = np.float32(fch_of_image)
     similarity = 0.0
     if len(fch) == len(fch_of_image):
@@ -191,7 +191,10 @@ def retrieve(request):
                 result = zip(*pool.map(functools.partial(calc_similarity,
                                                          fch,
                                                          extraction['directory_path'],
-                                                         fch_of_images), images))
+                                                         fch_of_images,
+                                                         images), range(0, len(images), 1)))
+                for r in result:
+                    print(r)
                 result = list(result)
                 result = [item[0] for item in result]
                 print(result)
