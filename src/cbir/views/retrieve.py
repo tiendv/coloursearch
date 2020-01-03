@@ -21,13 +21,12 @@ from ..utilities.CumulativeColorHistogramExtraction import extract_cumulative_co
 from ..utilities.FuzzyColorHistogramExtraction import extract_fuzzy_color_histogram, quantize_color_space
 
 
-def calc_similarity(fch, extraction, fch_of_images, image):
+def calc_similarity(fch, directory_path, fch_of_images, image):
     images_map_item = {
-        'image_path': os.path.join(extraction['directory_path'], image['image_name']),
+        'image_path': os.path.join(directory_path, image['image_name']),
         'thumbnail_path': image['thumbnail_path'],
         'similarity': 0.0
     }
-    fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
     # fch_of_image = np.float32(fch_of_image)
     similarity = 0.0
     if len(fch) == len(fch_of_image):
@@ -176,11 +175,13 @@ def retrieve(request):
                             image_name__in=list_of_image_name)\
                     .values('id', 'image_name', 'thumbnail_path')
                 image_ids = [item['id'] for item in images]
+                images = [image.__dict__ for image in images]
                 print("--- Get images: %s seconds ---" % (time.time() - start_time))
                 fch_of_images = FuzzyColorHistogram.objects\
                     .filter(image_extraction_id__in=image_ids)\
                     .values('image_extraction_id', 'id', 'value')\
                     .order_by('id')
+                fch_of_image = [item['value'] for item in fch_of_images if item['image_extraction_id'] == image['id']]
                 print("--- Get FCH: %s seconds ---" % (time.time() - start_time))
 
                 import django
@@ -188,7 +189,7 @@ def retrieve(request):
                 pool = multiprocessing.Pool(processes=30)
                 result = zip(*pool.map(functools.partial(calc_similarity,
                                                          fch,
-                                                         extraction,
+                                                         extraction['directory_path'],
                                                          fch_of_images), images))
                 result = list(result)
                 result = [item[0] for item in result]
