@@ -96,6 +96,8 @@ def extract_rgb_color_histogram(image_location, color_range, channel_range):
     result = pool.map(functools.partial(calc_histogram,
                                         channel_range,
                                         img), range(0, len(img), 1))
+    pool.close()
+    pool.join()
     result = list(result)
     result = collections.Counter(result).most_common()
     for item in result:

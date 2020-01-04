@@ -186,6 +186,8 @@ def retrieve(request):
                                                     extraction['directory_path'],
                                                     fch_of_images,
                                                     images), range(0, len(images), 1))
+                pool.close()
+                pool.join()
                 result = list(result)
                 print(result)
 
@@ -341,6 +343,8 @@ def evaluate_performance(database_name, query_folder_path, extraction_id):
                                                 extraction['directory_path'],
                                                 fch_of_images,
                                                 images), range(0, len(images), 1))
+            pool.close()
+            pool.join()
             result = list(result)
 
             result = sorted(result, key=lambda k: k['similarity'])
