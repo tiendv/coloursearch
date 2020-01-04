@@ -73,7 +73,7 @@ def retrieve(request):
             print(dominant_colors)
             colorMap = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-            color = colorMap.tolist()
+            colors = colorMap.tolist()
         else:
             return
         print("--- Get dominant color and preprocessing: %s seconds ---" % (time.time() - start_time))
