@@ -211,7 +211,7 @@ def retrieve(request):
         return HttpResponseRedirect('/')
 
 
-def evaluate_performance(database_name, query_folder_path, extraction_id):
+def evaluate_performance(database_name, query_folder_path, extraction_id, k):
     image_paths = []
     m_ap = {}
     m_ar = {}
@@ -349,7 +349,7 @@ def evaluate_performance(database_name, query_folder_path, extraction_id):
 
             result = sorted(result, key=lambda k: k['similarity'])
             print("Retrieval: %s seconds" % (time.time() - start_time))
-            result = result[:6]
+            result = result[:k]
             query_precision = []
             query_recall = []
             number_of_relevant_images = 0
