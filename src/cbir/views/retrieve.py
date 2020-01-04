@@ -243,7 +243,7 @@ def evaluation_performance(database_name, query_folder_path, extraction_id):
         print("Get dominant color and preprocessing: %s seconds" % (time.time() - start_time))
 
         method = Extraction.objects\
-            .filter(extraction_id=extraction_id)\
+            .filter(id=extraction_id)\
             .values('method_id')
         method = method[0]['method_id']
         print(method)
