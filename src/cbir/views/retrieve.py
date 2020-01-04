@@ -368,11 +368,17 @@ def evaluate_performance(database_name, query_folder_path, extraction_id):
                         number_of_relevant_images += 1
                         query_recall.append(number_of_relevant_images / 4)
                         query_precision.append(number_of_relevant_images / i)
+                print('|- Query precision -|')
+                print(query_precision)
+                print('|- Query recall -|')
+                print(query_recall)
                 average_precision = sum(query_precision) / len(query_precision)
                 average_recall = sum(query_recall) / len(query_recall)
                 m_ap[m_ap_key].append(average_precision)
                 m_ar[m_ap_key].append(average_recall)
+                print('|- m_ap -|')
                 print(m_ap)
+                print('|- m_ar -|')
                 print(m_ar)
     result = []
     for key, value in m_ap.items():
