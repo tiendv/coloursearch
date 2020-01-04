@@ -372,8 +372,10 @@ def evaluate_performance(database_name, query_folder_path, extraction_id):
                 average_recall = sum(query_recall) / len(query_recall)
                 m_ap[m_ap_key].append(average_precision)
                 m_ar[m_ap_key].append(average_recall)
+                print(m_ap)
+                print(m_ar)
     result = []
-    for key, value in m_ap:
+    for key, value in m_ap.items():
         result.append(sum(value) / len(value))
     result = sum(result) / len(result)
     print('----------------------')

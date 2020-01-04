@@ -122,7 +122,7 @@ def extract_rgb_color_histogram(image_location, color_range, channel_range):
     for key, value in histogram.items():
         histogram[key] = value / number_of_pixels
 
-    print("--- Histogram: %s seconds ---" % (time.time() - start_time))
+    print("Histogram: %s seconds" % (time.time() - start_time))
     return histogram
 
 
