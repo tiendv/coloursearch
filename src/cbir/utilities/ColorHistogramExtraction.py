@@ -1,11 +1,13 @@
-import math
-import numpy as np
 import cv2
-import collections
-import logging
-from ..utilities.Utilities import image_resize
-from ..constants import *
+import math
 import time
+import logging
+import functools
+import numpy as np
+import collections
+import multiprocessing
+from ..constants import *
+from ..utilities.Utilities import image_resize
 
 from ..models import ColorHistogram, Extraction
 
@@ -49,6 +51,23 @@ def calc_color_range(number_of_colors):
     return color_range, color, value_range
 
 
+def calc_histogram(channel_range, image, index):
+    channel_0 = None
+    channel_1 = None
+    channel_2 = None
+    for cr in channel_range:
+        if cr[0] <= image[index][0] <= cr[1]:
+            channel_0 = cr
+        if cr[0] <= image[index][1] <= cr[1]:
+            channel_1 = cr
+        if cr[0] <= image[index][2] <= cr[1]:
+            channel_2 = cr
+        if channel_0 is not None and channel_1 is not None and channel_2 is not None:
+            return
+    result = (channel_0, channel_1, channel_2)
+    return result
+
+
 def extract_rgb_color_histogram(image_location, color_range, channel_range):
     start_time = time.time()
     if type(image_location) == str:
@@ -71,20 +90,32 @@ def extract_rgb_color_histogram(image_location, color_range, channel_range):
     for c in color_range:
         histogram[c] = 0
 
-    for pixel in img:
-        channel_0 = None
-        channel_1 = None
-        channel_2 = None
-        for cr in channel_range:
-            if cr[0] <= pixel[0] <= cr[1]:
-                channel_0 = cr
-            if cr[0] <= pixel[1] <= cr[1]:
-                channel_1 = cr
-            if cr[0] <= pixel[2] <= cr[1]:
-                channel_2 = cr
-            if channel_0 is not None and channel_1 is not None and channel_2 is not None:
-                break
-        histogram[(channel_0, channel_1, channel_2)] += 1
+    import django
+    django.setup()
+    pool = multiprocessing.Pool(multiprocessing.cpu_count() - 2)
+    result = pool.map(functools.partial(calc_histogram,
+                                        channel_range,
+                                        img), range(0, len(img), 1))
+    result = list(result)
+    result = collections.Counter(result).most_common()
+    for item in result:
+        if item[0] in histogram:
+            histogram[item[0]] = item[1]
+
+    # for pixel in img:
+    #     channel_0 = None
+    #     channel_1 = None
+    #     channel_2 = None
+    #     for cr in channel_range:
+    #         if cr[0] <= pixel[0] <= cr[1]:
+    #             channel_0 = cr
+    #         if cr[0] <= pixel[1] <= cr[1]:
+    #             channel_1 = cr
+    #         if cr[0] <= pixel[2] <= cr[1]:
+    #             channel_2 = cr
+    #         if channel_0 is not None and channel_1 is not None and channel_2 is not None:
+    #             break
+    #     histogram[(channel_0, channel_1, channel_2)] += 1
 
     for key, value in histogram.items():
         histogram[key] = value / number_of_pixels
@@ -119,7 +150,6 @@ def extract_cielab_color_histogram(image_location, color_range, channel_range):
         image_location = np.array(image_location)
         image_location = image_location.astype(np.uint8)
         image_location = cv2.cvtColor(image_location, cv2.COLOR_RGB2Lab)
-        print(image_location)
         img = []
         for row in image_location:
             for pixel in row:

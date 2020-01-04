@@ -30,7 +30,6 @@ def calc_similarity(fch, directory_path, fch_of_images, images, index):
             similarity += (fch[i] - fch_of_image[i]) ** 2
         # similarity = cv2.norm(fch - fch_of_image, cv2.NORM_L2)
     similarity = math.sqrt(similarity)
-    print(similarity)
     return {
         'image_path': str(os.path.join(directory_path, images[index]['image_name'])),
         'thumbnail_path': str(images[index]['thumbnail_path']),
@@ -181,7 +180,7 @@ def retrieve(request):
 
                 import django
                 django.setup()
-                pool = multiprocessing.Pool(multiprocessing.cpu_count())
+                pool = multiprocessing.Pool(multiprocessing.cpu_count() - 2)
                 result = pool.map(functools.partial(calc_similarity,
                                                     fch,
                                                     extraction['directory_path'],
@@ -336,7 +335,7 @@ def evaluate_performance(database_name, query_folder_path, extraction_id):
 
             import django
             django.setup()
-            pool = multiprocessing.Pool(multiprocessing.cpu_count())
+            pool = multiprocessing.Pool(multiprocessing.cpu_count() - 2)
             result = pool.map(functools.partial(calc_similarity,
                                                 fch,
                                                 extraction['directory_path'],
