@@ -239,7 +239,7 @@ def evaluate_performance(database_name, query_folder_path, extraction_id):
         dominant_colors = get_dominant_color(image)
         print(dominant_colors)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        color = image.tolist()
+        colors = image.tolist()
         print("Get dominant color and preprocessing: %s seconds" % (time.time() - start_time))
 
         method = Extraction.objects\
