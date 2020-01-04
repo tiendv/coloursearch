@@ -248,7 +248,7 @@ def evaluation_performance(database_name, query_folder_path, extraction_id):
         method = method[0]['method_id']
         print(method)
 
-        if method == 'Fuzzy Color Histogram':
+        if method == 'fuzzy_color_histogram':
             number_of_coarse_colors = NUMBER_OF_COARSE_COLORS
             number_of_fine_colors = NUMBER_OF_FINE_COLORS
             m = M
