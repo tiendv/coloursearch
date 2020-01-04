@@ -210,7 +210,7 @@ def retrieve(request):
         return HttpResponseRedirect('/')
 
 
-def evaluation_performance(database_name, query_folder_path, extraction_id):
+def evaluate_performance(database_name, query_folder_path, extraction_id):
     image_paths = []
     m_ap = {}
     m_ar = {}
