@@ -215,14 +215,14 @@ def evaluate_performance(database_name, query_folder_path, extraction_id, k):
     image_paths = []
     m_ap = {}
     m_ar = {}
-    start_time = time.time()
     for dirpath, _, filenames in os.walk(query_folder_path):
         for f in filenames:
             image_paths.append(os.path.abspath(os.path.join(dirpath, f)))
 
     for index, image_path in enumerate(image_paths, start=1):
+        start_time = time.time()
         colors = []
-        print('{}/{}. Querying {}'.format(index, len(image_paths), image_path))
+        print('[{}/{}]. Querying {}'.format(index, len(image_paths), image_path))
         image_name = os.path.splitext(os.path.basename(image_path))[0]
         image = cv2.imread(image_path)
         height, width = image.shape[:2]
@@ -372,19 +372,29 @@ def evaluate_performance(database_name, query_folder_path, extraction_id, k):
                 print(query_precision)
                 print('|- Query recall -|')
                 print(query_recall)
-                average_precision = sum(query_precision) / len(query_precision)
-                average_recall = sum(query_recall) / len(query_recall)
+                average_precision = 0
+                average_recall = 0
+                if len(query_precision) != 0:
+                    average_precision = sum(query_precision) / len(query_precision)
+                if len(query_recall) != 0:
+                    average_recall = sum(query_recall) / len(query_recall)
                 m_ap[m_ap_key].append(average_precision)
                 m_ar[m_ap_key].append(average_recall)
-                print('|- m_ap -|')
+                print('--- m_ap ---')
                 print(m_ap)
-                print('|- m_ar -|')
+                print('--- m_ar ---')
                 print(m_ar)
     result = []
     for key, value in m_ap.items():
-        result.append(sum(value) / len(value))
-    result = sum(result) / len(result)
-    print('----------------------')
+        if len(value) != 0:
+            result.append(sum(value) / len(value))
+        else:
+            result.append(0)
+    if len(result) != 0:
+        result = sum(result) / len(result)
+    else:
+        result = 0
+    print('-----------------------------')
     print('| MAP = {} |'.format(result))
-    print('----------------------')
+    print('-----------------------------')
     return

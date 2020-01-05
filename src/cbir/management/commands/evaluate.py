@@ -8,12 +8,12 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('database_name', type=str)
         parser.add_argument('query_path', type=str)
-        parser.add_argument('extraction_id', type=float)
+        parser.add_argument('extraction_id', type=int)
         parser.add_argument('k', type=int)
 
     def handle(self, *args, **options):
         status = evaluate_performance(options['database_name'],
                                       options['query_path'],
-                                      options['extraction_id'], 
+                                      options['extraction_id'],
                                       options['k'])
         self.stdout.write(self.style.SUCCESS('Command done.'))
