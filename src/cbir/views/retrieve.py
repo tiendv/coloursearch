@@ -255,7 +255,8 @@ def evaluate_performance(database_name, query_folder_path, extraction_id, k, typ
             image = res.reshape(image_shape)
 
             # For debugging
-            res2 = image.tolist()
+            res2 = image.reshape(-1, 3)
+            res2 = res2.tolist()
             count = collections.Counter(tuple(item) for item in res2)
             print(count)
 
