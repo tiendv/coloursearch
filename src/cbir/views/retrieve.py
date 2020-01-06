@@ -211,7 +211,7 @@ def retrieve(request):
         return HttpResponseRedirect('/')
 
 
-def evaluate_performance(database_name, query_folder_path, extraction_id, k):
+def evaluate_performance(database_name, query_folder_path, extraction_id, k, type):
     image_paths = []
     m_ap = {}
     m_ar = {}
@@ -225,17 +225,39 @@ def evaluate_performance(database_name, query_folder_path, extraction_id, k):
         print('[{}/{}]. Querying {}'.format(index, len(image_paths), image_path))
         image_name = os.path.splitext(os.path.basename(image_path))[0]
         image = cv2.imread(image_path)
-        height, width = image.shape[:2]
-        if width > MAX_RETRIEVAL_IMAGE_WIDTH:
-            image = image_resize(image, width=MAX_RETRIEVAL_IMAGE_WIDTH)
-            height, width = image.shape[:2]
-            if height > MAX_RETRIEVAL_IMAGE_HEIGHT:
-                image = image_resize(image, height=MAX_RETRIEVAL_IMAGE_HEIGHT)
-        elif height > MAX_RETRIEVAL_IMAGE_HEIGHT:
-            image = image_resize(image, height=MAX_RETRIEVAL_IMAGE_HEIGHT)
+        if type == 'image':
             height, width = image.shape[:2]
             if width > MAX_RETRIEVAL_IMAGE_WIDTH:
                 image = image_resize(image, width=MAX_RETRIEVAL_IMAGE_WIDTH)
+                height, width = image.shape[:2]
+                if height > MAX_RETRIEVAL_IMAGE_HEIGHT:
+                    image = image_resize(image, height=MAX_RETRIEVAL_IMAGE_HEIGHT)
+            elif height > MAX_RETRIEVAL_IMAGE_HEIGHT:
+                image = image_resize(image, height=MAX_RETRIEVAL_IMAGE_HEIGHT)
+                height, width = image.shape[:2]
+                if width > MAX_RETRIEVAL_IMAGE_WIDTH:
+                    image = image_resize(image, width=MAX_RETRIEVAL_IMAGE_WIDTH)
+        elif type == 'color_layout':
+            image = image_resize(image, width=30)
+            Z = image.reshape((-1, 3))
+
+            # convert to np.float32
+            Z = np.float32(Z)
+
+            # define criteria, number of clusters(K) and apply kmeans()
+            criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+            ret, label, center = cv2.kmeans(Z, 8, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+
+            # Now convert back into uint8, and make original image
+            center = np.uint8(center)
+            res = center[label.flatten()]
+            image_shape = image.shape
+            image = res.reshape(image_shape)
+
+            # For debugging
+            res2 = image.tolist()
+            count = collections.Counter(tuple(item) for item in res2)
+            print(count)
 
         dominant_colors = get_dominant_color(image)
         print(dominant_colors)
