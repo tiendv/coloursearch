@@ -376,37 +376,48 @@ def evaluate_performance(database_name, query_folder_path, extraction_id, k, typ
             query_precision = []
             query_recall = []
             number_of_relevant_images = 0
+            m_ap_key = None
+            query_name_id = None
+
             if database_name == 'holidays':
                 query_name_id = int(image_name)
+                m_ap_key = query_name_id // 100 * 100
             elif database_name == 'ukbench':
                 query_name_id = int(image_name.replace('ukbench', ''))
                 m_ap_key = query_name_id // 4 * 4
-                if m_ap_key not in m_ap:
-                    m_ap[m_ap_key] = []
-                    m_ar[m_ap_key] = []
-                for i, item in enumerate(result, start=1):
-                    item_name = os.path.splitext(os.path.basename(item['image_path']))[0]
-                    name_id = int(item_name.replace('ukbench', ''))
+
+            if m_ap_key not in m_ap:
+                m_ap[m_ap_key] = []
+                m_ar[m_ap_key] = []
+            for i, item in enumerate(result, start=1):
+                item_name = os.path.splitext(os.path.basename(item['image_path']))[0]
+                name_id = int(item_name.replace('ukbench', ''))
+                if database_name == 'holidays':
                     if (query_name_id // 4) == (name_id // 4):
                         number_of_relevant_images += 1
                         query_recall.append(number_of_relevant_images / 4)
                         query_precision.append(number_of_relevant_images / i)
-                print('|- Query precision -|')
-                print(query_precision)
-                print('|- Query recall -|')
-                print(query_recall)
-                average_precision = 0
-                average_recall = 0
-                if len(query_precision) != 0:
-                    average_precision = sum(query_precision) / len(query_precision)
-                if len(query_recall) != 0:
-                    average_recall = sum(query_recall) / len(query_recall)
-                m_ap[m_ap_key].append(average_precision)
-                m_ar[m_ap_key].append(average_recall)
-                print('--- m_ap ---')
-                print(m_ap)
-                print('--- m_ar ---')
-                print(m_ar)
+                elif database_name == 'ukbench':
+                    if (query_name_id // 100) == (name_id // 100):
+                        number_of_relevant_images += 1
+                        query_recall.append(number_of_relevant_images / 4)
+                        query_precision.append(number_of_relevant_images / i)
+            print('|- Query precision -|')
+            print(query_precision)
+            print('|- Query recall -|')
+            print(query_recall)
+            average_precision = 0
+            average_recall = 0
+            if len(query_precision) != 0:
+                average_precision = sum(query_precision) / len(query_precision)
+            if len(query_recall) != 0:
+                average_recall = sum(query_recall) / len(query_recall)
+            m_ap[m_ap_key].append(average_precision)
+            m_ar[m_ap_key].append(average_recall)
+            print('--- m_ap ---')
+            print(m_ap)
+            print('--- m_ar ---')
+            print(m_ar)
     result = []
     for key, value in m_ap.items():
         if len(value) != 0:
