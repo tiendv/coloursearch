@@ -59,7 +59,7 @@
                             <div class="row">
                                 <span class="col-4 normal-label vertical-center">Phương pháp</span>
                                 <div class="col-8 my-3">
-                                    <div class="dropdown float-right mr-3">
+                                    <div class="dropdown float-right">
                                         <button class="btn dropdown-toggle" type="button"
                                                 style="background-color: #6cc0e5"
                                                 id="dropdownMenuButton" data-toggle="dropdown"
@@ -83,8 +83,9 @@
                                        max="50" value="15">
 
 
-                                <div class="col-4">
-                                    <input type="submit" class="submit-button btn btn-primary ml-lg-2 p-lg-2 px-lg-4 py-lg-2 ml-sm-1 p-sm-0 px-sm-1 py-sm-1"
+                                <div class="offset-1 col-4">
+                                    <input type="submit"
+                                           class="submit-button float-right btn btn-primary p-lg-2 px-lg-4 py-lg-2 px-md-0 py-md-1"
                                            value="xuất lưới">
                                 </div>
                             </div>
@@ -93,26 +94,27 @@
                                 <input type="number" class="col-2 input-height number-up-down no-padding"
                                        name="height" min="1"
                                        max="50" value="10">
-                                <div class="col-4">
-                                    <input type="submit" class="quick-fill btn btn-primary ml-lg-2 p-lg-2 px-lg-4 py-lg-2 ml-sm-1 p-sm-0 px-sm-1 py-sm-1"
+                                <div class="offset-1 col-4">
+                                    <input type="submit"
+                                           class="quick-fill float-right btn btn-primary p-lg-2 px-lg-4 py-lg-2 px-md-0 py-md-1"
                                            value="xoá màu">
                                 </div>
                             </div>
                         </form>
                         <div class="row px-3 mb-3">
-                            <button type="button" class="col-2 btn btn-primary p-2 px-4 py-3"
+                            <button type="button" class="col-2 btn btn-primary p-2 py-3"
                                     data-toggle="modal" data-target="#select-extractions" id="extractions-select">
                                 <i class="fas fa-cogs"></i>
                             </button>
-                            <button class="offset-1 col-4 btn btn-primary p-2 px-4 py-3 no-border" id="bgcolor-button">
+                            <button class="offset-1 col-4 btn btn-primary p-2 py-3 no-border large-text" id="bgcolor-button">
                                 Chọn một màu
                             </button>
-                            <button class="offset-1 col-4 btn btn-primary px-4 py-2 retrieve-button large-text"
+                            <button class="offset-1 col-4 btn btn-primary py-2 retrieve-button large-text"
                                     id="color-query-retrieve">{% csrf_token %}
                                 Truy xuất
                             </button>
                         </div>
-                        <div class="row justify-content-md-center mx-3 px-5 py-3 border" id="color-map-div">
+                        <div class="row justify-content-md-center mx-xl-5 mx-lg-1 px-3 py-3 border" id="color-map-div">
                             <table class="pixel-canvas" id="color-map"></table>
                         </div>
                     </div>
@@ -132,7 +134,8 @@
                             <span class="col-4 normal-label vertical-center">Phương pháp</span>
                             <div class="col-8 my-3">
                                 <div class="dropdown float-right mr-3">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                    <button class="btn dropdown-toggle" type="button"
+                                            style="background-color: #6cc0e5"
                                             id="dropdownMenuButton2" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
                                         <span id="method2">Fuzzy Color Histogram</span>
@@ -253,7 +256,8 @@
                         {% for extraction in extractions %}
                             <tr>
                                 <td><input type="checkbox" id="box-{{ forloop.counter }}" class="extraction-checkbox">
-                                    <label for="box-{{ forloop.counter }}" id="id-{{ forloop.counter }}">{{ extraction.id }}</label></td>
+                                    <label for="box-{{ forloop.counter }}"
+                                           id="id-{{ forloop.counter }}">{{ extraction.id }}</label></td>
                                 <td class="extraction-cell">{{ extraction.directory_path }}</td>
                                 <td class="extraction-cell">{{ extraction.method.detail }}</td>
                                 <td class="extraction-cell">{{ extraction.start_time }}</td>
@@ -265,7 +269,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="save-changes" data-dismiss="modal">Lưu thay đổi</button>
+                <button type="button" class="btn btn-primary" id="save-changes" data-dismiss="modal">Lưu thay đổi
+                </button>
             </div>
         </div>
     </div>

@@ -15,7 +15,7 @@ def annotate(directory_path):
     folder_name = os.path.basename(directory_path)
 
     csv_file_name = '{}.csv'.format(folder_name)
-    csv_file_path = os.path.join(settings.BASE_DIR, csv_file_name)
+    csv_file_path = os.path.join(settings.BASE_DIR, 'annotation', csv_file_name)
     with open(csv_file_path, 'w', newline='') as f:
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
 

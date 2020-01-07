@@ -237,7 +237,6 @@ function makeGrid() {
     while (pixelCanvas.firstChild) {
         pixelCanvas.removeChild(pixelCanvas.firstChild);
     }
-
     // Creates rows and cells
     for (let i = 1; i <= gridHeight; i++) {
         let gridRow = document.createElement('tr');
@@ -259,10 +258,13 @@ function makeGrid() {
     let cellLength = Math.floor(document.getElementById('color-map-div').offsetWidth / gridWidth);
     let tds = document.getElementsByClassName('color-cell');
     for (let i = 0; i < tds.length; i++) {
-        tds[i].style.setProperty('width', cellLength + 'px', 'important');
-        tds[i].style.setProperty('height', (cellLength - 2) + 'px');
         tds[i].style.backgroundColor = 'rgb(255, 255, 255)'
     }
+    let $cells = $('.color-cell');
+    $cells.each(function () {
+        let width = $(this).width();
+        $(this).height(width);
+    });
 }
 
 // Upon user's submitting height and width selections, callback function (inside method) calls makeGrid function. But event method preventDefault() first intercepts the 'submit' event, which would normally submit the form and refresh the page, preventing makeGrid() from being processed
@@ -324,7 +326,6 @@ $(".box-file").change(function (e) {
         let file = e.originalEvent.srcElement.files[i];
 
         let img = document.getElementById('image-uploaded');
-        img.style.maxWidth = '320px';
         img.style.padding = '15px 0';
         let reader = new FileReader();
         reader.onloadend = function () {

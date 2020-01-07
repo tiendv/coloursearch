@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from ...views.retrieve import evaluate_performance
+from ...views.evaluate import evaluate
 
 
 class Command(BaseCommand):
@@ -13,9 +13,9 @@ class Command(BaseCommand):
         parser.add_argument('type', type=str)
 
     def handle(self, *args, **options):
-        status = evaluate_performance(options['database_name'],
-                                      options['query_path'],
-                                      options['extraction_id'],
-                                      options['k'],
-                                      options['type'])
+        status = evaluate(options['database_name'],
+                          options['query_path'],
+                          options['extraction_id'],
+                          options['k'],
+                          options['type'])
         self.stdout.write(self.style.SUCCESS('Command done.'))
