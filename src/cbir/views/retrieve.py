@@ -182,12 +182,15 @@ def retrieve(request):
                 django.setup()
 
                 # faiss
+                vector_dict = {}
                 vector = []
-                for i in range(0, len(image_extractions)):
-                    vector.append([])
                 for item in fch_of_images:
-                    vector_index = item['image_extraction']
-                    vector[vector_index].append(item['value'])
+                    vector_index = item['image_extraction_id']
+                    if vector_index not in vector_dict:
+                        vector_dict[vector_index] = []
+                    vector_dict[vector_index].append(item['value'])
+                for key, value in vector_dict.items():
+                    vector.append(value)
                 vector = np.asarray(vector).astype('float32')
                 query = np.asarray([fch])
 
