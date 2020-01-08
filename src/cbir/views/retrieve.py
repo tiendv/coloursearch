@@ -205,7 +205,7 @@ def retrieve(request):
                     result.append({
                         'image_path': str(os.path.join(directory_path, image_extractions[item]['image_name'])),
                         'thumbnail_path': str(image_extractions[item]['thumbnail_path']),
-                        'similarity': distance_array[0][i]
+                        'similarity': str(distance_array[0][i])
                     })
 
                 # For production
