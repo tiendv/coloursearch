@@ -4,6 +4,7 @@ import csv
 import json
 import math
 import time
+import faiss
 import functools
 import numpy as np
 import multiprocessing
@@ -105,9 +106,9 @@ def retrieve(request):
             if csv_file == '':
                 coarse_color_ranges, coarse_channel_ranges, matrix, v = quantize_color_space()
             else:
-                v = FuzzyColorHistogramColor.objects\
+                v = FuzzyColorHistogramColor.objects \
                     .filter(number_of_coarse_colors=NUMBER_OF_COARSE_COLORS,
-                            number_of_fine_colors=NUMBER_OF_FINE_COLORS)\
+                            number_of_fine_colors=NUMBER_OF_FINE_COLORS) \
                     .values('ccomponent1', 'ccomponent2', 'ccomponent3')
                 v = [[item['ccomponent1'], item['ccomponent2'], item['ccomponent3']] for item in v]
                 with open(csv_file) as csv_file:
@@ -121,11 +122,11 @@ def retrieve(request):
                                                 matrix, v)
             # fch = np.float32(fch)
             images_map = {}
-            extractions = Extraction.objects\
+            extractions = Extraction.objects \
                 .filter(id__in=extraction_ids,
                         param1_value=number_of_coarse_colors,
                         param2_value=number_of_fine_colors,
-                        param3_value=m)\
+                        param3_value=m) \
                 .values('id', 'directory_path')
 
             result = []
@@ -163,50 +164,75 @@ def retrieve(request):
                         continue
                 print('length of image list: {}'.format(len(list_of_image_name)))
 
-                images = ImageExtraction.objects\
+                image_extractions = ImageExtraction.objects \
                     .filter(extraction_id=extraction['id'],
-                            image_name__in=list_of_image_name)\
+                            image_name__in=list_of_image_name) \
                     .values('id', 'image_name', 'thumbnail_path')
-                image_ids = [item['id'] for item in images]
-                images = list(images)
+                image_ids = [item['id'] for item in image_extractions]
+                image_extractions = list(image_extractions)
                 print("--- Get images: %s seconds ---" % (time.time() - start_time))
-                fch_of_images = FuzzyColorHistogram.objects\
-                    .filter(image_extraction_id__in=image_ids)\
-                    .values('image_extraction_id', 'id', 'value')\
+                fch_of_images = FuzzyColorHistogram.objects \
+                    .filter(image_extraction_id__in=image_ids) \
+                    .values('image_extraction_id', 'id', 'value') \
                     .order_by('id')
                 fch_of_images = list(fch_of_images)
                 print("--- Get FCH: %s seconds ---" % (time.time() - start_time))
 
                 import django
                 django.setup()
+
+                # faiss
+                vector = []
+                for i in range(0, len(image_extractions)):
+                    vector.append([])
+                for item in fch_of_images:
+                    vector_index = item['image_extraction']
+                    vector[vector_index].append(item['value'])
+                vector = np.asarray(vector).astype('float32')
+                query = np.asarray([fch])
+
+                index = faiss.IndexFlatL2(NUMBER_OF_FINE_COLORS)
+                index.add(vector)
+                distance_array, index_array = index.search(query, 200)
+                for i, item in enumerate(index_array[0]):
+                    result.append({
+                        'image_path': str(os.path.join(directory_path, image_extractions[item]['image_name'])),
+                        'thumbnail_path': str(image_extractions[item]['thumbnail_path']),
+                        'similarity': distance_array[i]
+                    })
+
                 # For production
-                pool = multiprocessing.Pool(multiprocessing.cpu_count() - 2)
-                result = pool.map(functools.partial(calc_similarity,
-                                                    fch,
-                                                    extraction['directory_path'],
-                                                    fch_of_images,
-                                                    images), range(0, len(images), 1))
+                # pool = multiprocessing.Pool(multiprocessing.cpu_count() - 2)
+                # result = pool.map(functools.partial(calc_similarity,
+                #                                     fch,
+                #                                     extraction['directory_path'],
+                #                                     fch_of_images,
+                #                                     image_extractions), range(0, len(image_extractions), 1))
+                # pool.close()
+                # pool.join()
 
                 # For local testing
                 # result = []
                 # for index in range(0, len(images)):
                 #     result.append(calc_similarity(fch, extraction['directory_path'], fch_of_images, images, index))
 
-                pool.close()
-                pool.join()
-                result = list(result)
+                # result = list(result)
                 print(result)
 
                 result = sorted(result, key=lambda k: k['similarity'])
                 print("--- Retrieval: %s seconds ---" % (time.time() - start_time))
-                return JsonResponse(result, safe=False)
 
-                # for index, image in enumerate(images, start=1):
+                # for index, image in enumerate(image_extractions, start=1):
                 #     images_map[image['id']] = calc_similarity(image, fch, extraction, fch_of_images)
-                #     print('{}/{}. Degree of similarity ({}): {}'.format(index, len(list_of_image_name), image['image_name'], images_map[image['id']]['similarity']))
+                #     print('{}/{}. Degree of similarity ({}): {}'.format(index,
+                #                                                         len(list_of_image_name),
+                #                                                         image['image_name'],
+                #                                                         images_map[image['id']]['similarity']))
 
             # for key, value in images_map.items():
             #     result.append(value)
+
+            return JsonResponse(result, safe=False)
 
         elif method == 'Color Coherence Vector':
             extract_color_coherence_vector(-1, colorMap)
