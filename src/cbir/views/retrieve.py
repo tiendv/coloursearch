@@ -197,6 +197,10 @@ def retrieve(request):
                 index = faiss.IndexFlatL2(NUMBER_OF_FINE_COLORS)
                 index.add(vector)
                 distance_array, index_array = index.search(query, 200)
+                print('distance_array')
+                print(distance_array)
+                print('index_array')
+                print(index_array)
                 for i, item in enumerate(index_array[0]):
                     result.append({
                         'image_path': str(os.path.join(directory_path, image_extractions[item]['image_name'])),
