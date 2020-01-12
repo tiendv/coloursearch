@@ -179,7 +179,7 @@ input[type=number] {
 }
 
 /* Styles submit button, including a change of displayed mouse cursor to inform user he/she is hovering over something clickable */
-.submit-button, .quick-fill {
+.submit-button, .clear-all, .quick-fill {
     /* Padding is space between element's content and border. First value sets top and bottom padding; second value sets right and left */
     font-size: 14px !important;
     white-space: normal;

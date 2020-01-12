@@ -23,12 +23,18 @@ def extract_color_coherence_vector(img_extraction_id, image_location, number_of_
     number_of_colors = int(number_of_colors)
     tau = int(tau)
 
-    print('Extracting CCV for ' + image_location)
+    print('Extracting CCV')
     print('number_of_colors = ' + str(number_of_colors))
     print('tau = ' + str(tau))
 
     start_time = time.time()
-    img = cv2.imread(image_location)
+    if type(image_location) == list:
+        image_location = np.array(image_location)
+        img = image_location.astype(np.uint8)
+    elif type(image_location) == str:
+        img = cv2.imread(image_location)
+    else:
+        img = image_location
     row, col, channels = img.shape
 
     blurred_image = cv2.GaussianBlur(img, (3, 3), 0)
@@ -69,16 +75,19 @@ def extract_color_coherence_vector(img_extraction_id, image_location, number_of_
         } for i in range(0, number_of_colors)
     }
 
-    for key, value in ccv.items():
-        instance = ColorCoherenceVector()
-        instance.image_extraction_id = img_extraction_id
-        instance.ccomponent1 = key[0]
-        instance.ccomponent2 = key[1]
-        instance.ccomponent3 = key[2]
-        instance.alpha = value['alpha']
-        instance.beta = value['beta']
-        instance.save()
-        print('Saved ' + str(key) + ': ' + str(value))
+    if img_extraction_id == -1:
+        return ccv
+    else:
+        for key, value in ccv.items():
+            instance = ColorCoherenceVector()
+            instance.image_extraction_id = img_extraction_id
+            instance.ccomponent1 = key[0]
+            instance.ccomponent2 = key[1]
+            instance.ccomponent3 = key[2]
+            instance.alpha = value['alpha']
+            instance.beta = value['beta']
+            instance.save()
+            print('Saved ' + str(key) + ': ' + str(value))
 
     print("--- Extraction time: %s seconds ---" % (time.time() - start_time))
     return ccv

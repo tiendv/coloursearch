@@ -61,7 +61,7 @@ window.onload = function () {
                         text.className = 'text text-2 pt-2 mt-3';
                         let p1 = document.createElement('p');
                         p1.className = 'mb-2';
-                        p1.textContent = i;
+                        p1.textContent = i + 1;
                         p1.style.fontWeight = '900';
                         p1.style.color = '#000000';
                         p1.style.wordWrap = 'break-word';
@@ -143,7 +143,7 @@ window.onload = function () {
                     text.className = 'text text-2 pt-2 mt-3';
                     let p1 = document.createElement('p');
                     p1.className = 'mb-2';
-                    p1.textContent = i;
+                    p1.textContent = i + 1;
                     p1.style.fontWeight = '900';
                     p1.style.color = '#000000';
                     p1.style.wordWrap = 'break-word';
@@ -228,6 +228,7 @@ window.addEventListener("load", function (event) {
 
 const sizePicker = document.querySelector('.size-picker');
 const pixelCanvas = document.querySelector('.pixel-canvas');
+const clearAll = document.querySelector('.clear-all');
 const quickFill = document.querySelector('.quick-fill');
 
 function makeGrid() {
@@ -307,8 +308,12 @@ pixelCanvas.addEventListener('dblclick', e => {
     e.target.style.backgroundColor = null;
 });
 
+clearAll.addEventListener('click', function () {
+    pixelCanvas.querySelectorAll('td').forEach(td => td.style.backgroundColor = '#FFFFFF');
+});
+
 quickFill.addEventListener('click', function () {
-    const color = document.querySelector('#bgcolor-button').innerHTML;
+    const color = $('#bgcolor-button').text();
     pixelCanvas.querySelectorAll('td').forEach(td => td.style.backgroundColor = color);
 });
 
@@ -326,7 +331,6 @@ $(".box-file").change(function (e) {
         let file = e.originalEvent.srcElement.files[i];
 
         let img = document.getElementById('image-uploaded');
-        img.style.padding = '15px 0';
         let reader = new FileReader();
         reader.onloadend = function () {
             img.src = reader.result;

@@ -10,7 +10,7 @@ import numpy as np
 import multiprocessing
 from django.conf import settings
 from ..constants import *
-from .retrieve import calc_similarity
+from .retrieve import calc_fch_similarity
 from ..views.annotate import image_resize, get_dominant_color
 from ..utilities.FuzzyColorHistogramExtraction import calc_color_range
 from ..models.FuzzyColorHistogramColor import FuzzyColorHistogramColor
@@ -167,7 +167,7 @@ def evaluate(database_name, query_folder_path, extraction_id, k, type):
             import django
             django.setup()
             pool = multiprocessing.Pool(multiprocessing.cpu_count() - 2)
-            result = pool.map(functools.partial(calc_similarity,
+            result = pool.map(functools.partial(calc_fch_similarity,
                                                 fch,
                                                 extraction['directory_path'],
                                                 fch_of_images,

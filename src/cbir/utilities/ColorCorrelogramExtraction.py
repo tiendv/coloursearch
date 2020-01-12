@@ -9,7 +9,7 @@ from ..models.ColorCorrelogram import ColorCorrelogram
 
 
 def extract_color_correlogram(img_extraction_id, image_location, number_of_colors=64, d=7, increment=1):
-    print('Extracting Color Correlogram for ' + image_location)
+    print('Extracting Color Correlogram')
     D = []
     if d is None or d < 1:
         D = [1, 3, 5, 7]
@@ -28,7 +28,13 @@ def extract_color_correlogram(img_extraction_id, image_location, number_of_color
     number_of_colors = len(colors)
     m = number_of_colors
 
-    img = cv2.imread(image_location)
+    if type(image_location) == list:
+        image_location = np.array(image_location)
+        img = image_location.astype(np.uint8)
+    elif type(image_location) == str:
+        img = cv2.imread(image_location)
+    else:
+        img = image_location
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     height, width = img.shape[:2]
     start_time = time.time()
@@ -103,7 +109,8 @@ def extract_color_correlogram(img_extraction_id, image_location, number_of_color
                     gamma[k][color_range] = 0.0
     print("--- gamma: %s seconds ---" % (time.time() - start_time))
     # print(gamma)
-
+    if img_extraction_id == -1:
+        return gamma
     k = None
     for key, value in gamma.items():
         k = key

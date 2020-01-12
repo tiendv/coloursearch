@@ -89,15 +89,22 @@
                                            value="xuất lưới">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mb-3">
                                 <span class="col-5 normal-label vertical-center">Chiều cao lưới</span>
                                 <input type="number" class="col-2 input-height number-up-down no-padding"
                                        name="height" min="1"
                                        max="50" value="10">
                                 <div class="offset-1 col-4">
-                                    <input type="submit"
-                                           class="quick-fill float-right btn btn-primary p-lg-2 px-lg-4 py-lg-2 px-md-0 py-md-1"
+                                    <input type="button"
+                                           class="clear-all float-right btn btn-primary p-lg-2 px-lg-4 py-lg-2 px-md-0 py-md-1"
                                            value="xoá màu">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="offset-8 col-4">
+                                    <input type="button"
+                                           class="quick-fill float-right btn btn-primary p-lg-2 px-lg-4 py-lg-2 px-md-0 py-md-1"
+                                           value="phủ màu">
                                 </div>
                             </div>
                         </form>
@@ -106,7 +113,8 @@
                                     data-toggle="modal" data-target="#select-extractions" id="extractions-select">
                                 <i class="fas fa-cogs"></i>
                             </button>
-                            <button class="offset-1 col-4 btn btn-primary p-2 py-3 no-border large-text" id="bgcolor-button">
+                            <button class="offset-1 col-4 btn btn-primary p-2 py-3 no-border large-text"
+                                    id="bgcolor-button">
                                 Chọn một màu
                             </button>
                             <button class="offset-1 col-4 btn btn-primary py-2 retrieve-button large-text"
