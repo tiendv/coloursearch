@@ -380,7 +380,7 @@ def retrieve(request):
             #     result.append(value)
 
         elif method == 'Color Correlogram':
-            cc_temp = extract_color_correlogram(-1, colors, 8, 3, 2)
+            cc_temp = extract_color_correlogram(-1, colors, 64, 3, 2)
             cc = []
             for key1, value1 in cc_temp.items():
                 for key2, value2 in value1.items():

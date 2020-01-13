@@ -196,11 +196,14 @@
             <div class="container">
                 <div class="row justify-content-center mb-2 pb-2">
                     <div class="col-md-7 heading-section text-center ftco-animate">
-                        <h3 class="mb-4">Kết quả truy xuất</h3>
+                        <h3 class="mb-2">Kết quả truy xuất</h3>
                     </div>
                 </div>
-                <div class="row justify-content-center" id="loader" style="visibility: hidden">
-                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+{#                <div class="row justify-content-center" style="min-height: 85px">#}
+{#                    <img id="loader" style="visibility: hidden" src="{% static 'images/loader.svg' %}">#}
+{#                </div>#}
+                <div class="row justify-content-center" style="min-height: 85px">
+                    <div id="loader" style="visibility: hidden" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                 </div>
                 <div class="row" id="retrieval-result">
                 </div>
