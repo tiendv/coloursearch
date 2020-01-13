@@ -58,7 +58,7 @@ def calc_cc_similarity(cc, directory_path, cc_of_images, images, index):
     similarity = 0.0
     if len(cc) == len(cc_of_image):
         for index, (key, value) in enumerate(cc.items()):
-            similarity += abs(cc[value]['value'] - cc_of_image[i])
+            similarity += abs(cc[value]['value'] - cc_of_image[index])
         # similarity = cv2.norm(ccv - ccv_of_image, cv2.NORM_L2)
     return {
         'image_path': str(os.path.join(directory_path, images[index]['image_name'])),
@@ -134,7 +134,6 @@ def retrieve(request):
                         color_name = '_'.join(map(str, [NUMBER_OF_COARSE_COLORS, NUMBER_OF_FINE_COLORS]))
                         if file_name == color_name:
                             csv_file = os.path.join(r, file)
-            print(csv_file)
             if csv_file == '':
                 coarse_color_ranges, coarse_channel_ranges, matrix, v = quantize_color_space()
             else:
@@ -152,8 +151,6 @@ def retrieve(request):
                                                 coarse_color_ranges,
                                                 coarse_channel_ranges,
                                                 matrix, v)
-            # fch = np.float32(fch)
-            images_map = {}
             extractions = Extraction.objects \
                 .filter(id__in=extraction_ids,
                         param1_value=number_of_coarse_colors,
@@ -222,7 +219,7 @@ def retrieve(request):
                 for key, value in vector_dict.items():
                     vector.append(value)
                 vector = np.asarray(vector).astype('float32')
-                query = np.asarray([fch])
+                query = np.asarray([fch]).astype('float32')
 
                 index = faiss.IndexFlatL2(NUMBER_OF_FINE_COLORS)
                 index.add(vector)
@@ -270,7 +267,6 @@ def retrieve(request):
             ccv = []
             for key, value in ccv_temp.items():
                 ccv.append(value['alpha'])
-            images_map = {}
             extraction_ids = [3]
             extractions = Extraction.objects \
                 .filter(id__in=extraction_ids,
@@ -384,9 +380,11 @@ def retrieve(request):
             #     result.append(value)
 
         elif method == 'Color Correlogram':
-            cc = extract_color_correlogram(-1, colorMap, 8, 3, 2)
-            print(cc)
-            images_map = {}
+            cc_temp = extract_color_correlogram(-1, colors, 8, 3, 2)
+            cc = []
+            for key1, value1 in cc_temp.items():
+                for key2, value2 in value1.items():
+                    cc.append(value2)
             extraction_ids = [5]
             extractions = Extraction.objects \
                 .filter(id__in=extraction_ids,
@@ -453,7 +451,7 @@ def retrieve(request):
                 for key, value in vector_dict.items():
                     vector.append(value)
                 vector = np.asarray(vector).astype('float32')
-                query = np.asarray([cc])
+                query = np.asarray([cc]).astype('float32')
 
                 index = faiss.IndexFlatL2(NUMBER_OF_FINE_COLORS)
                 index.add(vector)
