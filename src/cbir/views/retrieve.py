@@ -227,10 +227,6 @@ def retrieve(request):
                 index = faiss.IndexFlatL2(NUMBER_OF_FINE_COLORS)
                 index.add(vector)
                 distance_array, index_array = index.search(query, 200)
-                print('distance_array')
-                print(distance_array)
-                print('index_array')
-                print(index_array)
                 for i, item in enumerate(index_array[0]):
                     result.append({
                         'image_path': str(os.path.join(directory_path, image_extractions[item]['image_name'])),
@@ -270,8 +266,12 @@ def retrieve(request):
             #     result.append(value)
 
         elif method == 'Color Coherence Vector':
-            ccv = extract_color_coherence_vector(-1, image)
+            ccv_temp = extract_color_coherence_vector(-1, image)
+            ccv = []
+            for key, value in ccv_temp.items():
+                ccv.append(value['alpha'])
             images_map = {}
+            extraction_ids = [3]
             extractions = Extraction.objects \
                 .filter(id__in=extraction_ids,
                         method_id='color_coherence_vector') \
@@ -327,31 +327,27 @@ def retrieve(request):
                 # django.setup()
 
                 # faiss
-                # vector_dict = {}
-                # vector = []
-                # for item in ccv_of_images:
-                #     vector_index = item['image_extraction_id']
-                #     if vector_index not in vector_dict:
-                #         vector_dict[vector_index] = []
-                #     vector_dict[vector_index].append(item['value'])
-                # for key, value in vector_dict.items():
-                #     vector.append(value)
-                # vector = np.asarray(vector).astype('float32')
-                # query = np.asarray([ccv])
-                #
-                # index = faiss.IndexFlatL2(NUMBER_OF_FINE_COLORS)
-                # index.add(vector)
-                # distance_array, index_array = index.search(query, 200)
-                # print('distance_array')
-                # print(distance_array)
-                # print('index_array')
-                # print(index_array)
-                # for i, item in enumerate(index_array[0]):
-                #     result.append({
-                #         'image_path': str(os.path.join(directory_path, image_extractions[item]['image_name'])),
-                #         'thumbnail_path': str(image_extractions[item]['thumbnail_path']),
-                #         'similarity': str(distance_array[0][i])
-                #     })
+                vector_dict = {}
+                vector = []
+                for item in ccv_of_images:
+                    vector_index = item['image_extraction_id']
+                    if vector_index not in vector_dict:
+                        vector_dict[vector_index] = []
+                    vector_dict[vector_index].append(item['alpha'])
+                for key, value in vector_dict.items():
+                    vector.append(value)
+                vector = np.asarray(vector).astype('float32')
+                query = np.asarray([ccv]).astype('float32')
+
+                index = faiss.IndexFlatL2(NUMBER_OF_CCV_COLORS)
+                index.add(np.ascontiguousarray(vector))
+                distance_array, index_array = index.search(query, 200)
+                for i, item in enumerate(index_array[0]):
+                    result.append({
+                        'image_path': str(os.path.join(directory_path, image_extractions[item]['image_name'])),
+                        'thumbnail_path': str(image_extractions[item]['thumbnail_path']),
+                        'similarity': str(distance_array[0][i])
+                    })
 
                 # For production
                 # pool = multiprocessing.Pool(multiprocessing.cpu_count() - 2)
@@ -364,13 +360,13 @@ def retrieve(request):
                 # pool.join()
 
                 # For local testing
-                result = []
-                for index in range(0, len(image_extractions)):
-                    result.append(calc_ccv_similarity(ccv,
-                                                      extraction['directory_path'],
-                                                      ccv_of_images,
-                                                      image_extractions,
-                                                      index))
+                # result = []
+                # for index in range(0, len(image_extractions)):
+                #     result.append(calc_ccv_similarity(ccv,
+                #                                       extraction['directory_path'],
+                #                                       ccv_of_images,
+                #                                       image_extractions,
+                #                                       index))
 
                 result = list(result)
 
@@ -391,11 +387,11 @@ def retrieve(request):
             cc = extract_color_correlogram(-1, colorMap, 8, 3, 2)
             print(cc)
             images_map = {}
+            extraction_ids = [5]
             extractions = Extraction.objects \
                 .filter(id__in=extraction_ids,
                         method_id='color_correlogram') \
                 .values('id', 'directory_path')
-            print(extractions)
             for extraction in extractions:
                 directory_path = extraction['directory_path']
                 folder_name = os.path.basename(directory_path)
@@ -447,31 +443,27 @@ def retrieve(request):
                 # django.setup()
 
                 # faiss
-                # vector_dict = {}
-                # vector = []
-                # for item in ccv_of_images:
-                #     vector_index = item['image_extraction_id']
-                #     if vector_index not in vector_dict:
-                #         vector_dict[vector_index] = []
-                #     vector_dict[vector_index].append(item['value'])
-                # for key, value in vector_dict.items():
-                #     vector.append(value)
-                # vector = np.asarray(vector).astype('float32')
-                # query = np.asarray([ccv])
-                #
-                # index = faiss.IndexFlatL2(NUMBER_OF_FINE_COLORS)
-                # index.add(vector)
-                # distance_array, index_array = index.search(query, 200)
-                # print('distance_array')
-                # print(distance_array)
-                # print('index_array')
-                # print(index_array)
-                # for i, item in enumerate(index_array[0]):
-                #     result.append({
-                #         'image_path': str(os.path.join(directory_path, image_extractions[item]['image_name'])),
-                #         'thumbnail_path': str(image_extractions[item]['thumbnail_path']),
-                #         'similarity': str(distance_array[0][i])
-                #     })
+                vector_dict = {}
+                vector = []
+                for item in cc_of_images:
+                    vector_index = item['image_extraction_id']
+                    if vector_index not in vector_dict:
+                        vector_dict[vector_index] = []
+                    vector_dict[vector_index].append(item['value'])
+                for key, value in vector_dict.items():
+                    vector.append(value)
+                vector = np.asarray(vector).astype('float32')
+                query = np.asarray([cc])
+
+                index = faiss.IndexFlatL2(NUMBER_OF_FINE_COLORS)
+                index.add(vector)
+                distance_array, index_array = index.search(query, 200)
+                for i, item in enumerate(index_array[0]):
+                    result.append({
+                        'image_path': str(os.path.join(directory_path, image_extractions[item]['image_name'])),
+                        'thumbnail_path': str(image_extractions[item]['thumbnail_path']),
+                        'similarity': str(distance_array[0][i])
+                    })
 
                 # For production
                 # pool = multiprocessing.Pool(multiprocessing.cpu_count() - 2)
@@ -484,13 +476,13 @@ def retrieve(request):
                 # pool.join()
 
                 # For local testing
-                result = []
-                for index in range(0, len(image_extractions)):
-                    result.append(calc_cc_similarity(cc,
-                                                     extraction['directory_path'],
-                                                     cc_of_images,
-                                                     image_extractions,
-                                                     index))
+                # result = []
+                # for index in range(0, len(image_extractions)):
+                #     result.append(calc_cc_similarity(cc,
+                #                                      extraction['directory_path'],
+                #                                      cc_of_images,
+                #                                      image_extractions,
+                #                                      index))
 
                 result = list(result)
 
