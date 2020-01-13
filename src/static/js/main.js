@@ -11,6 +11,8 @@ window.onload = function () {
 
     // Query by color layout
     $('#color-query-retrieve').click(function () {
+        $('#loader').css("visibility", "visible");
+        $('#loader').fadeIn();
         number_of_cols_in_page = 0;
         cols = [];
         let colorMap = [];
@@ -90,6 +92,7 @@ window.onload = function () {
                     }
                     number_of_cols_in_page += 50;
                 }
+                $('#loader').fadeOut();
                 console.log(data);
             }
         });
@@ -97,6 +100,8 @@ window.onload = function () {
 
     // Query by example image
     $('#image-query-retrieve').click(function () {
+        $('#loader').css("visibility", "visible");
+        $('#loader').fadeIn();
         number_of_cols_in_page = 0;
         cols = [];
         let colorMap = [];
@@ -172,6 +177,8 @@ window.onload = function () {
                 }
                 number_of_cols_in_page += 50;
             }
+            $('#loader').fadeOut();
+            console.log(data);
         });
     });
 
