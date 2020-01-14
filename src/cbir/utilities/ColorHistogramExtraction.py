@@ -63,7 +63,8 @@ def calc_histogram(channel_range, image, index):
         if cr[0] <= image[index][2] <= cr[1]:
             channel_2 = cr
         if channel_0 is not None and channel_1 is not None and channel_2 is not None:
-            return
+            result = (channel_0, channel_1, channel_2)
+            return result
     result = (channel_0, channel_1, channel_2)
     return result
 
