@@ -7,8 +7,11 @@
 - django
 - nginx
 
-<center><i>Sơ đồ minh hoạ kiến trúc các công nghệ được sử dụng trong ứng dụng</i>
-</center>
+<p align="center">
+  <img src="https://github.com/nxh235/content-based-image-retrieval/blob/master/resources/1.png?raw=true" alt="Sơ đồ minh hoạ kiến trúc các công nghệ được sử dụng trong ứng dụng"/>
+</p>
+<p align="center">
+<i>Sơ đồ minh hoạ kiến trúc các công nghệ được sử dụng trong ứng dụng</i></p>
 
 ## Các bước cài đặt
 
