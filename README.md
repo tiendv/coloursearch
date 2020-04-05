@@ -98,17 +98,25 @@
 
     Nếu thông báo migrate tất cả các file thành công, trong MySQL sẽ hiện ra các table.
 
-<p align="center">
-<img src="https://github.com/tiendv/coloursearch/blob/master/resources/2.png?raw=true" alt="Migrate cấu trúc model trong project Django qua database schema thành công"/>
-</p>
-<p align="center">
-<i>Migrate cấu trúc model trong project Django qua database schema.</i></p>
+    <p align="center">
+    <img src="https://github.com/tiendv/coloursearch/blob/master/resources/2.png?raw=true" alt="Migrate cấu trúc model trong project Django qua database schema thành công"/>
+    </p>
+    <p align="center">
+    <i>Migrate cấu trúc model trong project Django qua database schema.</i></p>
 
-<p align="center">
-<img src="https://github.com/tiendv/coloursearch/blob/master/resources/3.png?raw=true" alt="Các table được tạo ra trong MySQL"/>
-</p>
-<p align="center">
-<i>Các table được tạo ra trong MySQL.</i></p>
+    <p align="center">
+    <img src="https://github.com/tiendv/coloursearch/blob/master/resources/3.png?raw=true" alt="Các table được tạo ra trong MySQL"/>
+    </p>
+    <p align="center">
+    <i>Các table được tạo ra trong MySQL.</i></p>
+
+11. Để chạy ứng dụng Django, chạy lệnh sau:
+
+    ~~~bash
+    python manage.py runserver
+    ~~~
+
+    Mở trình duyệt web, truy cập vào địa chỉ http://127.0.0.1:8000 sẽ ra được màn hình ứng dụng.
 
 ### Đối với Ubuntu
 
@@ -375,11 +383,11 @@
 
     Mở trình duyệt web, truy cập vào địa chỉ http://127.0.0.1:8000 sẽ ra được màn hình ứng dụng.
 
-<p align="center">
-  <img src="https://github.com/tiendv/coloursearch/blob/master/resources/5.png?raw=true" alt="Màn hình ứng dụng"/>
-</p>
-<p align="center">
-<i>Màn hình ứng dụng</i></p>
+    <p align="center">
+    <img src="https://github.com/tiendv/coloursearch/blob/master/resources/5.png?raw=true" alt="Màn hình ứng dụng"/>
+    </p>
+    <p align="center">
+    <i>Màn hình ứng dụng</i></p>
 
 ## Thực thi ứng dụng
 
