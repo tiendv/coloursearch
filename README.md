@@ -8,7 +8,7 @@
 - NGINX
 
 <p align="center">
-  <img src="https://github.com/nxh235/content-based-image-retrieval/blob/master/resources/1.png?raw=true" alt="Sơ đồ minh hoạ kiến trúc các công nghệ được sử dụng trong ứng dụng"/>
+  <img src="https://github.com/tiendv/coloursearch/blob/master/resources/1.png?raw=true" alt="Sơ đồ minh hoạ kiến trúc các công nghệ được sử dụng trong ứng dụng"/>
 </p>
 <p align="center">
 <i>Sơ đồ minh hoạ kiến trúc các công nghệ được sử dụng trong ứng dụng.</i></p>
@@ -26,7 +26,7 @@
 3. Clone project bằng cách nhập vào câu lệnh sau:
 
     ~~~bash
-    git clone https://github.com/nxh235/content-based-image-retrieval.git
+    git clone https://github.com/tiendv/coloursearch.git
     ~~~
 
 4. Mở Command Prompt (hoặc Windows Powershell hoặc Mingw-w64, Cygwin), cài đặt Virtual Environment (Virtualenv) bằng PyPI (pip) (đã được cài đặt cùng với Python 3):
@@ -99,13 +99,13 @@
     Nếu thông báo migrate tất cả các file thành công, trong MySQL sẽ hiện ra các table.
 
 <p align="center">
-<img src="https://github.com/nxh235/content-based-image-retrieval/blob/master/resources/2.png?raw=true" alt="Migrate cấu trúc model trong project Django qua database schema thành công"/>
+<img src="https://github.com/tiendv/coloursearch/blob/master/resources/2.png?raw=true" alt="Migrate cấu trúc model trong project Django qua database schema thành công"/>
 </p>
 <p align="center">
 <i>Migrate cấu trúc model trong project Django qua database schema.</i></p>
 
 <p align="center">
-<img src="https://github.com/nxh235/content-based-image-retrieval/blob/master/resources/3.png?raw=true" alt="Các table được tạo ra trong MySQL"/>
+<img src="https://github.com/tiendv/coloursearch/blob/master/resources/3.png?raw=true" alt="Các table được tạo ra trong MySQL"/>
 </p>
 <p align="center">
 <i>Các table được tạo ra trong MySQL.</i></p>
@@ -376,7 +376,7 @@
     Mở trình duyệt web, truy cập vào địa chỉ http://127.0.0.1:8000 sẽ ra được màn hình ứng dụng.
 
 <p align="center">
-  <img src="https://github.com/nxh235/content-based-image-retrieval/blob/master/resources/5.png?raw=true" alt="Màn hình ứng dụng"/>
+  <img src="https://github.com/tiendv/coloursearch/blob/master/resources/5.png?raw=true" alt="Màn hình ứng dụng"/>
 </p>
 <p align="center">
 <i>Màn hình ứng dụng</i></p>
@@ -404,7 +404,7 @@
     | Cumulative Color Histogram | cumulative_color_histogram | Số lượng màu sắc - n (Number of colors)            |                                                         |                                  |
 
 <p align="center">
-<img src="https://github.com/nxh235/content-based-image-retrieval/blob/master/resources/4.png?raw=true" alt="Trích xuất đặc trưng thành công"/>
+<img src="https://github.com/tiendv/coloursearch/blob/master/resources/4.png?raw=true" alt="Trích xuất đặc trưng thành công"/>
 </p>
 <p align="center">
 <i>Trích xuất đặc trưng thành công.</i></p>
