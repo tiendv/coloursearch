@@ -305,7 +305,7 @@
     After=syslog.target
 
     [Service]
-    ExecStart=/usr/local/bin/uwsgi --emperor /etc/uwsgi/sites
+    ExecStart=/usr/local/bin/uwsgi --emperor /home/username/content-based-image-retrieval/cbir_uwsgi.ini
     Restart=always
     KillSignal=SIGQUIT
     Type=notify
