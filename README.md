@@ -411,11 +411,11 @@
     | Color Coherence Vector     | color_coherence_vector     | Số lượng màu sắc - n (Number of colors)            | Đại lượng xác định  tính coherence - т (tau)            |                                  |
     | Cumulative Color Histogram | cumulative_color_histogram | Số lượng màu sắc - n (Number of colors)            |                                                         |                                  |
 
-<p align="center">
-<img src="https://github.com/tiendv/coloursearch/blob/master/resources/4.png?raw=true" alt="Trích xuất đặc trưng thành công"/>
-</p>
-<p align="center">
-<i>Trích xuất đặc trưng thành công.</i></p>
+    <p align="center">
+    <img src="https://github.com/tiendv/coloursearch/blob/master/resources/4.png?raw=true" alt="Trích xuất đặc trưng thành công"/>
+    </p>
+    <p align="center">
+    <i>Trích xuất đặc trưng thành công.</i></p>
 
 2. Đối với đặc trưng Fuzzy Color Histogram, để tăng tốc độ truy xuất hình ảnh, thực hiện câu lệnh sau để annotate các màu về một số màu cơ bản:
 
