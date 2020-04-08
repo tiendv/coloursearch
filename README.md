@@ -58,7 +58,7 @@
     pip install -r requirements.txt
     ~~~
 
-    __Lưu ý:__ Tới thời điểm hiện tại, faiss chưa hỗ trợ Windows, khi build trên Windows sẽ bị lỗi.
+    __Lưu ý:__ Tới thời điểm hiện tại, faiss chưa hỗ trợ Windows, khi build trên Windows sẽ bị lỗi. Một giải pháp thay thế cho việc indexing bằng faiss là dùng multiprocessing. Để deploy project trên Windows, người dùng comment các dòng số `212-232`, `326-346`, `444-464` và bỏ comment các dòng số `235-249`, `349-365`, `467-483`.
 
 8. Tải về và cài đặt hệ quản trị cơ sở dữ liệu MySQL tại địa chỉ. https://dev.mysql.com/downloads/installer/
 
@@ -116,7 +116,7 @@
     python manage.py runserver
     ~~~
 
-    Mở trình duyệt web, truy cập vào địa chỉ http://127.0.0.1:8000 sẽ ra được màn hình ứng dụng.
+    Mở trình duyệt web, truy cập vào địa chỉ http://127.0.0.1:8000 màn hình ứng dụng sẽ hiện ra.
 
 ### Đối với Ubuntu
 
@@ -442,5 +442,6 @@
     ~~~
 
     Trong đó:
-    - `k` là số hình ảnh đầu tiên trong kết quả tìm kiếm lấy ra để đánh giá.
-    - `loại truy vấn` là cách thức truy vấn hình ảnh, bao gồm: `image` và `color_layout`.
+    - `<tên tập dữ liệu hình ảnh>`: hiện tại project hỗ trợ đánh giá hai tập dữ liệu hình ảnh là `holidays` (INRIA Holidays) và `ukbench` (University of Kentucky Benchmark). Người dùng có thể tuỳ chỉnh trong file `content-based-image-retrieval\src\cbir\views\evaluate.py`
+    - `<k>` là số hình ảnh đầu tiên trong kết quả tìm kiếm lấy ra để đánh giá.
+    - `<loại truy vấn>` là cách thức truy vấn hình ảnh, bao gồm: `image` và `color_layout`.
