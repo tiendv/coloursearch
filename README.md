@@ -147,7 +147,7 @@
 3. Clone project bằng cách nhập vào câu lệnh sau:
 
     ~~~bash
-    git clone https://github.com/nxh235/content-based-image-retrieval.git
+    git clone https://github.com/tiendv/coloursearch.git
     ~~~
 
 4. Cài đặc PyPI (pip):
@@ -221,7 +221,7 @@
     source cbir/venv/activate
     ~~~
 
-    Migrate từ thư mục content-based-image-retrieval/src/:
+    Migrate từ thư mục `content-based-image-retrieval/src/`:
 
     ~~~bash
     python manage.py migrate
@@ -442,6 +442,6 @@
     ~~~
 
     Trong đó:
-    - `<tên tập dữ liệu hình ảnh>`: hiện tại project hỗ trợ đánh giá hai tập dữ liệu hình ảnh là `holidays` (INRIA Holidays) và `ukbench` (University of Kentucky Benchmark). Người dùng có thể tuỳ chỉnh trong file `content-based-image-retrieval\src\cbir\views\evaluate.py`
+    - `<tên tập dữ liệu hình ảnh>`: hiện tại project hỗ trợ đánh giá hai tập dữ liệu hình ảnh là `holidays` (INRIA Holidays) và `ukbench` (University of Kentucky Benchmark). Người dùng có thể tuỳ chỉnh trong file `content-based-image-retrieval/src/cbir/views/evaluate.py`
     - `<k>` là số hình ảnh đầu tiên trong kết quả tìm kiếm lấy ra để đánh giá.
     - `<loại truy vấn>` là cách thức truy vấn hình ảnh, bao gồm: `image` và `color_layout`.
