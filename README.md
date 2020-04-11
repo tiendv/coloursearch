@@ -442,6 +442,6 @@
     ~~~
 
     Trong đó:
-    - `<tên tập dữ liệu hình ảnh>`: hiện tại project hỗ trợ đánh giá hai tập dữ liệu hình ảnh là `holidays` (INRIA Holidays) và `ukbench` (University of Kentucky Benchmark). Người dùng có thể tuỳ chỉnh trong file `content-based-image-retrieval/src/cbir/views/evaluate.py`
+    - `<tên tập dữ liệu hình ảnh>`: hiện tại project hỗ trợ đánh giá hai tập dữ liệu hình ảnh là `holidays` ([INRIA Holidays](http://lear.inrialpes.fr/people/jegou/data.php)) và `ukbench` ([University of Kentucky Benchmark](https://archive.org/details/ukbench)). Người dùng có thể tuỳ chỉnh trong file `content-based-image-retrieval/src/cbir/views/evaluate.py`
     - `<k>` là số hình ảnh đầu tiên trong kết quả tìm kiếm lấy ra để đánh giá.
     - `<loại truy vấn>` là cách thức truy vấn hình ảnh, bao gồm: `image` và `color_layout`.
